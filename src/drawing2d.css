@@ -231,3 +231,30 @@ html[data-editor] textarea {
   border-radius: 12px;
   padding: 4px 8px;
 }
+[data-editor="3d"] .tabs [data-tab="pathway"] {
+  display: none;
+}
+.pathway-properties {
+  border-top: 1px solid #d8e3ea;
+  margin-top: 14px;
+}
+.pathway-properties summary {
+  font-weight: 650;
+  padding: 12px 0;
+  cursor: pointer;
+}
+.pathway-properties .details-body {
+  padding: 0;
+}
+.pathway-properties textarea {
+  width: 100%;
+  min-height: 62px;
+  font-family: inherit;
+  font-size: 12px;
+}
+.pathway-properties input {
+  max-width: 100%;
+}
+.pathway-properties p {
+  overflow-wrap: anywhere;
+}

@@ -2,7 +2,7 @@
 
 Online: **https://espierin.github.io/immunostudio/**
 
-Detailed user manuals: [English](public/manual/en.html) · [Nederlands](public/manual/nl.html). Both have a table of contents, practical tutorials, fourteen captioned screenshots/detail views, export reference and print/PDF layout. Click any illustration to open the original screenshot. Online: [English](https://espierin.github.io/immunostudio/manual/en.html) · [Nederlands](https://espierin.github.io/immunostudio/manual/nl.html). Regenerate after editing: `node scripts/build-manuals.mjs`.
+Detailed user manuals: [English](public/manual/en.html) · [Nederlands](public/manual/nl.html). Both have a table of contents, practical tutorials, fifteen captioned screenshots/detail views, export reference and print/PDF layout. Click any illustration to open the original screenshot. Online: [English](https://espierin.github.io/immunostudio/manual/en.html) · [Nederlands](https://espierin.github.io/immunostudio/manual/nl.html). Regenerate after editing: `node scripts/build-manuals.mjs`.
 
 2D sculpting: open **Sculpt & modifiers** to push/pull, inflate, deflate or smooth individual cell/tissue contours. The floating panel can be dragged, expanded and minimized. Contour modifiers provide smooth, simplify, inset/outset and whole-object mirrors. Choose **Use as membrane**, then **Attach selection** on separate molecules to keep them perpendicular while the membrane deforms. Line construction also supports plain strokes, lipid bilayers, endothelium, stratified skin and intestinal epithelium, with independent interior fill. Bézier handles extend freely beyond the original line box. Enclosed SVG cell interiors deform with the boundary. See manual sections 5a–5c for grouped receptors, anchor settings and supported geometry.
 
@@ -78,3 +78,11 @@ De 3D-cellen volgen de oorspronkelijke 2D-contour met een celtype-afhankelijke a
 | 10 | Accessibility, English/Dutch wording, contrast, browser regression checks and manuals |
 
 References: [Inkscape welcome and command palette](https://wiki.inkscape.org/wiki/index.php/Release_notes/1.1), [Blender command search](https://docs.blender.org/manual/en/4.0/interface/controls/templates/operator_search.html), [BioRender contextual canvas](https://help.biorender.com/hc/en-gb/articles/26447997366173-How-to-use-the-BioRender-canvas). Graphics and code are original. Regenerate the opening artwork with `node scripts/build-opening-art.mjs`. See manual section 2a for the new workflow.
+
+## Pathway building blocks
+
+The 2D Pathway elements tab contains 35 original editable schematic symbols in six categories. Geometry, labels, state/modification, stoichiometry, compartments, identifiers, complex members, source provenance and normalized connection ports are represented separately. Project validation and `.immuno` files preserve the metadata; generated SVGs carry portable metadata too. Label/state edits preserve customized vector geometry. The membrane entry uses the existing native bilayer editor. Compartments are placed behind other objects.
+
+[Symbol gallery](https://espierin.github.io/immunostudio/pathway-elements/) · [English instructions](https://espierin.github.io/immunostudio/manual/en.html#pathway) · [Nederlandse uitleg](https://espierin.github.io/immunostudio/manual/nl.html#pathway). Generate the original SVGs and gallery with `node scripts/build-pathway-elements.mjs`.
+
+`pathwayTypeFor` provides initial Reactome/GPML class mappings with an explicit unknown fallback; `pathwayPorts` returns transformed port coordinates. These are foundations for a future importer. Live pathway retrieval, graph reconstruction and live node-attached connectors are not implemented in this step. The symbols do not claim full SBGN/GPML conformance. References: [Reactome diagram specification](https://reactome.org/dev/diagram/pathway-diagram-specs), [GPML schema](https://github.com/PathVisio/GPML).

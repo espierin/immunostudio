@@ -1,4 +1,11 @@
 import {
+  validatePathwayMetadata,
+  pathwayProperties,
+  updatePathwayItem,
+  pathwaySVG,
+  makePathwayItem,
+} from "./pathway-elements.js";
+import {
   selectionViewport,
   pageFormats,
   pageFormatControls,
@@ -298,7 +305,8 @@ export class Drawing2D {
       strokeWidth: 3,
       ...item,
     };
-    this.doc.items.push(n);
+    if (n.pathway?.role === "compartment") this.doc.items.unshift(n);
+    else this.doc.items.push(n);
     this.selected = [n.id];
     this.notify();
     return n;
@@ -308,12 +316,19 @@ export class Drawing2D {
       [w, h] = sourceSize(svg),
       width = Math.min(330, Math.max(240, w / 2)),
       height = (width * h) / w;
+    const metadata = new DOMParser()
+      .parseFromString(svg, "image/svg+xml")
+      .querySelector('metadata[data-pathway-metadata="true"]');
+    const pathway = metadata
+      ? validatePathwayMetadata(JSON.parse(metadata.textContent))
+      : undefined;
     return this.add({
       kind: "svg",
-      name,
+      name: pathway?.label || name,
+      ...(pathway ? { pathway } : {}),
       svg,
       sourceFile,
-      volumeLook: isCellElement({ name, sourceFile }),
+      volumeLook: pathway ? false : isCellElement({ name, sourceFile }),
       w: width,
       h: height,
     });
@@ -1070,6 +1085,27 @@ export class Drawing2D {
     });
     document.addEventListener("change", (e) => {
       if (document.documentElement.dataset.editor !== "2d") return;
+      if (e.target.dataset.pathwayField) {
+        const items = this.selectedItems().filter(
+          (i) => i.pathway && !i.locked,
+        );
+        if (!items.length) return;
+        try {
+          const next = items.map((i) =>
+            updatePathwayItem(
+              clone(i),
+              e.target.dataset.pathwayField,
+              e.target.value,
+            ),
+          );
+          this.beforeChange();
+          items.forEach((item, index) => Object.assign(item, next[index]));
+          this.notify();
+        } catch (error) {
+          this.onStatus(error.message);
+        }
+        return;
+      }
       if (e.target.hasAttribute("data-sheet-preset")) {
         if (e.target.value) this.command("page-format-" + e.target.value);
         return;
@@ -1105,6 +1141,8 @@ export class Drawing2D {
               continue;
             }
           }
+          if (field === "name" && item.pathway)
+            updatePathwayItem(item, "label", value);
           item[field] = value;
           if (field === "layerSide") item.layerSide = +value === -1 ? -1 : 1;
           if (field === "layerThickness")
@@ -1421,6 +1459,23 @@ export class Drawing2D {
     return true;
   }
   command(cmd) {
+    if (cmd === "pathway-reset") {
+      const items = this.selectedItems().filter((i) => i.pathway && !i.locked);
+      if (!items.length) return;
+      this.beforeChange();
+      for (const item of items) {
+        if (item.kind === "membrane") {
+          const base = makePathwayItem("membrane", item.id);
+          item.curve = base.curve;
+          item.bilayerThickness = base.bilayerThickness;
+        } else item.svg = pathwaySVG(item.pathway);
+        delete item.contourOriginal;
+        delete item.contourEdit;
+      }
+      this.nodeEdit = null;
+      this.notify();
+      return;
+    }
     if (cmd === "toggle-lock") {
       const selected = this.selectedItems();
       if (!selected.length) return;
@@ -1631,7 +1686,7 @@ export class Drawing2D {
       i = items[0];
     const number = (title, key, value) =>
       `<label>${title}<input type="number" data-sheet-field="${key}" value="${Math.round(value * 100) / 100}" step="1" ${i?.anchor2d && ["x", "y", "rotation"].includes(key) ? "disabled" : ""}></label>`;
-    const html = `<div class="details-body"><strong ${i ? "data-no-translate" : ""}>${items.length > 1 ? items.length + " geselecteerde elementen" : i ? escape(i.name) : "2D tekenblad"}</strong>${i ? `${i.anchor2d ? '<div class="hinge-box"><strong>Membraananker</strong><p>Positie en rotatie volgen de membraanrand. Bewerk het anker in het zwevende menu.</p><button data-sheet-action="floating-tools">Membraananker bewerken</button></div>' : ""}<label>Naam<input data-sheet-field="name" value="${escape(i.name)}"></label><div class="coordinates">${number("X", "x", i.x)}${number("Y", "y", i.y)}</div><div class="coordinates">${number("Breedte", "w", i.w)}${number("Hoogte", "h", i.h)}</div>${number("Rotatie (°)", "rotation", i.rotation || 0)}<label>Dekking<input type="range" data-sheet-field="opacity" min="0" max="1" step=".05" value="${i.opacity}"></label>${lineAppearanceControls(i)}${i.kind === "membrane" && (!i.lineStyle || i.lineStyle === "membrane") ? `<div class="hinge-box"><strong>Lipidendubbellaag</strong>${number("Membraandikte", "bilayerThickness", i.bilayerThickness || 34)}<p class="muted">${(i.curve.length - 1) / 3 + 1} curvepunten. Sleep de punten en oranje handvatten. Dubbelklik op het membraan om een extra punt toe te voegen.</p><button data-sheet-action="add-curve-point">＋ Punt toevoegen</button></div>` : ""}${i.kind === "text" ? `<label>Tekst<textarea data-sheet-field="text">${escape(i.text)}</textarea></label>${number("Tekstgrootte", "fontSize", i.fontSize)}<label class="check"><input type="checkbox" data-sheet-field="bold" ${i.bold ? "checked" : ""}> Vet</label>` : ""}${i.kind !== "svg" ? `<div class="row"><label>Vulling <input type="color" data-sheet-field="fill" value="${i.fill || "#ffffff"}"></label><label>Contour <input type="color" data-sheet-field="stroke" value="${i.stroke || "#064986"}"></label></div>${number("Lijndikte", "strokeWidth", i.strokeWidth || 3)}` : '<p class="muted">Native vector. Verhoudingen blijven behouden bij slepen van de hoekpunten.</p>'}${i.kind === "svg" && isCellElement(i) ? `<label class="check"><input type="checkbox" data-sheet-field="volumeLook" ${i.volumeLook ? "checked" : ""}> Volumewerking</label>` : ""}<label class="check"><input type="checkbox" data-sheet-field="locked" ${i.locked ? "checked" : ""}> Vergrendeld</label><div class="row"><button data-sheet-action="duplicate">Dupliceren</button><button data-sheet-action="delete" class="danger">Verwijderen</button></div>` : '<p class="muted">Voeg een losse bouwsteen toe of teken een vorm. Shift-klik voor meervoudige selectie.</p>'}<div class="sheet-arrange"><strong>Ordenen</strong><div class="view-buttons">${[
+    const html = `<div class="details-body"><strong ${i ? "data-no-translate" : ""}>${items.length > 1 ? items.length + " geselecteerde elementen" : i ? escape(i.name) : "2D tekenblad"}</strong>${i ? `${i.anchor2d ? '<div class="hinge-box"><strong>Membraananker</strong><p>Positie en rotatie volgen de membraanrand. Bewerk het anker in het zwevende menu.</p><button data-sheet-action="floating-tools">Membraananker bewerken</button></div>' : ""}<label>Naam<input maxlength="512" data-sheet-field="name" value="${escape(i.name)}"></label><div class="coordinates">${number("X", "x", i.x)}${number("Y", "y", i.y)}</div><div class="coordinates">${number("Breedte", "w", i.w)}${number("Hoogte", "h", i.h)}</div>${number("Rotatie (°)", "rotation", i.rotation || 0)}<label>Dekking<input type="range" data-sheet-field="opacity" min="0" max="1" step=".05" value="${i.opacity}"></label>${pathwayProperties(i)}${lineAppearanceControls(i)}${i.kind === "membrane" && (!i.lineStyle || i.lineStyle === "membrane") ? `<div class="hinge-box"><strong>Lipidendubbellaag</strong>${number("Membraandikte", "bilayerThickness", i.bilayerThickness || 34)}<p class="muted">${(i.curve.length - 1) / 3 + 1} curvepunten. Sleep de punten en oranje handvatten. Dubbelklik op het membraan om een extra punt toe te voegen.</p><button data-sheet-action="add-curve-point">＋ Punt toevoegen</button></div>` : ""}${i.kind === "text" ? `<label>Tekst<textarea data-sheet-field="text">${escape(i.text)}</textarea></label>${number("Tekstgrootte", "fontSize", i.fontSize)}<label class="check"><input type="checkbox" data-sheet-field="bold" ${i.bold ? "checked" : ""}> Vet</label>` : ""}${i.kind !== "svg" ? `<div class="row"><label>Vulling <input type="color" data-sheet-field="fill" value="${i.fill || "#ffffff"}"></label><label>Contour <input type="color" data-sheet-field="stroke" value="${i.stroke || "#064986"}"></label></div>${number("Lijndikte", "strokeWidth", i.strokeWidth || 3)}` : '<p class="muted">Native vector. Verhoudingen blijven behouden bij slepen van de hoekpunten.</p>'}${i.kind === "svg" && isCellElement(i) ? `<label class="check"><input type="checkbox" data-sheet-field="volumeLook" ${i.volumeLook ? "checked" : ""}> Volumewerking</label>` : ""}<label class="check"><input type="checkbox" data-sheet-field="locked" ${i.locked ? "checked" : ""}> Vergrendeld</label><div class="row"><button data-sheet-action="duplicate">Dupliceren</button><button data-sheet-action="delete" class="danger">Verwijderen</button></div>` : '<p class="muted">Voeg een losse bouwsteen toe of teken een vorm. Shift-klik voor meervoudige selectie.</p>'}<div class="sheet-arrange"><strong>Ordenen</strong><div class="view-buttons">${[
       ["front", "Vooraan"],
       ["back", "Achteraan"],
       ["forward", "Vooruit"],

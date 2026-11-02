@@ -1,0 +1,321 @@
+{
+  "version": 1,
+  "scope": "Original editable schematic glyphs; no live pathway import.",
+  "elements": [
+    {
+      "type": "protein",
+      "title": "Eiwit",
+      "category": "Moleculen",
+      "role": "entity",
+      "label": "Protein",
+      "name": "Protein",
+      "keywords": "protein eiwit geneproduct"
+    },
+    {
+      "type": "receptor",
+      "title": "Receptor",
+      "category": "Moleculen",
+      "role": "entity",
+      "label": "Receptor",
+      "name": "Receptor",
+      "keywords": "membrane receptor transmembraan"
+    },
+    {
+      "type": "ligand",
+      "title": "Ligand",
+      "category": "Moleculen",
+      "role": "entity",
+      "label": "Ligand",
+      "name": "Ligand",
+      "keywords": "ligand cytokine chemokine"
+    },
+    {
+      "type": "enzyme",
+      "title": "Enzym",
+      "category": "Moleculen",
+      "role": "entity",
+      "label": "Enzyme",
+      "name": "Enzyme",
+      "keywords": "enzyme enzym kinase phosphatase"
+    },
+    {
+      "type": "metabolite",
+      "title": "Metaboliet",
+      "category": "Moleculen",
+      "role": "entity",
+      "label": "Metabolite",
+      "name": "Metabolite",
+      "keywords": "chemical metabolite small molecule chebi"
+    },
+    {
+      "type": "drug",
+      "title": "Geneesmiddel",
+      "category": "Moleculen",
+      "role": "entity",
+      "label": "Drug",
+      "name": "Drug",
+      "keywords": "chemicaldrug drug medicine inhibitor"
+    },
+    {
+      "type": "ion",
+      "title": "Ion",
+      "category": "Moleculen",
+      "role": "entity",
+      "label": "Ion",
+      "name": "Ion",
+      "keywords": "calcium sodium ion"
+    },
+    {
+      "type": "gene",
+      "title": "Gen",
+      "category": "Moleculen",
+      "role": "entity",
+      "label": "Gene",
+      "name": "Gene",
+      "keywords": "gene gen dna locus"
+    },
+    {
+      "type": "dna",
+      "title": "DNA",
+      "category": "Moleculen",
+      "role": "entity",
+      "label": "DNA",
+      "name": "DNA",
+      "keywords": "dna nucleic acid"
+    },
+    {
+      "type": "rna",
+      "title": "RNA",
+      "category": "Moleculen",
+      "role": "entity",
+      "label": "RNA",
+      "name": "RNA",
+      "keywords": "rna mrna transcript"
+    },
+    {
+      "type": "complex",
+      "title": "Eiwitcomplex",
+      "category": "Complexen en groepen",
+      "role": "entity",
+      "label": "Complex",
+      "name": "Complex",
+      "keywords": "complex eiwitcomplex assembly"
+    },
+    {
+      "type": "entity-set",
+      "title": "Molecuulverzameling",
+      "category": "Complexen en groepen",
+      "role": "entity",
+      "label": "Entity set",
+      "name": "Entity set",
+      "keywords": "entityset set collection family groep"
+    },
+    {
+      "type": "multimer",
+      "title": "Multimeer",
+      "category": "Complexen en groepen",
+      "role": "entity",
+      "label": "Multimer",
+      "name": "Multimer",
+      "keywords": "multimer dimer oligomer stoichiometry"
+    },
+    {
+      "type": "unknown",
+      "title": "Onbekend molecuul",
+      "category": "Complexen en groepen",
+      "role": "entity",
+      "label": "Unknown",
+      "name": "Unknown",
+      "keywords": "unknown entity fallback unspecified"
+    },
+    {
+      "type": "subpathway",
+      "title": "Deelpathway",
+      "category": "Processen",
+      "role": "process",
+      "label": "Subpathway",
+      "name": "Subpathway",
+      "keywords": "processnode encapsulatednode pathway process"
+    },
+    {
+      "type": "reaction",
+      "title": "Reactiestap",
+      "category": "Processen",
+      "role": "process",
+      "label": "Reaction",
+      "name": "Reaction",
+      "keywords": "reaction process transition conversion"
+    },
+    {
+      "type": "association",
+      "title": "Associatie",
+      "category": "Processen",
+      "role": "process",
+      "label": "Association",
+      "name": "Association",
+      "keywords": "association binding assembly"
+    },
+    {
+      "type": "dissociation",
+      "title": "Dissociatie",
+      "category": "Processen",
+      "role": "process",
+      "label": "Dissociation",
+      "name": "Dissociation",
+      "keywords": "dissociation unbinding"
+    },
+    {
+      "type": "degradation",
+      "title": "Afbraak",
+      "category": "Processen",
+      "role": "process",
+      "label": "Degradation",
+      "name": "Degradation",
+      "keywords": "degradation sink proteasome"
+    },
+    {
+      "type": "compartment",
+      "title": "Compartiment",
+      "category": "Compartimenten",
+      "role": "compartment",
+      "label": "Compartment",
+      "name": "Compartment",
+      "keywords": "compartment organelle location"
+    },
+    {
+      "type": "cell",
+      "title": "Celgebied",
+      "category": "Compartimenten",
+      "role": "compartment",
+      "label": "Cell",
+      "name": "Cell",
+      "keywords": "cell area cel cytoplasm"
+    },
+    {
+      "type": "nucleus",
+      "title": "Kerngebied",
+      "category": "Compartimenten",
+      "role": "compartment",
+      "label": "Nucleus",
+      "name": "Nucleus",
+      "keywords": "nucleus nuclear kern compartment"
+    },
+    {
+      "type": "vesicle",
+      "title": "Vesikelgebied",
+      "category": "Compartimenten",
+      "role": "compartment",
+      "label": "Vesicle",
+      "name": "Vesicle",
+      "keywords": "vesicle endosome lysosome"
+    },
+    {
+      "type": "membrane",
+      "title": "Celmembraan",
+      "category": "Compartimenten",
+      "role": "compartment",
+      "label": "Membrane",
+      "name": "Membrane",
+      "keywords": "membrane bilayer celmembraan"
+    },
+    {
+      "type": "conversion",
+      "title": "Omzetting",
+      "category": "Verbindingen",
+      "role": "edge",
+      "label": "Conversion",
+      "name": "Conversion",
+      "keywords": "output arrow conversion reaction product"
+    },
+    {
+      "type": "reversible",
+      "title": "Reversibele omzetting",
+      "category": "Verbindingen",
+      "role": "edge",
+      "label": "Reversible",
+      "name": "Reversible",
+      "keywords": "reversible bidirectional"
+    },
+    {
+      "type": "activation",
+      "title": "Activatie",
+      "category": "Verbindingen",
+      "role": "edge",
+      "label": "Activation",
+      "name": "Activation",
+      "keywords": "activation stimulation positive regulation"
+    },
+    {
+      "type": "inhibition",
+      "title": "Remming",
+      "category": "Verbindingen",
+      "role": "edge",
+      "label": "Inhibition",
+      "name": "Inhibition",
+      "keywords": "inhibition negative regulation tbar"
+    },
+    {
+      "type": "catalysis",
+      "title": "Katalyse",
+      "category": "Verbindingen",
+      "role": "edge",
+      "label": "Catalysis",
+      "name": "Catalysis",
+      "keywords": "catalysis catalyst enzyme"
+    },
+    {
+      "type": "modulation",
+      "title": "Modulatie",
+      "category": "Verbindingen",
+      "role": "edge",
+      "label": "Modulation",
+      "name": "Modulation",
+      "keywords": "modulation regulation unspecified influence"
+    },
+    {
+      "type": "interaction",
+      "title": "Interactie",
+      "category": "Verbindingen",
+      "role": "edge",
+      "label": "Interaction",
+      "name": "Interaction",
+      "keywords": "interaction binding association unknown relationship"
+    },
+    {
+      "type": "translocation",
+      "title": "Transport",
+      "category": "Verbindingen",
+      "role": "edge",
+      "label": "Transport",
+      "name": "Transport",
+      "keywords": "transport translocation compartment"
+    },
+    {
+      "type": "transcription",
+      "title": "Transcriptie",
+      "category": "Verbindingen",
+      "role": "edge",
+      "label": "Transcription",
+      "name": "Transcription",
+      "keywords": "transcription gene expression"
+    },
+    {
+      "type": "translation",
+      "title": "Translatie",
+      "category": "Verbindingen",
+      "role": "edge",
+      "label": "Translation",
+      "name": "Translation",
+      "keywords": "translation protein synthesis"
+    },
+    {
+      "type": "annotation",
+      "title": "Annotatie",
+      "category": "Annotaties",
+      "role": "annotation",
+      "label": "Note",
+      "name": "Note",
+      "keywords": "note annotation label text"
+    }
+  ]
+}

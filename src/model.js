@@ -1,3 +1,4 @@
+import { validatePathwayMetadata } from "./pathway-elements.js";
 import { sourceStyles } from "./palettes.js";
 import { evaluateTimeline, framePlan } from "./animation.js";
 export const clone = (x) => structuredClone(x);
@@ -446,6 +447,7 @@ export function validateProject(p) {
       }
       if (i.layerSide !== undefined && ![-1, 1].includes(i.layerSide))
         throw Error("Invalid 2D tissue side.");
+      if (i.pathway) validatePathwayMetadata(i.pathway);
       if (i.anchor2d) {
         const a = i.anchor2d;
         if (
