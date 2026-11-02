@@ -3,6 +3,21 @@ export function isCellElement(item) {
     `${item.name || ""} ${item.sourceFile || ""}`,
   );
 }
+export function isHemisphereCell(item) {
+  const text = `${item.name || ""} ${item.sourceFile || ""}`;
+  if (
+    /membrane[ _-]*(patch|cell)|cell[ _-]*membrane|patch|suspension|product[ _-]*bag|cell[ _-]*cluster|context|surface|CD3-associated/i.test(
+      text,
+    )
+  )
+    return false;
+  return (
+    isCellElement(item) ||
+    /\b[TB][ _-]*CD\d|\bNK\b|basophil|eosinophil|leukemic[ _-]*(blast|target)|graft[ _-]*target|infected[ _-]*target|injured[ _-]*target/i.test(
+      text,
+    )
+  );
+}
 
 // Keep the original contours and organelles; shade each coloured compartment.
 export function enhanceCellVector(text, prefix) {

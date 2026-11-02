@@ -1,4 +1,6 @@
 import * as T from "three";
+import { cellHemisphereGeometry } from "./cell-geometry.js";
+import { isHemisphereCell } from "./cell-look.js";
 import { SVGLoader } from "three/addons/loaders/SVGLoader.js";
 import {
   mergeGeometries,
@@ -41,8 +43,10 @@ function inside(x, y, ring) {
 /** Two curved faces meet at the exact vector boundary, including real holes. */
 export function volumeGeometry(
   shape,
-  { depth = 10, subdivisions = 2, curveSegments = 10 } = {},
+  { depth = 10, subdivisions = 2, curveSegments = 10, hemisphere = false } = {},
 ) {
+  if (hemisphere)
+    return cellHemisphereGeometry(shape, depth, Math.max(24, curveSegments));
   const flat = new T.ShapeGeometry(shape, curveSegments),
     pos = flat.attributes.position,
     index = flat.index;
@@ -93,7 +97,7 @@ export function volumeGeometry(
   geometry.setAttribute("position", new T.Float32BufferAttribute(vertices, 3));
   geometry = mergeVertices(geometry, 1e-4);
   geometry.computeVertexNormals();
-  return { geometry, bounds, rings, radius, depth };
+  return { geometry, bounds, rings, radius, depth, hemisphere };
 }
 function simpleColor(value, fallback = "#064986") {
   try {
@@ -171,6 +175,7 @@ export async function buildBasisVolume(
     depthScale = 1,
     mode = "volume",
     includeLabels = true,
+    cell,
     onProgress = () => {},
   } = {},
 ) {
@@ -201,6 +206,36 @@ export async function buildBasisVolume(
     span = Math.max(size.x, size.y),
     center = bounds.getCenter(new T.Vector2()),
     unit = 7 / span;
+  const cellMode =
+    mode === "volume" &&
+    (cell ??
+      isHemisphereCell({ name: document.querySelector("title")?.textContent }));
+  const shapesByPath = new Map();
+  let bodyShape = null,
+    bodyArea = 0;
+  if (cellMode)
+    for (const path of data.paths) {
+      const style = path.userData.style;
+      if (
+        !style.fill ||
+        style.fill === "none" ||
+        Number(style.fillOpacity ?? 1) <= 0
+      )
+        continue;
+      try {
+        const shapes = SVGLoader.createShapes(path);
+        shapesByPath.set(path, shapes);
+        for (const shape of shapes) {
+          const box = new T.Box2().setFromPoints(shape.extractPoints(10).shape),
+            s = box.getSize(new T.Vector2()),
+            area = s.x * s.y;
+          if (Math.min(s.x, s.y) > span * 0.4 && area > bodyArea) {
+            bodyShape = shape;
+            bodyArea = area;
+          }
+        }
+      } catch {}
+    }
   const batches = new Map(),
     envelopes = [];
   let triangles = 0,
@@ -228,7 +263,7 @@ export async function buildBasisVolume(
     ) {
       let shapes;
       try {
-        shapes = SVGLoader.createShapes(path);
+        shapes = shapesByPath.get(path) || SVGLoader.createShapes(path);
       } catch {
         warnings.push("Een complex pad kon niet worden omgezet: " + identity);
         continue;
@@ -241,14 +276,17 @@ export async function buildBasisVolume(
           c = box.getCenter(new T.Vector2()),
           minor = Math.min(s.x, s.y);
         if (minor < 0.001) continue;
+        const isBody = shape === bodyShape;
         const large = minor > span * 0.55,
           depth =
-            (mode === "relief"
-              ? span * 0.035
-              : Math.max(
-                  span * 0.003,
-                  Math.min(minor * 0.75, span * (large ? 0.045 : 0.18)),
-                )) * depthScale;
+            (isBody
+              ? minor
+              : mode === "relief"
+                ? span * 0.035
+                : Math.max(
+                    span * 0.003,
+                    Math.min(minor * 0.75, span * (large ? 0.045 : 0.18)),
+                  )) * depthScale;
         const complexity =
             extracted.shape.length +
             extracted.holes.reduce((n, h) => n + h.length, 0),
@@ -262,7 +300,11 @@ export async function buildBasisVolume(
                   : minor > span * 0.04
                     ? 3
                     : 1;
-        const volume = volumeGeometry(shape, { depth, subdivisions });
+        const volume = volumeGeometry(shape, {
+          depth,
+          subdivisions: isBody ? Math.max(4, subdivisions) : subdivisions,
+          hemisphere: isBody,
+        });
         let base = 0;
         for (const prev of envelopes) {
           if (
@@ -275,7 +317,11 @@ export async function buildBasisVolume(
                 1,
                 boundaryDistance(c.x, c.y, prev.rings) / prev.radius,
               ),
-              front = prev.z + prev.depth * 0.5 * Math.sqrt(d * (2 - d));
+              front =
+                prev.z +
+                (prev.hemisphere
+                  ? 0
+                  : prev.depth * 0.5 * Math.sqrt(d * (2 - d)));
             base = Math.max(base, front);
           }
         }
@@ -387,6 +433,7 @@ export async function buildBasisVolume(
   }
   root.userData = {
     conversion: "rounded-vector-volume-v1",
+    cellGeometry: bodyShape ? "hemisphere-cutaway" : null,
     shapeCount,
     pathCount,
     triangles: Math.round(triangles),

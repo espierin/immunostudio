@@ -5,6 +5,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { buildBasisVolume } from "./basis3d.js";
 import { membraneCutGeometry } from "./membrane-cut.js";
 import { lipidTailGeometry } from "./lipids.js";
+import { isHemisphereCell } from "./cell-look.js";
 import { recolorSourceColor } from "./palettes.js";
 import {
   bezier,
@@ -533,6 +534,7 @@ export class StudioScene {
             buildBasisVolume(text, {
               mode: item.representation === "relief" ? "relief" : "volume",
               depthScale: item.volumeDepth || 1,
+              cell: isHemisphereCell(item) || undefined,
             }),
           );
         this.volumeAssets.set(key, promise);

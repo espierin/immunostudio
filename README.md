@@ -49,3 +49,7 @@ De hele collectie is gecontroleerd op eindige geometrie en daadwerkelijke diepte
 ## Nederlands en Engels
 
 Kies **Nederlands** of **English** in de kopbalk. De interface, uitlegteksten, meldingen en dialoogvensters wisselen direct van taal. De keuze wordt op dit apparaat bewaard. Projectnamen, eigen objectnamen en tekst in de illustraties blijven intact. Pictogramknoppen en eigenschapspictogrammen hebben verklarende hoverteksten in de gekozen taal.
+
+## Cellen als halve bol
+
+De 3D-volumeweergave van celbouwstenen heeft een bolle achterkant als celoppervlak en een vlakke doorsnede aan de voorkant. De oorspronkelijke kern en organellen blijven aan die voorkant zichtbaar. De oorspronkelijke celcontour vormt de rand; de bolle achterkant verloopt glad. Volumediepte past de diepte aan. De 2D-bronnen en de aparte reliëfweergave blijven behouden.

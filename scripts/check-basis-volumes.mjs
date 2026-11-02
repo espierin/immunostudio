@@ -2,6 +2,7 @@ import { JSDOM } from "jsdom";
 import { readFile, writeFile } from "node:fs/promises";
 import * as T from "three";
 import { buildBasisVolume } from "../src/basis3d.js";
+import { isHemisphereCell } from "../src/cell-look.js";
 const dom = new JSDOM();
 globalThis.DOMParser = dom.window.DOMParser;
 globalThis.XMLSerializer = dom.window.XMLSerializer;
@@ -12,7 +13,10 @@ for (const asset of catalog) {
   try {
     model = await buildBasisVolume(
       await readFile("public/library/" + asset.file, "utf8"),
-      { includeLabels: false },
+      {
+        includeLabels: false,
+        cell: isHemisphereCell({ name: asset.title, sourceFile: asset.file }),
+      },
     );
     const bounds = new T.Box3().setFromObject(model),
       size = bounds.getSize(new T.Vector3());
