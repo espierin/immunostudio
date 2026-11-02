@@ -2,7 +2,7 @@
 
 Online: **https://espierin.github.io/immunostudio/**
 
-Detailed user manuals: [English](public/manual/en.html) · [Nederlands](public/manual/nl.html). Both have a table of contents, practical tutorials, twelve captioned screenshots/detail views, export reference and print/PDF layout. Click any illustration to open the original screenshot. Online: [English](https://espierin.github.io/immunostudio/manual/en.html) · [Nederlands](https://espierin.github.io/immunostudio/manual/nl.html). Regenerate after editing: `node scripts/build-manuals.mjs`.
+Detailed user manuals: [English](public/manual/en.html) · [Nederlands](public/manual/nl.html). Both have a table of contents, practical tutorials, fourteen captioned screenshots/detail views, export reference and print/PDF layout. Click any illustration to open the original screenshot. Online: [English](https://espierin.github.io/immunostudio/manual/en.html) · [Nederlands](https://espierin.github.io/immunostudio/manual/nl.html). Regenerate after editing: `node scripts/build-manuals.mjs`.
 
 2D sculpting: open **Sculpt & modifiers** to push/pull, inflate, deflate or smooth individual cell/tissue contours. The floating panel can be dragged, expanded and minimized. Contour modifiers provide smooth, simplify, inset/outset and whole-object mirrors. Choose **Use as membrane**, then **Attach selection** on separate molecules to keep them perpendicular while the membrane deforms. Line construction also supports plain strokes, lipid bilayers, endothelium, stratified skin and intestinal epithelium, with independent interior fill. Bézier handles extend freely beyond the original line box. Enclosed SVG cell interiors deform with the boundary. See manual sections 5a–5c for grouped receptors, anchor settings and supported geometry.
 
@@ -61,3 +61,20 @@ De 3D-cellen volgen de oorspronkelijke 2D-contour met een celtype-afhankelijke a
 2D optimization review (three rounds): closed tissue seams now wrap correctly and locked objects resist double-click/anchor edits; floating controls preserve collapsed sections and focus, with unavailable actions disabled; unchanged curve artwork is reused and SVG contour discovery avoids repeated DOM scans. Validation: 54 tests pass plus browser checks for sculpting, undo and persistent panel state. A local 100-redraw geometry benchmark measured approximately 390 ms regenerating a skin layer versus 0.1 ms reusing unchanged artwork; this excludes browser DOM layout and painting.
 
 2D bilayers pack the two leaflets independently along their actual offset-edge lengths. Outside and inside curves may contain different lipid counts, while both retain close head spacing, normal tails and an evenly filled closed seam.
+
+## Ten improvement rounds
+
+| Round | Delivered |
+|---|---|
+| 1 | Home screen, current local workspace summary and safe resume/open flows |
+| 2 | Original scientific vector hero artwork and responsive home layout |
+| 3 | Editable membrane/receptor and tissue starters, with replacement confirmation |
+| 4 | Ctrl+K/F3 command search, bilingual matching and keyboard navigation |
+| 5 | Contextual duplicate/mirror/layer/lock/group/alignment controls |
+| 6 | Persistent library favorites and empty-search recovery |
+| 7 | F9 focus mode, panel space and layout reset |
+| 8 | Fit-selection navigation, 16:9/square/A4-ratio page presets and Ctrl+S backup |
+| 9 | Binary arc-length lookup, debounced search, no hidden or duplicate 3D rebuilds |
+| 10 | Accessibility, English/Dutch wording, contrast, browser regression checks and manuals |
+
+References: [Inkscape welcome and command palette](https://wiki.inkscape.org/wiki/index.php/Release_notes/1.1), [Blender command search](https://docs.blender.org/manual/en/4.0/interface/controls/templates/operator_search.html), [BioRender contextual canvas](https://help.biorender.com/hc/en-gb/articles/26447997366173-How-to-use-the-BioRender-canvas). Graphics and code are original. Regenerate the opening artwork with `node scripts/build-opening-art.mjs`. See manual section 2a for the new workflow.

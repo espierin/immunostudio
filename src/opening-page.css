@@ -375,3 +375,55 @@ button[data-workspace-focus][aria-pressed="true"] {
     gap: 6px;
   }
 }
+html[data-ui] .opening-page .opening-primary {
+  background: #0077b6 !important;
+  color: #fff !important;
+}
+html[data-ui] .opening-page .opening-primary:hover {
+  background: #005f91 !important;
+  color: #fff !important;
+}
+.opening-starts > button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 9px 25px #002b4910;
+}
+.opening-starts > button {
+  transition:
+    transform 0.18s,
+    box-shadow 0.18s;
+}
+.opening-page a:focus-visible {
+  outline: 2px solid #0077b6;
+  outline-offset: 5px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .opening-starts > button {
+    transition: none;
+  }
+  .opening-starts > button:hover {
+    transform: none;
+  }
+}
+@media (max-width: 600px) {
+  .opening-top [data-home="resume"] {
+    display: none;
+  }
+  .opening-current {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 20px;
+  }
+  .opening-current strong {
+    overflow-wrap: anywhere;
+  }
+  .opening-current > button {
+    align-self: flex-start;
+  }
+  .opening-page h1 {
+    font-size: 44px;
+  }
+  .opening-bottom {
+    flex-direction: column;
+    gap: 8px;
+  }
+}

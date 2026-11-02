@@ -513,6 +513,67 @@ Object.assign(english, {
   "De lijnopbouw volgt alle curve- en sculptbewerkingen. Binnenvlak vullen sluit een open lijn visueel met een rechte verbinding.":
     "The line construction follows curve and sculpt edits. Fill interior visually closes an open line with a straight connection.",
 });
+Object.assign(english, {
+  Startpagina: "Home",
+  Handleiding: "Manual",
+  Alles: "All",
+  "VAN MOLECUUL TOT VERHAAL": "FROM MOLECULE TO STORY",
+  "Wetenschap helder": "Science, clearly",
+  "in beeld.": "illustrated.",
+  "Teken cellen, vorm membranen en bouw je immunologische verhaal. Van bewerkbare vectoren tot ruimtelijke modellen.":
+    "Draw cells, shape membranes and tell your immunological story. From editable vectors to spatial models.",
+  "Open editor ↗": "Open editor ↗",
+  "Verder met je project ↗": "Continue your project ↗",
+  "Project openen": "Open project",
+  "Je werk wordt lokaal op dit apparaat bewaard.":
+    "Your work is saved locally on this device.",
+  "JE WERKRUIMTE": "YOUR WORKSPACE",
+  "elementen lokaal bewaard": "items saved on this device",
+  "Open werkruimte →": "Open workspace →",
+  "Begin met een idee": "Start with an idea",
+  "Volledig bewerkbaar in 2D": "Fully editable in 2D",
+  "Leeg tekenblad": "Blank canvas",
+  "Alle ruimte voor je eigen figuur.": "Room to create your own figure.",
+  "Membraan en receptoren": "Membrane & receptors",
+  "Buig de rand. Moleculen volgen mee.":
+    "Shape the edge. Molecules follow along.",
+  "Cellen en weefsels": "Cells & tissues",
+  "Vorm endotheel, huid en darmepitheel.":
+    "Shape endothelium, skin and intestinal epithelium.",
+  "2D & 3D · SVG · PNG · Office-export lokaal":
+    "2D & 3D · SVG · PNG · Office export locally",
+  "Start een voorbeeld": "Start an example",
+  "Voorbeeld starten": "Start example",
+  "Opdrachten zoeken": "Search commands",
+  "Opdrachten zoeken (Ctrl+K / F3)": "Search commands (Ctrl+K / F3)",
+  "Zoek een opdracht": "Search for a command",
+  "Zoek een gereedschap of bewerking…": "Find a tool or action…",
+  "↑ ↓ kiezen · Enter uitvoeren · Esc sluiten":
+    "↑ ↓ choose · Enter run · Esc close",
+  "Project downloaden": "Download project",
+  "Snelle selectiebewerkingen": "Quick selection actions",
+  "Selectie dupliceren": "Duplicate selection",
+  "Een laag naar voren": "Bring forward one layer",
+  "Vergrendeling wisselen": "Toggle lock",
+  "Selectie groeperen": "Group selection",
+  "Linkerranden uitlijnen": "Align left edges",
+  "Verticaal centreren": "Centre vertically",
+  Ontgrendelen: "Unlock",
+  Vergrendelen: "Lock",
+  "★ Favorieten": "★ Favorites",
+  "Favoriet wisselen": "Toggle favorite",
+  "Toon alle elementen": "Show all elements",
+  Focusmodus: "Focus mode",
+  "Werkruimte herstellen": "Reset workspace layout",
+  "Zijpanelen verbergen of tonen (F9)": "Hide or show side panels (F9)",
+  "Pas selectie": "Fit selection",
+  Bladformaat: "Page format",
+  "Eigen formaat": "Custom size",
+  "Presentatie 16:9": "Presentation 16:9",
+  Vierkant: "Square",
+  "A4 staand": "A4 portrait",
+  "A4 liggend": "A4 landscape",
+});
 const patterns = [
   [
     /^Huidig frame: (\d+)\. Camera-acties gebruiken het renderbereik\.$/,

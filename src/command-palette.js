@@ -9,7 +9,7 @@ export function searchCommands(commands, query) {
   return commands.filter((c) =>
     words.every((w) =>
       norm(
-        c.label + " " + translate(c.label) + " " + (c.keywords || ""),
+        c.label + " " + translate(c.label, "en") + " " + (c.keywords || ""),
       ).includes(w),
     ),
   );
@@ -19,8 +19,9 @@ export class CommandPalette {
     this.getCommands = getCommands;
     this.dialog = document.createElement("dialog");
     this.dialog.className = "command-palette";
+    this.dialog.setAttribute("aria-labelledby", "command-title");
     this.dialog.innerHTML =
-      '<div class="command-heading"><h2>Opdrachten zoeken</h2><button data-command-close aria-label="Sluiten">×</button></div><input type="search" aria-label="Zoek een opdracht" placeholder="Zoek een gereedschap of bewerking…"><div class="command-results" data-no-translate></div><p>↑ ↓ kiezen · Enter uitvoeren · Esc sluiten</p>';
+      '<div class="command-heading"><h2 id="command-title">Opdrachten zoeken</h2><button data-command-close aria-label="Sluiten">×</button></div><input type="search" aria-label="Zoek een opdracht" placeholder="Zoek een gereedschap of bewerking…"><div class="command-results" data-no-translate></div><p>↑ ↓ kiezen · Enter uitvoeren · Esc sluiten</p>';
     document.body.append(this.dialog);
     this.input = this.dialog.querySelector("input");
     this.input.addEventListener("input", () => {
@@ -41,6 +42,7 @@ export class CommandPalette {
       "keydown",
       (e) => {
         if (document.documentElement.dataset.home === "true") return;
+        if (document.querySelector("dialog[open]") && !this.dialog.open) return;
         if (
           e.key === "F3" ||
           ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k")

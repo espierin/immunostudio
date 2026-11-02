@@ -50,7 +50,7 @@ export function starterProject(kind, molecule = null) {
           targetId: "starter-membrane",
           pathIndex: 0,
           u: 0.5,
-          side: -1,
+          side: 1,
           offset: 0,
           pivotX: 0.5,
           pivotY: 0.8,

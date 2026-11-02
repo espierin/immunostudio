@@ -1140,7 +1140,11 @@ export class Drawing2D {
       }
     });
     document.addEventListener("keydown", (e) => {
-      if (document.documentElement.dataset.home === "true") return;
+      if (
+        document.documentElement.dataset.home === "true" ||
+        document.querySelector("dialog[open]")
+      )
+        return;
       if (
         document.documentElement.dataset.editor !== "2d" ||
         ["INPUT", "TEXTAREA", "SELECT"].includes(e.target.tagName) ||
