@@ -62,7 +62,8 @@ export function prepareContour(drawing, item, preferredIndex) {
     sig;
   if (item.kind === "svg") {
     sourceDoc = new DOMParser().parseFromString(item.svg, "image/svg+xml");
-    const nodes = [...entity.querySelectorAll("[data-node-path]")];
+    const nodes = [...entity.querySelectorAll("[data-node-path]")],
+      sourceParts = vectorElements(sourceDoc);
     index = preferredIndex ?? item.contourEdit?.pathIndex;
     if (index === undefined) {
       let largest = 0;
@@ -70,7 +71,7 @@ export function prepareContour(drawing, item, preferredIndex) {
         try {
           const b = n.getBBox(),
             fill = getComputedStyle(n).fill,
-            commands = elementPath(vectorElements(sourceDoc)[i]);
+            commands = elementPath(sourceParts[i]);
           if (
             fill !== "none" &&
             commands.some((c) => c.type === "Z") &&
@@ -86,7 +87,7 @@ export function prepareContour(drawing, item, preferredIndex) {
     index ??= 0;
     if (!node?.getTotalLength)
       throw Error("Kies een vectorcontour met Punten bewerken.");
-    const source = vectorElements(sourceDoc)[index],
+    const source = sourceParts[index],
       commands = elementPath(source);
     if (commands.filter((c) => c.type === "M").length !== 1)
       throw Error(
@@ -216,11 +217,12 @@ export function prepareInterior(session, anchors) {
     if (index === session.index || receptors.some((g) => g?.contains(node)))
       continue;
     try {
-      const toSheet = session.screenToSheet.multiply(node.getScreenCTM());
+      const toSheet = session.screenToSheet.multiply(node.getScreenCTM()),
+        commands = elementPath(source[index]);
       parts.push({
         index,
-        commands: elementPath(source[index]),
-        samples: pathPoints(elementPath(source[index])).map((p) => {
+        commands,
+        samples: pathPoints(commands).map((p) => {
           const world = point([p.x, p.y], toSheet);
           return {
             ...p,

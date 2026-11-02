@@ -7,6 +7,7 @@ import {
   curvePath,
   moveCurveControl,
   curvePosition,
+  createCurveAppearanceCache,
 } from "../src/curve-appearance2d.js";
 import { shapeMembrane } from "../src/shape-membrane.js";
 import {
@@ -196,4 +197,39 @@ test("closed tissue samples wrap across the seam; open ends stay bounded", () =>
       tissueMarkup({ ...loop, lineStyle }, style),
       /NaN|Infinity/,
     );
+});
+
+test("curve artwork cache reuses moves and invalidates curve, style and appearance edits", () => {
+  let renders = 0;
+  const cached = createCurveAppearanceCache((item, palette) => {
+      renders++;
+      return curveAppearanceMarkup(item, palette);
+    }),
+    item = structuredClone({ ...curve, lineStyle: "skin" }),
+    palette = { ...style };
+  const original = cached(item, palette);
+  item.x += 40;
+  item.rotation = 45;
+  item.opacity = 0.5;
+  assert.equal(cached(item, palette), original);
+  assert.equal(renders, 1);
+  for (const mutate of [
+    () => (item.curve[1][1] += 0.1),
+    () => (item.fillEnabled = true),
+    () => (item.layerSide = -1),
+    () => (item.cellWidth = 65),
+    () => (item.layerThickness = 140),
+    () => (palette.outline = "#FF0000"),
+    () => (item.w = 600),
+    () => (item.lineStyle = "membrane"),
+    () => (item.bilayerThickness = 50),
+  ]) {
+    const count = renders;
+    mutate();
+    cached(item, palette);
+    assert.equal(renders, count + 1);
+  }
+  const fresh = structuredClone(item);
+  cached(fresh, palette);
+  assert.equal(renders, 11);
 });

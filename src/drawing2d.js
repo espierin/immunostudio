@@ -34,7 +34,7 @@ import {
   followInterior,
 } from "./sculpt2d.js";
 import {
-  curveAppearanceMarkup,
+  createCurveAppearanceCache,
   lineAppearanceControls,
   editableLine,
   moveCurveControl,
@@ -200,6 +200,7 @@ export class Drawing2D {
     };
     this.clipboard = [];
     this.cache = new Map();
+    this.curveMarkup = createCurveAppearanceCache();
     this.style = { label: "#064986", hla: "#FF5A36", head: "#A9C6E2" };
     this.svg = document.createElementNS(NS, "svg");
     this.svg.setAttribute("aria-label", "2D tekenblad");
@@ -394,7 +395,7 @@ export class Drawing2D {
     this.floating?.update();
   }
   itemMarkup(i) {
-    if (i.kind === "membrane") return curveAppearanceMarkup(i, this.style);
+    if (i.kind === "membrane") return this.curveMarkup(i, this.style);
     const fill = i.fillEnabled === false ? "none" : i.fill || "none",
       stroke = i.stroke || "none",
       sw = i.strokeWidth ?? 3;

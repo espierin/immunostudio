@@ -133,6 +133,35 @@ export function curveAppearanceMarkup(item, style) {
     `<path data-curve-line d="${d}" fill="none" stroke="${item.stroke || style.outline || "#2167AE"}" stroke-width="${item.strokeWidth || 3}" stroke-linecap="round" stroke-linejoin="round"/>`
   );
 }
+// One entry per live object. Position/rotation live on the wrapper and do not
+// invalidate artwork; all curve, appearance and palette changes do.
+export function createCurveAppearanceCache(render = curveAppearanceMarkup) {
+  const cache = new WeakMap();
+  return (item, style) => {
+    const key = JSON.stringify([
+      item.w,
+      item.h,
+      item.curve,
+      item.closed,
+      item.lineStyle,
+      item.fillEnabled,
+      item.fill,
+      item.stroke,
+      item.strokeWidth,
+      item.layerThickness,
+      item.cellWidth,
+      item.layerSide,
+      item.bilayerThickness,
+      style,
+    ]);
+    let entry = cache.get(item);
+    if (!entry || entry.key !== key) {
+      entry = { key, markup: render(item, style) };
+      cache.set(item, entry);
+    }
+    return entry.markup;
+  };
+}
 export function lineAppearanceControls(item) {
   if (!editableLine(item)) return "";
   const kind =
