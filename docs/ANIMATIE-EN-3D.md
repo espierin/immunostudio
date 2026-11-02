@@ -18,7 +18,7 @@ Camera actions create an orbit, dolly, zoom or horizontal pan over the render ra
 
 ## Molecular audit
 
-All 190 curated individual elements were generated and checked for finite positions/normals and nonzero depth: **190 passed**. The catalog classifies 47 cell figures, 71 molecular elements and 72 other elements. Every molecular element has a schematic volume; cells use the half-ball cutaway representation. The machine-readable evidence is in [3d-bibliotheek-controle.json](3d-bibliotheek-controle.json).
+All 190 curated individual elements were generated and checked for finite positions/normals and nonzero depth: **190 passed**. The catalog classifies 51 cell figures, 70 molecular elements and 69 other elements. Every molecular element has a schematic volume; cells use source-contour cutaways with type-specific rear shapes (see CELL-MORPHOLOGY.md). The machine-readable evidence is in [3d-bibliotheek-controle.json](3d-bibliotheek-controle.json).
 
 19 RCSB entry titles were checked through the RCSB API. 55 catalog elements have a related reference; some share a reference complex. Reference buttons open the existing PDB import and chain-selection workflow. References are explicitly examples of structures, fragments or complexes, not assertions that a cartoon has an exact sequence, allele, peptide, species or isotype match. Other molecules retain a schematic volume and RCSB search. No experimental coordinates are fabricated from a drawing.
 

@@ -1,10 +1,10 @@
 export function isCellElement(item) {
-  return /cell|lymphocyt|neutroph|monocyt|macroph|dendritic|erythro|platelet|_T_CD|_NK_/i.test(
+  return /cell|lymphocyt|neutroph|monocyt|macroph|dendritic|erythro|platelet|cardiomy|_T_CD|_NK_/i.test(
     `${item.name || ""} ${item.sourceFile || ""}`,
   );
 }
 export function isHemisphereCell(item) {
-  const text = `${item.name || ""} ${item.sourceFile || ""}`;
+  const text = `${item.name || ""} ${(item.sourceFile || "").split(/[\\/]/).at(-1)}`;
   if (
     /\b[TB][ -]cell[ -]receptor|\bTCR\b|\bBCR\b|coreceptor|cell adhesion/i.test(
       text,

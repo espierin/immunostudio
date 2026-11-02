@@ -8,7 +8,7 @@ export function moleculeInfo(asset) {
       sourceFile: asset.file || asset.sourceFile,
     })
   )
-    return { type: "cell", variant: "hemisphere-cutaway", reference: null };
+    return { type: "cell", variant: "cell-type-cutaway", reference: null };
   const rules = [
     [/proteasom/i, "1IRU"],
     [/TAP_transporter/i, "5U1D"],

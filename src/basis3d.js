@@ -1,6 +1,7 @@
 import * as T from "three";
 import { cellHemisphereGeometry } from "./cell-geometry.js";
 import { isHemisphereCell } from "./cell-look.js";
+import { cellMorphology } from "./cell-morphology.js";
 import { SVGLoader } from "three/addons/loaders/SVGLoader.js";
 import {
   mergeGeometries,
@@ -43,10 +44,21 @@ function inside(x, y, ring) {
 /** Two curved faces meet at the exact vector boundary, including real holes. */
 export function volumeGeometry(
   shape,
-  { depth = 10, subdivisions = 2, curveSegments = 10, hemisphere = false } = {},
+  {
+    depth = 10,
+    subdivisions = 2,
+    curveSegments = 10,
+    hemisphere = false,
+    morphology,
+  } = {},
 ) {
   if (hemisphere)
-    return cellHemisphereGeometry(shape, depth, Math.max(24, curveSegments));
+    return cellHemisphereGeometry(
+      shape,
+      depth,
+      Math.max(24, curveSegments),
+      morphology,
+    );
   const flat = new T.ShapeGeometry(shape, curveSegments),
     pos = flat.attributes.position,
     index = flat.index;
@@ -176,6 +188,7 @@ export async function buildBasisVolume(
     mode = "volume",
     includeLabels = true,
     cell,
+    cellProfile,
     onProgress = () => {},
   } = {},
 ) {
@@ -211,6 +224,9 @@ export async function buildBasisVolume(
     (cell ??
       isHemisphereCell({ name: document.querySelector("title")?.textContent }));
   const shapesByPath = new Map();
+  const morphology =
+    cellProfile ||
+    cellMorphology({ name: document.querySelector("title")?.textContent });
   let bodyShape = null,
     bodyArea = 0;
   if (cellMode)
@@ -229,7 +245,7 @@ export async function buildBasisVolume(
           const box = new T.Box2().setFromPoints(shape.extractPoints(10).shape),
             s = box.getSize(new T.Vector2()),
             area = s.x * s.y;
-          if (Math.min(s.x, s.y) > span * 0.4 && area > bodyArea) {
+          if (Math.min(s.x, s.y) > span * 0.12 && area > bodyArea) {
             bodyShape = shape;
             bodyArea = area;
           }
@@ -281,12 +297,15 @@ export async function buildBasisVolume(
           depth =
             (isBody
               ? minor
-              : mode === "relief"
-                ? span * 0.035
-                : Math.max(
-                    span * 0.003,
-                    Math.min(minor * 0.75, span * (large ? 0.045 : 0.18)),
-                  )) * depthScale;
+              : cellMode &&
+                  ["erythrocyte", "platelet"].includes(morphology.type)
+                ? span * 0.003
+                : mode === "relief"
+                  ? span * 0.035
+                  : Math.max(
+                      span * 0.003,
+                      Math.min(minor * 0.75, span * (large ? 0.045 : 0.18)),
+                    )) * depthScale;
         const complexity =
             extracted.shape.length +
             extracted.holes.reduce((n, h) => n + h.length, 0),
@@ -304,6 +323,7 @@ export async function buildBasisVolume(
           depth,
           subdivisions: isBody ? Math.max(4, subdivisions) : subdivisions,
           hemisphere: isBody,
+          morphology: isBody ? morphology : undefined,
         });
         let base = 0;
         for (const prev of envelopes) {
@@ -433,7 +453,8 @@ export async function buildBasisVolume(
   }
   root.userData = {
     conversion: "rounded-vector-volume-v1",
-    cellGeometry: bodyShape ? "hemisphere-cutaway" : null,
+    cellGeometry: bodyShape ? "cell-type-cutaway-v2" : null,
+    cellMorphology: bodyShape ? morphology.type : null,
     shapeCount,
     pathCount,
     triangles: Math.round(triangles),

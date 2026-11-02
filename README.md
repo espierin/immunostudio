@@ -52,6 +52,6 @@ De hele collectie is gecontroleerd op eindige geometrie en daadwerkelijke diepte
 
 Kies **Nederlands** of **English** in de kopbalk. De interface, uitlegteksten, meldingen en dialoogvensters wisselen direct van taal. De keuze wordt op dit apparaat bewaard. Projectnamen, eigen objectnamen en tekst in de illustraties blijven intact. Pictogramknoppen en eigenschapspictogrammen hebben verklarende hoverteksten in de gekozen taal.
 
-## Cellen als halve bol
+## Celtype-afhankelijke 3D-doorsneden
 
-De 3D-volumeweergave van celbouwstenen heeft een bolle achterkant als celoppervlak en een vlakke doorsnede aan de voorkant. De oorspronkelijke kern en organellen blijven aan die voorkant zichtbaar. De oorspronkelijke celcontour vormt de rand; de bolle achterkant verloopt glad. Volumediepte past de diepte aan. De 2D-bronnen en de aparte reliëfweergave blijven behouden.
+De 3D-cellen volgen de oorspronkelijke 2D-contour met een celtype-afhankelijke achterkant. Dendritische cellen behouden dunne uitlopers; erytrocyten krijgen een afgeplatte schijf met centrale indeuking en bloedplaatjes worden plat. Macrofagen en monocyten krijgen een asymmetrische achterzijde. Cardiomyocyten en epitheelcellen behouden hun langgerekte of hoekige contour. Lymfocyten blijven waar passend relatief rond. De oorspronkelijke kern en organellen blijven vooraan zichtbaar. Volumediepte past de schematische diepte aan. Zie [celvormen en referenties](docs/CELL-MORPHOLOGY.md).

@@ -4,6 +4,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { TransformControls } from "three/addons/controls/TransformControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { buildBasisVolume } from "./basis3d.js";
+import { cellMorphology } from "./cell-morphology.js";
 import { lipidTailGeometry } from "./lipids.js";
 import { isHemisphereCell } from "./cell-look.js";
 import { recolorSourceColor } from "./palettes.js";
@@ -523,6 +524,7 @@ export class StudioScene {
               mode: item.representation === "relief" ? "relief" : "volume",
               depthScale: item.volumeDepth || 1,
               cell: isHemisphereCell(item) || undefined,
+              cellProfile: cellMorphology(item),
             }),
           );
         this.volumeAssets.set(key, promise);

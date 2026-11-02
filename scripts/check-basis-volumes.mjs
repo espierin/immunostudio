@@ -4,6 +4,7 @@ import * as T from "three";
 import { buildBasisVolume } from "../src/basis3d.js";
 import { isHemisphereCell } from "../src/cell-look.js";
 import { moleculeInfo } from "../src/molecule-catalog.js";
+import { cellMorphology } from "../src/cell-morphology.js";
 const dom = new JSDOM();
 globalThis.DOMParser = dom.window.DOMParser;
 globalThis.XMLSerializer = dom.window.XMLSerializer;
@@ -17,6 +18,7 @@ for (const asset of catalog) {
       {
         includeLabels: false,
         cell: isHemisphereCell({ name: asset.title, sourceFile: asset.file }),
+        cellProfile: cellMorphology(asset),
       },
     );
     const bounds = new T.Box3().setFromObject(model),
