@@ -46,6 +46,10 @@ const response = (data, status = 200) => ({
   json: async () => data,
 });
 test("pathway IDs and canonical URLs reject untrusted source links", () => {
+  assert.equal(
+    pathwayURL("Reactome", "R-HSA-983169"),
+    "https://reactome.org/PathwayBrowser/#/R-HSA-983169",
+  );
   assert.equal(pathwayId(" r-hsa-168256.2 "), "R-HSA-168256.2");
   assert.equal(pathwayId("wp127"), "WP127");
   assert.equal(pathwayId("WP127<script>"), null);

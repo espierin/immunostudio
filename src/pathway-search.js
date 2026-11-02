@@ -28,7 +28,7 @@ export function pathwayId(query) {
 }
 export function pathwayURL(source, id) {
   if (source === "Reactome" && /^R-[A-Z]{3}-\d+$/.test(id))
-    return `https://reactome.org/content/detail/${id}`;
+    return `https://reactome.org/PathwayBrowser/#/${id}`;
   if (source === "WikiPathways" && /^WP\d+$/.test(id))
     return `https://www.wikipathways.org/pathways/${id}`;
   if (source === "Pathway Commons" && commonsId(id)) {
