@@ -1,3 +1,4 @@
+import { SelectionBar } from "./selection-bar.js";
 import { uid, clone } from "./model.js";
 import { shapeMembrane } from "./shape-membrane.js";
 import {
@@ -209,6 +210,7 @@ export class Drawing2D {
     host.append(this.svg);
     this.bind();
     this.floating = new FloatingDrawingTools(this);
+    this.selectionBar = new SelectionBar(this, host);
     this.resize = new ResizeObserver(() => this.render());
     this.resize.observe(host);
     this.render();
@@ -393,6 +395,7 @@ export class Drawing2D {
     this.renderVectorNodes();
     this.renderSculptGuide();
     this.floating?.update();
+    this.selectionBar?.update();
   }
   itemMarkup(i) {
     if (i.kind === "membrane") return this.curveMarkup(i, this.style);
@@ -1405,6 +1408,15 @@ export class Drawing2D {
     return true;
   }
   command(cmd) {
+    if (cmd === "toggle-lock") {
+      const selected = this.selectedItems();
+      if (!selected.length) return;
+      this.beforeChange();
+      const locked = !selected.every((i) => i.locked);
+      for (const i of selected) i.locked = locked;
+      this.notify();
+      return;
+    }
     if (this.sculptCommand(cmd)) return;
     let items = this.selectedItems();
     if (cmd === "select-all") {

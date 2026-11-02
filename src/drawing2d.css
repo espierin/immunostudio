@@ -199,3 +199,35 @@ html[data-editor] select,
 html[data-editor] textarea {
   color: var(--ui-text, #17324d);
 }
+.selection-bar {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: calc(100% - 24px);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 9px;
+  border: 1px solid #cbdde8;
+  border-radius: 10px;
+  background: #fffffff5;
+  box-shadow: 0 5px 20px #002b4917;
+  z-index: 5;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.selection-bar[hidden] {
+  display: none;
+}
+.selection-bar button {
+  font-size: 11px;
+  padding: 6px 8px;
+  white-space: nowrap;
+}
+.selection-bar > span {
+  font-size: 11px;
+  background: #e6f2f9;
+  border-radius: 12px;
+  padding: 4px 8px;
+}
