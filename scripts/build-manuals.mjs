@@ -225,9 +225,23 @@ for (const lang of ["en", "nl"]) {
   manuals[lang].sections.splice(index + 1, 0, ...sculptHelp[lang]);
 }
 
+for (const lang of ["en", "nl"]) {
+  const section = manuals[lang].sections.find((s) => s[0] === "membrane");
+  section[2] +=
+    lang === "en"
+      ? "<p><b>Lipid packing:</b> each leaflet is filled independently along its own edge length. An outside bend can have more lipids than the inside bend. Head spacing is adjusted to keep both rows closely packed, including the seam of a closed loop. This updates automatically after curve edits, sculpting and membrane thickness changes; there is no required one-to-one pairing between the leaflets.</p>"
+      : "<p><b>Lipidenverdeling:</b> beide membraanlagen worden onafhankelijk gevuld op basis van hun eigen randlengte. Een buitenbocht kan meer lipiden bevatten dan de binnenbocht. De afstand tussen de koppen wordt aangepast zodat beide rijen zo goed mogelijk aansluiten, ook bij het sluitpunt van een gesloten lus. Dit wordt automatisch bijgewerkt bij curvebewerking, sculpten en een andere membraandikte; de binnen- en buitenlaag hoeven niet paarsgewijs evenveel lipiden te bevatten.</p>";
+}
 const css = `:root{font:16px/1.65 system-ui,sans-serif;color:#002b49;background:#edf3f7}*{box-sizing:border-box}body{margin:0}header{background:#002b49;color:white;padding:38px max(24px,calc((100% - 1100px)/2))}header p{color:#cde2ef}h1{font-size:2.2rem;line-height:1.2;margin:12px 0}a{color:#0077b6;text-underline-offset:3px}header a{color:#fff}nav.actions{display:flex;gap:20px;flex-wrap:wrap;align-items:center}button{background:#0077b6;color:white;border:0;border-radius:5px;padding:10px 16px;font:inherit;cursor:pointer}.layout{max-width:1150px;margin:auto;display:grid;grid-template-columns:240px minmax(0,1fr);gap:35px;padding:30px 24px}aside{position:sticky;top:20px;align-self:start;max-height:90vh;overflow:auto;font-size:.88rem}aside a{display:block;padding:6px 0}article{background:white;border:1px solid #d8e3ea;padding:16px 36px 45px;min-width:0}section{scroll-margin-top:20px;border-bottom:1px solid #d8e3ea;padding:12px 0 28px}h2{font-size:1.5rem;line-height:1.3;margin-top:28px}h3{font-size:1.12rem}li{margin:8px 0}table{border-collapse:collapse;width:100%;font-size:.92rem;margin:20px 0}th,td{border:1px solid #d8e3ea;padding:10px;text-align:left;vertical-align:top}th{background:#e8f3fa}dt{font-weight:700;margin-top:20px}dd{margin:4px 0 14px}code{background:#edf3f7;padding:2px 4px;overflow-wrap:anywhere}footer{padding:24px;text-align:center;font-size:.85rem}@media(max-width:800px){.layout{display:block;padding:15px}aside{position:static;max-height:none;margin-bottom:20px}article{padding:10px 20px}h1{font-size:1.8rem}}@media print{html{font-size:10pt;background:white}header{background:white;color:#002b49;padding:0}header p{color:#002b49}.actions,aside,footer{display:none!important}.layout{display:block;padding:0;max-width:none}article{border:0;padding:0}section{break-before:auto}h2,h3{break-after:avoid}tr{break-inside:avoid}a{color:inherit}body{margin:12mm}table{font-size:9pt}}`;
 // Keep the original screenshots intact; SVG viewBoxes provide responsive detail crops.
 const illustrations = [
+  {
+    section: "membrane",
+    file: "leaflet-packing",
+    crop: [310, 225, 610, 370],
+    en: "Independent lipid packing: the circular membrane has 72 outer and 57 inner lipids, with approximately equal head spacing along each edge. The open bend also fills its two edges independently.",
+    nl: "Onafhankelijke lipidenverdeling: het ronde membraan heeft 72 buitenste en 57 binnenste lipiden, met vrijwel gelijke kopafstand langs iedere rand. Ook de open bocht vult beide randen onafhankelijk.",
+  },
   {
     section: "line-layers",
     file: "line-layers",
