@@ -9,6 +9,8 @@ import {
   contourFrame,
   nearestContour,
   anchoredPose,
+  interiorWeights,
+  deformInteriorPoint,
 } from "./contour2d.js";
 import { bezier } from "./model.js";
 import { membranePoints } from "./membrane2d.js";
@@ -218,6 +220,16 @@ export function prepareInterior(session, anchors) {
       parts.push({
         index,
         commands: elementPath(source[index]),
+        samples: pathPoints(elementPath(source[index])).map((p) => {
+          const world = point([p.x, p.y], toSheet);
+          return {
+            ...p,
+            world,
+            weights: session.closed
+              ? interiorWeights(session.points, world)
+              : undefined,
+          };
+        }),
         toSheet,
         fromSheet: toSheet.inverse(),
       });
@@ -247,6 +259,65 @@ function moveEmbedded(doc, worldPoints, closed, anchors) {
     g.setAttribute("data-membrane-side", String(a.side));
   }
 }
+function deformParts(doc, session, worldPoints, interior) {
+  // Simplify can change the cage's point count. Match its parameterization to
+  // the original cage only for the interior mapping; retain the simplified rim.
+  if (worldPoints.length !== session.points.length) {
+    const points = worldPoints;
+    worldPoints = session.points.map(
+      (_, i) =>
+        contourFrame(
+          points,
+          i /
+            (session.closed
+              ? session.points.length
+              : session.points.length - 1),
+          session.closed,
+        ).point,
+    );
+  }
+  for (const part of interior) {
+    const changed = structuredClone(part.commands);
+    for (const p of part.samples) {
+      const moved = point(
+        deformInteriorPoint(
+          p.world,
+          session.points,
+          worldPoints,
+          session.closed,
+          session.brushRadius || 100,
+          p.weights,
+        ),
+        part.fromSheet,
+      );
+      changed[p.command].values[p.offset] = moved[0];
+      changed[p.command].values[p.offset + 1] = moved[1];
+    }
+    replacePart(doc, part.index, changed);
+  }
+}
+export function followInterior(session, nextPoints, interior) {
+  const doc = new DOMParser().parseFromString(
+    session.item.svg,
+    "image/svg+xml",
+  );
+  if (nextPoints.length !== session.points.length) {
+    const points = nextPoints;
+    nextPoints = session.points.map(
+      (_, i) =>
+        contourFrame(
+          points,
+          i /
+            (session.closed
+              ? session.points.length
+              : session.points.length - 1),
+          session.closed,
+        ).point,
+    );
+  }
+  deformParts(doc, session, nextPoints, interior);
+  session.item.svg = new XMLSerializer().serializeToString(doc.documentElement);
+}
 export function followEmbedded(session, anchors) {
   const doc = session.sourceDoc.cloneNode(true);
   moveEmbedded(doc, session.points, session.closed, anchors);
@@ -271,23 +342,7 @@ export function writeContour(
   if (item.kind === "svg") {
     const doc = session.sourceDoc.cloneNode(true);
     replacePart(doc, session.index, commands);
-    for (const part of interior) {
-      const changed = structuredClone(part.commands);
-      for (const p of pathPoints(part.commands)) {
-        const original = point([p.x, p.y], part.toSheet),
-          old = nearestContour(session.points, original, session.closed),
-          next = contourFrame(worldPoints, old.u, session.closed),
-          weight =
-            Math.max(0, 1 - old.distance / (session.brushRadius || 100)) ** 2,
-          moved = point(
-            original.map((v, k) => v + (next.point[k] - old.point[k]) * weight),
-            part.fromSheet,
-          );
-        changed[p.command].values[p.offset] = moved[0];
-        changed[p.command].values[p.offset + 1] = moved[1];
-      }
-      replacePart(doc, part.index, changed);
-    }
+    deformParts(doc, session, worldPoints, interior);
     moveEmbedded(doc, worldPoints, session.closed, anchors);
     item.svg = new XMLSerializer().serializeToString(doc.documentElement);
     item.contourEdit = {

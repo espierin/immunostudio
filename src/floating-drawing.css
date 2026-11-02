@@ -108,3 +108,7 @@
 .sheet-canvas[data-tool="sculpt"] .sheet-selection {
   display: none;
 }
+
+.floating-content .line-appearance label.check {
+  justify-content: flex-start;
+}

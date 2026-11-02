@@ -492,6 +492,27 @@ Object.assign(english, {
   "Kies een aparte molecuulgroep, buiten de celcontour.":
     "Choose a separate molecule group outside the cell contour.",
 });
+Object.assign(english, {
+  "Deze curve heeft het maximum van 31 ankerpunten.":
+    "This curve has reached the maximum of 31 anchors.",
+  "Lijnopbouw en vulling": "Line construction and fill",
+  Lijnopbouw: "Line construction",
+  "Alleen lijn": "Line only",
+  Celmembraan: "Cell membrane",
+  Endotheel: "Endothelium",
+  "Huid / meerlagig epitheel": "Skin / stratified epithelium",
+  Darmepitheel: "Intestinal epithelium",
+  "Binnenvlak vullen": "Fill interior",
+  Vulkleur: "Fill colour",
+  "Laagdikte (px)": "Layer thickness (px)",
+  "Celbreedte (px)": "Cell width (px)",
+  "Zijde van de lijn": "Side of the line",
+  "Zijde 1": "Side 1",
+  "Zijde 2": "Side 2",
+  "Bézierlijn bewerken": "Edit Bézier line",
+  "De lijnopbouw volgt alle curve- en sculptbewerkingen. Binnenvlak vullen sluit een open lijn visueel met een rechte verbinding.":
+    "The line construction follows curve and sculpt edits. Fill interior visually closes an open line with a straight connection.",
+});
 const patterns = [
   [
     /^Huidig frame: (\d+)\. Camera-acties gebruiken het renderbereik\.$/,

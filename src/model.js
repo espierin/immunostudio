@@ -418,6 +418,27 @@ export function validateProject(p) {
       sheetIds.add(i.id);
       if (i.kind === "svg" && typeof i.svg !== "string")
         throw Error("SVG ontbreekt in 2D-object.");
+      if (
+        i.lineStyle !== undefined &&
+        !["line", "membrane", "endothelium", "skin", "intestine"].includes(
+          i.lineStyle,
+        )
+      )
+        throw Error("Invalid 2D line appearance.");
+      if (i.fillEnabled !== undefined && typeof i.fillEnabled !== "boolean")
+        throw Error("Invalid 2D fill option.");
+      for (const [key, min, max] of [
+        ["layerThickness", 12, 240],
+        ["cellWidth", 12, 200],
+      ]) {
+        if (
+          i[key] !== undefined &&
+          (!Number.isFinite(i[key]) || i[key] < min || i[key] > max)
+        )
+          throw Error("Invalid 2D tissue dimensions.");
+      }
+      if (i.layerSide !== undefined && ![-1, 1].includes(i.layerSide))
+        throw Error("Invalid 2D tissue side.");
       if (i.anchor2d) {
         const a = i.anchor2d;
         if (

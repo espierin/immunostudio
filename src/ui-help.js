@@ -1,4 +1,8 @@
 export const explanations = {
+  "to-editable-curve": [
+    "Maak van de geselecteerde lijn of vorm een bewerkbare Béziercurve. Sleep blauwe punten en oranje handvatten.",
+    "Make the selected line or shape an editable Bézier curve. Drag blue anchors and orange handles.",
+  ],
   "anchor-mark-embedded": [
     "Markeer een aparte SVG-receptorgroep bij de gekozen celrand zodat deze mee beweegt.",
     "Mark a separate SVG receptor group near the chosen cell boundary so it follows deformation.",

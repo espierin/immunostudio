@@ -1,4 +1,73 @@
 const mix = (a, b, t) => a.map((v, i) => v + (b[i] - v) * t);
+// Mean-value cage coordinates transport the whole cell interior, including a
+// nucleus far from the brush. Signed weights also handle concave cell outlines.
+export function interiorWeights(contour, p) {
+  const n = contour.length,
+    vectors = contour.map((v) => [v[0] - p[0], v[1] - p[1]]),
+    lengths = vectors.map((v) => Math.hypot(...v));
+  let inside = false;
+  for (let i = 0, j = n - 1; i < n; j = i++) {
+    const a = contour[i],
+      b = contour[j];
+    if (
+      a[1] > p[1] !== b[1] > p[1] &&
+      p[0] < ((b[0] - a[0]) * (p[1] - a[1])) / (b[1] - a[1]) + a[0]
+    )
+      inside = !inside;
+    if (lengths[i] < 1e-7) return contour.map((_, k) => (k === i ? 1 : 0));
+    const dx = b[0] - a[0],
+      dy = b[1] - a[1],
+      l2 = dx * dx + dy * dy,
+      t = l2 ? ((p[0] - a[0]) * dx + (p[1] - a[1]) * dy) / l2 : 0;
+    if (
+      t >= 0 &&
+      t <= 1 &&
+      Math.hypot(p[0] - a[0] - t * dx, p[1] - a[1] - t * dy) < 1e-6
+    )
+      return contour.map((_, k) => (k === i ? 1 - t : k === j ? t : 0));
+  }
+  if (!inside) return null;
+  const halves = vectors.map((a, i) => {
+      const b = vectors[(i + 1) % n];
+      return Math.tan(
+        Math.atan2(a[0] * b[1] - a[1] * b[0], a[0] * b[0] + a[1] * b[1]) / 2,
+      );
+    }),
+    weights = lengths.map((r, i) => (halves[(i + n - 1) % n] + halves[i]) / r),
+    sum = weights.reduce((a, b) => a + b, 0);
+  return Math.abs(sum) > 1e-10 && weights.every(Number.isFinite)
+    ? weights.map((v) => v / sum)
+    : null;
+}
+export function deformInteriorPoint(
+  p,
+  before,
+  after,
+  closed = true,
+  radius = 100,
+  weights = undefined,
+) {
+  if (closed) {
+    const w = weights === undefined ? interiorWeights(before, p) : weights;
+    if (!w) return [...p];
+    return p.map(
+      (v, k) =>
+        v + w.reduce((sum, x, i) => sum + x * (after[i][k] - before[i][k]), 0),
+    );
+  }
+  const old = nearestContour(before, p, false),
+    next = contourFrame(after, old.u, false),
+    offset = p.map((v, k) => v - old.point[k]),
+    along = offset[0] * old.tangent[0] + offset[1] * old.tangent[1],
+    normal = offset[0] * old.normal[0] + offset[1] * old.normal[1],
+    blend = Math.max(0, 1 - old.distance / Math.max(1, radius));
+  return p.map(
+    (v, k) =>
+      v +
+      (next.point[k] + next.tangent[k] * along + next.normal[k] * normal - v) *
+        blend,
+  );
+}
 export const signedArea = (p) =>
   p.reduce((a, v, i) => {
     const q = p[(i + 1) % p.length];
