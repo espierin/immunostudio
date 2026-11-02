@@ -37,6 +37,6 @@ const gallery = `<!doctype html><html lang="en"><meta charset="utf-8"><meta name
   )
   .join(
     "",
-  )}<p>Reactome and WikiPathways class adapters are prepared in the code; live pathway search/import is not part of this first set. These diagrams are schematic and are not a claim of full SBGN or GPML conformance.</p></main></html>`;
+  )}<p>Use the ImmunoStudio header menu Pathways → Search pathways to search Reactome and WikiPathways. Class adapters are prepared in the code; automatic full pathway import is not available yet. These diagrams are schematic and are not a claim of full SBGN or GPML conformance.</p></main></html>`;
 await writeFile("public/pathway-elements/index.html", gallery);
 console.log(`Generated ${pathwayCatalog.length} pathway symbols and gallery.`);

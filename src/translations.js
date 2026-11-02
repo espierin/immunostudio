@@ -622,6 +622,54 @@ Object.assign(english, {
   "Bewerkbare schema-elementen. Automatische pathway-import volgt later.":
     "Editable schematic elements. Automatic pathway import will follow later.",
 });
+Object.assign(english, {
+  "Eerste 50 pathways getoond. Verfijn de zoekterm voor een kleinere selectie.":
+    "First 50 pathways shown. Refine your search for a smaller selection.",
+  "Pathways zoeken": "Search pathways",
+  "Pathways zoeken…": "Search pathways…",
+  "2D-pathwaybouwstenen": "2D pathway building blocks",
+  "Zoek op een molecuul, pathway-ID of een deel van de pathwaynaam.":
+    "Search by molecule, pathway ID or part of a pathway name.",
+  Zoekterm: "Search term",
+  "Bijvoorbeeld AKT1, interleukin, WP127…":
+    "For example AKT1, interleukin, WP127…",
+  "Zoeken op": "Search by",
+  Automatisch: "Automatic",
+  Pathwaynaam: "Pathway name",
+  Molecuulnaam: "Molecule name",
+  "Pathway-ID": "Pathway ID",
+  "Beide databases": "Both databases",
+  Organisme: "Organism",
+  "Alle organismen": "All organisms",
+  Zoeken: "Search",
+  "Databases doorzoeken…": "Searching databases…",
+  "pathways gevonden": "pathways found",
+  "Zoekopdracht voltooid.": "Search completed.",
+  "Zoekopdracht geannuleerd.": "Search cancelled.",
+  "Beperkte selectie. Maximaal 50 pathways; Reactome onderzoekt maximaal 8 molecuultreffers. Verfijn de zoekterm.":
+    "Limited selection. Up to 50 pathways; Reactome checks up to 8 molecule matches. Refine your search.",
+  "Tijdslimiet bereikt. Probeer opnieuw of kies één database.":
+    "Request timed out. Retry or select one database.",
+  "Niet bereikbaar. Probeer opnieuw of kies de andere database.":
+    "Unavailable. Retry or select the other database.",
+  "Geen resultaten beschikbaar. Controleer je internetverbinding en probeer opnieuw.":
+    "No results available. Check your internet connection and retry.",
+  "Geen pathways gevonden. Probeer een andere term of kies Alle organismen.":
+    "No pathways found. Try another term or select All organisms.",
+  "Molecuultreffers:": "Molecule matches:",
+  Beschrijving: "Description",
+  "Open bij de bron ↗": "Open source ↗",
+  "ID kopiëren": "Copy ID",
+  Gekopieerd: "Copied",
+  "Meer resultaten tonen": "Show more results",
+  "Zoekresultaten openen bij de bron. Het automatisch opbouwen van een volledig pathway is nog niet beschikbaar.":
+    "Search results open at the source. Automatically building a complete pathway is not yet available.",
+  "Zoek met 2 tot 160 tekens.": "Search with 2 to 160 characters.",
+  "Gebruik letters of cijfers in de zoekterm.":
+    "Include letters or numbers in the search term.",
+  "Gebruik een Reactome-ID (R-HSA-168256) of WikiPathways-ID (WP127).":
+    "Use a Reactome ID (R-HSA-168256) or WikiPathways ID (WP127).",
+});
 const patterns = [
   [/^(\d+) pathway-elementen · 2D$/, "$1 pathway elements · 2D"],
   [
