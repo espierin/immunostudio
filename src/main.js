@@ -1862,7 +1862,12 @@ function resetWorkspaceLayout() {
     hidden: false,
     collapsed: [],
   });
+  for (const details of drawing2D.floating.element.querySelectorAll(
+    "[data-floating-panel]",
+  ))
+    details.open = true;
   drawing2D.floating.place();
+  drawing2D.floating.update();
   drawing2D.floating.save();
 }
 for (const toolbar of document.querySelectorAll(".sheet-toolbar,.toolbar")) {
