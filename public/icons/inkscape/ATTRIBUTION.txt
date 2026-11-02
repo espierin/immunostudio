@@ -1,0 +1,6 @@
+Symbolic action icons from the locally installed Inkscape 1.4.2 distribution.
+Source: share/inkscape/icons/hicolor/symbolic/actions/*-symbolic.svg
+Project: https://inkscape.org/
+The original SVG source files are retained. Inkscape's bundled GPL licence is
+included as COPYING. The icons are displayed as CSS masks in UMC Utrecht colours;
+their original geometry has not been modified.

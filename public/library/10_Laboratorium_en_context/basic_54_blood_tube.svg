@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="600" height="600" viewBox="-123.20000000000002 -123.20000000000002 246.40000000000003 246.40000000000003"><defs id="opt-soft-defs"><linearGradient id="optBlue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#B8DDF8" /><stop offset=".45" stop-color="#70AFE5" /><stop offset="1" stop-color="#2167AE" /></linearGradient></defs><title>Blood specimen tube</title><desc>Blood specimen tube. Schematic editable native vector component. Group labels describe its parts.</desc><defs>
+    <linearGradient id="glass" x2="1" y2="0">
+      <stop stop-color="#E0EEF8" id="stop27" />
+      <stop offset=".4" stop-color="#FFFFFF" id="stop28" />
+      <stop offset="1" stop-color="#C3DAEC" id="stop29" />
+    </linearGradient>
+    </defs><g id="component-layer" inkscape:groupmode="layer" inkscape:label="Blood specimen tube"><g id="Positioned-component-243" inkscape:label="Positioned component" transform="translate(0 0) rotate(0) scale(1)"><g id="Blood-specimen-tube-242" inkscape:label="Blood specimen tube"><rect x="-18" y="-62" width="36" height="126" rx="14" fill="url(#glass)" stroke="#092E50" stroke-width="3" /><rect x="-21" y="-79" width="42" height="25" rx="5" fill="url(#optBlue)" stroke="#092E50" stroke-width="3" /><path d="M-12 -7 V46 Q0 61 12 46 V-7 Z" fill="#CC1F2C" stroke="#CC1F2C" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" /><rect x="-12" y="-45" width="24" height="34" rx="2" fill="white" stroke="#A9C6E2" stroke-width="1" /></g></g></g></svg>

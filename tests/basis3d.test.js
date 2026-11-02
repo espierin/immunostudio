@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import * as T from 'three';
+import {volumeGeometry,boundaryDistance} from '../src/basis3d.js';
+import {isBasicElement} from '../src/library-policy.js';
+import {lipidTailGeometry} from '../src/lipids.js';
+test('Vector circle becomes a closed rounded volume with its silhouette retained',()=>{const s=new T.Shape();s.absarc(0,0,10,0,Math.PI*2,false);const {geometry}=volumeGeometry(s,{depth:6,subdivisions:2});geometry.computeBoundingBox();assert.ok(geometry.boundingBox.max.z>2);assert.ok(geometry.boundingBox.min.z< -2);assert.ok(Math.abs(geometry.boundingBox.max.x-10)<.01);assert.ok(geometry.attributes.normal.array.every(Number.isFinite))});
+test('Holes remain real empty regions in vector-derived volume',()=>{const s=new T.Shape();s.moveTo(-10,-10);s.lineTo(10,-10);s.lineTo(10,10);s.lineTo(-10,10);s.closePath();const h=new T.Path();h.absarc(0,0,3,0,Math.PI*2,true);s.holes.push(h);const {geometry}=volumeGeometry(s,{depth:5});const p=geometry.attributes.position;for(let i=0;i<p.count;i++)assert.ok(Math.hypot(p.getX(i),p.getY(i))>2.9)});
+test('Catalog policy excludes composite teaching figures and tables',()=>{assert.ok(isBasicElement({file:'x/basic_13_TCR_CD3_user.svg',title:'TCR αβ'}));assert.ok(isBasicElement({file:'x/basic_41_membrane_curved.svg',title:'Curved membrane'}));assert.equal(isBasicElement({file:'x/basic_61_contact_HLA_TCR.svg',title:'HLA TCR contact'}),false);assert.equal(isBasicElement({file:'x/basic_100_table.svg',title:'Table'}),false);assert.equal(isBasicElement({file:'x/basic_556_TB11_03_Anergy_without_cell_deletion.svg',textbookModule:'TB11',assetRole:'Losse bouwsteen'}),false)});
+test('Lipid tails are paired slim bent chains, not a central rod',()=>{const g=lipidTailGeometry();g.computeBoundingBox();assert.ok(g.boundingBox.min.x<-.09&&g.boundingBox.max.x>.09);const positions=g.attributes.position;const nearTop=[];for(let i=0;i<positions.count;i++)if(positions.getY(i)>-.03)nearTop.push(positions.getX(i));assert.ok(nearTop.every(x=>Math.abs(x)>.05));assert.ok(g.boundingBox.max.x-g.boundingBox.min.x<.3)});

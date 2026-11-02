@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="600" height="600" viewBox="-39.2 -149.2 78.4 78.4"><defs id="opt-soft-defs" /><title>CMV envelope glycoprotein</title><desc>CMV envelope glycoprotein. Schematic editable native vector component. Group labels describe its parts.</desc><defs>
+    <linearGradient id="orange" x2="1" y2="1">
+      <stop stop-color="#FFB47D" id="stop6" />
+      <stop offset=".45" stop-color="#FF7546" id="stop7" />
+      <stop offset="1" stop-color="#E74D30" id="stop8" />
+    </linearGradient>
+    </defs><g id="component-layer" inkscape:groupmode="layer" inkscape:label="CMV envelope glycoprotein"><g id="copy305-Envelope-glycoprotein-spike-22" inkscape:label="Envelope glycoprotein spike" transform="rotate(0)">
+          <path d="M-3 -92 L-5 -113 Q-17 -117 -12 -127 Q-9 -134 1 -129 Q11 -135 16 -126 Q21 -117 7 -112 L6 -92 Z" fill="url(#orange)" stroke="#092E50" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="copy305-path88" />
+        </g></g></svg>

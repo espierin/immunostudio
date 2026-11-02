@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" width="800" height="1318" viewBox="-85 -215 170 280"><title>T-cell receptor</title><desc>Native cartoon rebuilt from the current detailed component style; not a recolored copy of the old PIRCHE geometry. Current detailed TCR/CD3 domains rather than the old flat TCR silhouette.</desc><defs>
+</defs><g id="component-layer" inkscape:groupmode="layer" inkscape:label="T-cell receptor"><g id="Positioned-component-2" inkscape:label="Positioned component" transform="translate(0 0) rotate(0) scale(1)"><g id="Basis-basic-13-TCR-CD3-user-svg-1" inkscape:label="Basis: basic_13_TCR_CD3_user.svg"><defs><linearGradient id="basis1-optGreen" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#C8E89A" /><stop offset="1" stop-color="#93C94D" /></linearGradient></defs><g id="basis1-component-layer" inkscape:label="TCR αβ + CD3"><g id="basis1-Positioned-component-151" inkscape:label="Positioned component" transform="translate(0 0) rotate(0) scale(1)"><g id="basis1-copy246-TCR-alpha-beta-with-CD3-15" inkscape:label="TCR alpha/beta with CD3">
+        <g id="basis1-copy246-Inter-domain-linkers-and-inter-chain-disulfide-bond-13" inkscape:label="Inter-domain linkers and inter-chain disulfide bond">
+          <path d="M-20 -130 V-108 M20 -130 V-108 M-10 -54 H10" fill="none" stroke="#092E50" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" id="basis1-copy246-path67" />
+        </g>
+        <g id="basis1-copy246-CD3-signalling-chains-14" inkscape:label="CD3 signalling chains">
+          <rect x="-49" y="-59" width="12" height="43" rx="5" fill="#77A9D1" stroke="#092E50" stroke-width="2" id="basis1-copy246-rect67" />
+          <rect x="37" y="-59" width="12" height="43" rx="5" fill="#77A9D1" stroke="#092E50" stroke-width="2" id="basis1-copy246-rect68" />
+          <path d="m -43,-16 v 50 l -7,10 m 93,-60 v 51 l 8,10" fill="none" stroke="#092e50" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" id="basis1-copy246-path68" sodipodi:nodetypes="cccccc" />
+        </g>
+        <g id="basis1-copy246-TCR-alpha-chain-11" inkscape:label="TCR alpha chain">
+          <path d="M-20 20 V-25 Q-20 -43 -16 -49" fill="none" stroke="#092E50" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" id="basis1-copy246-path61" />
+          <rect x="-34" y="-108" width="28" height="61" rx="13" fill="url(#basis1-optGreen)" stroke="#092E50" stroke-width="3.2" id="basis1-copy246-rect61" />
+          <path d="M-34 -130 C-41 -143 -40 -172 -27 -180 Q-20 -185 -13 -180 C0 -172 1 -143 -6 -130 Z" fill="url(#basis1-optGreen)" stroke="#092E50" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" id="basis1-copy246-path62" />
+          <path d="M-28 -160 L-13 -145 M-28 -87 L-13 -68" fill="none" stroke="#C7E796" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" id="basis1-copy246-path63" />
+        </g>
+        <g id="basis1-copy246-TCR-beta-chain-12" inkscape:label="TCR beta chain">
+          <path d="M20 20 V-25 Q20 -43 16 -49" fill="none" stroke="#092E50" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" id="basis1-copy246-path64" />
+          <rect x="6" y="-108" width="28" height="61" rx="13" fill="url(#basis1-optGreen)" stroke="#092E50" stroke-width="3.2" id="basis1-copy246-rect64" />
+          <path d="M6 -130 C-1 -143 0 -172 13 -180 Q20 -185 27 -180 C40 -172 41 -143 34 -130 Z" fill="url(#basis1-optGreen)" stroke="#092E50" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" id="basis1-copy246-path65" />
+          <path d="M12 -160 L27 -145 M12 -87 L27 -68" fill="none" stroke="#C7E796" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" id="basis1-copy246-path66" />
+        </g>
+      </g>
+    </g></g></g></g></g></svg>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="600" height="600" viewBox="-89.60000000000001 -89.60000000000001 179.20000000000002 179.20000000000002"><defs id="opt-soft-defs" /><title>CMV capsid and genome</title><desc>CMV capsid and genome. Schematic editable native vector component. Group labels describe its parts.</desc><defs>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#78B9EB" id="stop1" />
+      <stop offset=".46" stop-color="#287CC4" id="stop2" />
+      <stop offset="1" stop-color="#125698" id="stop3" />
+    </linearGradient>
+    </defs><g id="component-layer" inkscape:groupmode="layer" inkscape:label="CMV capsid and genome"><g id="copy304-Icosahedral-capsid-42" inkscape:label="Icosahedral capsid">
+          <path d="M0 -59 L52 -27 45 36 0 60 -49 30 -51 -28 Z" fill="url(#blue)" stroke="#092E50" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" id="copy304-path170" />
+          <path d="M0 -27 C-29 -17 24 -2 -3 8 S22 29 -5 32" fill="none" stroke="#E0F0FF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" id="copy304-path172" />
+        </g></g></svg>

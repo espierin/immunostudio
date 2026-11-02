@@ -1,0 +1,201 @@
+.editor-mode-switch {
+  display: flex;
+  border: 1px solid var(--ui-border, #dce3e9);
+  border-radius: 7px;
+  padding: 2px;
+  gap: 2px;
+}
+.editor-mode-switch button {
+  padding: 6px 10px;
+  border: 0;
+  font-weight: 600;
+}
+.editor-mode-switch button.active {
+  color: #fff;
+  background: var(--ui-primary, #007f86);
+}
+.sheet-toolbar {
+  display: none;
+  background: var(--ui-surface, #fff);
+  border-bottom: 1px solid var(--ui-border, #dce3e9);
+  align-items: center;
+  gap: 4px;
+  padding: 7px 10px;
+  flex-wrap: wrap;
+}
+.sheet-toolbar button {
+  font-size: 11px;
+  padding: 6px 8px;
+}
+.tool-divider {
+  height: 20px;
+  border-left: 1px solid var(--ui-border, #dce3e9);
+  margin: 0 4px;
+}
+#drawing2d {
+  position: absolute;
+  inset: 0;
+  background: var(--ui-background, #e7edf2);
+  z-index: 2;
+  padding: 18px;
+}
+#drawing2d[hidden] {
+  display: none;
+}
+.sheet-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+  overflow: visible;
+  outline: none;
+}
+.sheet-canvas[data-tool="pan"] {
+  cursor: grab;
+}
+.sheet-canvas:not([data-tool="select"]):not([data-tool="pan"]) {
+  cursor: crosshair;
+}
+.sheet-selection [data-sheet-handle] {
+  cursor: nwse-resize;
+}
+.sheet-selection [data-sheet-handle="rotate"] {
+  cursor: grab;
+}
+.sheet-arrange {
+  margin: 18px 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--ui-border, #dce3e9);
+}
+.sheet-arrange > strong {
+  font-size: 11px;
+  display: block;
+  margin: 10px 0;
+}
+.details-body textarea {
+  width: 100%;
+  min-height: 80px;
+  display: block;
+  margin-top: 6px;
+  padding: 8px;
+  border: 1px solid var(--ui-border, #dce3e9);
+  border-radius: 5px;
+  font: inherit;
+}
+.coordinates:has(> label:nth-child(2):last-child) {
+  grid-template-columns: 1fr 1fr;
+}
+[data-editor="2d"] nav.toolbar,
+[data-editor="2d"] .view-toolbar,
+[data-editor="2d"] .timeline,
+[data-editor="2d"] .three-properties,
+[data-editor="2d"] #viewport > canvas,
+[data-editor="2d"] #viewport > .scene-badge,
+[data-editor="2d"] .compartment,
+[data-editor="2d"] .axis,
+[data-editor="2d"] .scene-hint,
+[data-editor="2d"] .tabs [data-tab="models"],
+[data-editor="2d"] .tabs [data-tab="pdb"],
+[data-editor="2d"] #basis-representation {
+  display: none !important;
+}
+[data-editor="2d"] .sheet-toolbar {
+  display: flex;
+}
+[data-editor="2d"] main {
+  height: calc(100vh - 106px);
+}
+[data-theme="source"] body {
+  background: var(--ui-background);
+  color: var(--ui-text);
+}
+[data-theme="source"] header,
+[data-theme="source"] .toolbar,
+[data-theme="source"] .library,
+[data-theme="source"] .inspector,
+[data-theme="source"] .timeline,
+[data-theme="source"] footer,
+[data-theme="source"] .view-toolbar,
+[data-theme="source"] dialog {
+  background: var(--ui-surface);
+  color: var(--ui-text);
+  border-color: var(--ui-border);
+}
+[data-theme="source"] button,
+[data-theme="source"] select,
+[data-theme="source"] input:not([type="range"]):not([type="checkbox"]),
+[data-theme="source"] textarea {
+  background: var(--ui-background) !important;
+  color: var(--ui-text);
+  border-color: var(--ui-border);
+}
+[data-theme="source"] button.primary,
+[data-theme="source"] .editor-mode-switch button.active {
+  background: var(--ui-primary) !important;
+  color: var(--ui-background);
+}
+[data-theme="source"] button.active {
+  color: var(--ui-primary);
+  border-color: var(--ui-primary);
+}
+[data-theme="source"] .brand,
+[data-theme="source"] .project-title input,
+[data-theme="source"] h2,
+[data-theme="source"] strong,
+[data-theme="source"] summary,
+[data-theme="source"] .model-card > span {
+  color: var(--ui-text);
+}
+[data-theme="source"] .muted,
+[data-theme="source"] .details-body > label,
+[data-theme="source"] .library-info,
+[data-theme="source"] .library-footer,
+[data-theme="source"] .tabs button,
+[data-theme="source"] .scene-row button,
+[data-theme="source"] .panel-head > span {
+  color: var(--ui-muted);
+}
+[data-theme="source"] .selected-card,
+[data-theme="source"] .hinge-box,
+[data-theme="source"] .scene-row.selected {
+  background: var(--ui-background);
+  border-color: var(--ui-border);
+}
+@media (max-width: 850px) {
+  [data-editor="2d"] main {
+    height: calc(100vh - 92px);
+  }
+  [data-editor="2d"] .inspector {
+    top: 64px;
+  }
+  .editor-mode-switch button {
+    font-size: 11px;
+    padding: 5px 7px;
+  }
+  .header-actions button {
+    font-size: 11px;
+    padding: 6px;
+  }
+  .brand {
+    font-size: 18px;
+  }
+  header {
+    gap: 10px;
+  }
+  .sheet-toolbar {
+    gap: 2px;
+    padding: 5px;
+  }
+  .sheet-toolbar button {
+    font-size: 10px;
+    padding: 5px;
+  }
+  #drawing2d {
+    padding: 10px;
+  }
+}
+html[data-editor] input,
+html[data-editor] select,
+html[data-editor] textarea {
+  color: var(--ui-text, #17324d);
+}

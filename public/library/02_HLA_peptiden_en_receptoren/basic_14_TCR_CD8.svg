@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" width="600" height="600" viewBox="-153.70000000000002 -221.20000000000002 302.40000000000003 302.40000000000003"><defs id="opt-soft-defs"><linearGradient id="optBlue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#B8DDF8" /><stop offset=".45" stop-color="#70AFE5" /><stop offset="1" stop-color="#2167AE" /></linearGradient><linearGradient id="optLight" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#EEF7FF" /><stop offset="1" stop-color="#A9C6E2" /></linearGradient><linearGradient id="optGreen" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#C8E89A" /><stop offset="1" stop-color="#93C94D" /></linearGradient></defs><title>TCR/CD3 with CD8</title><desc>TCR/CD3 with CD8. Schematic editable native vector component. Group labels describe its parts.</desc><defs>
+    </defs><g id="component-layer" inkscape:groupmode="layer" inkscape:label="TCR/CD3 with CD8"><g id="Positioned-component-152" inkscape:label="Positioned component" transform="translate(-30 0) rotate(0) scale(1)"><g id="copy247-TCR-alpha-beta-with-CD3-15" inkscape:label="TCR alpha/beta with CD3">
+        <g id="copy247-Inter-domain-linkers-and-inter-chain-disulfide-bond-13" inkscape:label="Inter-domain linkers and inter-chain disulfide bond">
+          <path d="M-20 -130 V-108 M20 -130 V-108 M-10 -54 H10" fill="none" stroke="#092E50" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" id="copy247-path67" />
+        </g>
+        <g id="copy247-CD3-signalling-chains-14" inkscape:label="CD3 signalling chains">
+          <rect x="-49" y="-59" width="12" height="43" rx="5" fill="#77A9D1" stroke="#092E50" stroke-width="2" id="copy247-rect67" />
+          <rect x="37" y="-59" width="12" height="43" rx="5" fill="#77A9D1" stroke="#092E50" stroke-width="2" id="copy247-rect68" />
+          <path d="m -43,-16 v 50 l -7,10 m 93,-60 v 51 l 8,10" fill="none" stroke="#092e50" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" id="copy247-path68" sodipodi:nodetypes="cccccc" />
+        </g>
+        <g id="copy247-TCR-alpha-chain-11" inkscape:label="TCR alpha chain">
+          <path d="M-20 20 V-25 Q-20 -43 -16 -49" fill="none" stroke="#092E50" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" id="copy247-path61" />
+          <rect x="-34" y="-108" width="28" height="61" rx="13" fill="url(#optGreen)" stroke="#092E50" stroke-width="3.2" id="copy247-rect61" />
+          <path d="M-34 -130 C-41 -143 -40 -172 -27 -180 Q-20 -185 -13 -180 C0 -172 1 -143 -6 -130 Z" fill="url(#optGreen)" stroke="#092E50" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" id="copy247-path62" />
+          <path d="M-28 -160 L-13 -145 M-28 -87 L-13 -68" fill="none" stroke="#C7E796" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" id="copy247-path63" />
+        </g>
+        <g id="copy247-TCR-beta-chain-12" inkscape:label="TCR beta chain">
+          <path d="M20 20 V-25 Q20 -43 16 -49" fill="none" stroke="#092E50" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" id="copy247-path64" />
+          <rect x="6" y="-108" width="28" height="61" rx="13" fill="url(#optGreen)" stroke="#092E50" stroke-width="3.2" id="copy247-rect64" />
+          <path d="M6 -130 C-1 -143 0 -172 13 -180 Q20 -185 27 -180 C40 -172 41 -143 34 -130 Z" fill="url(#optGreen)" stroke="#092E50" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" id="copy247-path65" />
+          <path d="M12 -160 L27 -145 M12 -87 L27 -68" fill="none" stroke="#C7E796" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" id="copy247-path66" />
+        </g>
+      </g>
+    </g><g id="Positioned-component-154" inkscape:label="Positioned component" transform="translate(50 0) rotate(0) scale(0.9)"><g id="CD8-alpha-beta-coreceptor-153" inkscape:label="CD8 alpha/beta coreceptor"><path d="M-10 22 V-51 M10 22 V-51" fill="none" stroke="#092E50" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" /><rect x="-22" y="-90" width="24" height="44" rx="12" fill="url(#optBlue)" stroke="#092E50" stroke-width="3" /><rect x="2" y="-90" width="24" height="44" rx="12" fill="url(#optLight)" stroke="#092E50" stroke-width="3" /><path d="M-15 -80 L-5 -64 M8 -80 L18 -64 M-10 22 l-5 13 M10 22 l5 13" fill="none" stroke="#092E50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></g></g></g></svg>

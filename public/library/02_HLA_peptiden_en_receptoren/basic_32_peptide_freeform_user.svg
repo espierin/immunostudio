@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" width="600" height="600" viewBox="-112.00000000000001 -112.00000000000001 224.00000000000003 224.00000000000003"><defs id="opt-soft-defs"><linearGradient id="optYellow"><stop stop-color="#FFE9A1" /><stop offset="1" stop-color="#FFC72C" /></linearGradient></defs><title>Free-form peptide – your chain</title><desc>Free-form peptide – your chain. Schematic editable native vector component. Group labels describe its parts.</desc><defs>
+    </defs><g id="component-layer" inkscape:groupmode="layer" inkscape:label="Free-form peptide – your chain"><g id="User-edited-flexible-peptide-chain-195" inkscape:label="User-edited flexible peptide chain" transform="translate(-195 -150)" data-peptide-updated="2026"><g transform="translate(187.89014 129.83300444444444) scale(1.18 1.27) translate(-187.89014 -129.83300444444444)"><path d="m 137.62014,136.1101 c 0,0 9.80663,13.55695 16.70732,12.57473 9.31297,-1.32557 7.6217,-24.03114 16.91713,-22.58775 16.04121,2.49087 1.5883,38.52336 15.99883,45.9974 6.22682,3.22955 15.38865,-0.72138 20.22891,-5.7983 9.31689,-9.77243 -2.19476,-32.32804 9.29094,-39.42616 6.08164,-3.75844 13.72605,4.71516 20.87188,4.937 4.90768,0.15236 14.5173,-2.49498 14.5173,-2.49498" fill="none" stroke="#092e50" stroke-width="3.3" stroke-linecap="round" stroke-linejoin="round" id="copy292-path403" sodipodi:nodetypes="caaaaaac" />
+    <g id="copy293-g428">
+      <ellipse cx="253.69035" cy="130.30888" rx="6.9263382" ry="7.6432471" fill="url(#optYellow)" stroke="#092e50" stroke-width="2.2" id="copy293-ellipse419" />
+      <ellipse cx="251.95877" cy="127.76113" rx="2.1644807" ry="1.6984993" fill="#ffffff" stroke="none" stroke-width="0" opacity="0.7" id="copy293-ellipse420" />
+    </g>
+    <path d="m 122.08993,130.01194 17.29588,5.58689" fill="none" stroke="#092e50" stroke-width="3.3" stroke-linecap="round" stroke-linejoin="round" id="copy294-path397" sodipodi:nodetypes="cc" />
+    <g id="copy295-g429">
+      <ellipse cx="122.08993" cy="130.01193" rx="6.9263382" ry="7.6432471" fill="url(#optYellow)" stroke="#092e50" stroke-width="2.2" id="copy295-ellipse403" />
+      <ellipse cx="120.35835" cy="127.46419" rx="2.1644807" ry="1.6984993" fill="#ffffff" stroke="none" stroke-width="0" opacity="0.7" id="copy295-ellipse404" />
+    </g>
+    <g id="copy296-g421" transform="translate(0,4)">
+      <ellipse cx="138.53998" cy="131.83958" rx="6.9263382" ry="7.6432471" fill="url(#optYellow)" stroke="#092e50" stroke-width="2.2" id="copy296-ellipse405" />
+      <ellipse cx="136.8084" cy="129.29184" rx="2.1644807" ry="1.6984993" fill="#ffffff" stroke="none" stroke-width="0" opacity="0.7" id="copy296-ellipse406" />
+    </g>
+    <g id="copy297-g422" transform="translate(-2,18)">
+      <ellipse cx="154.99004" cy="132.55861" rx="6.9263382" ry="7.6432471" fill="url(#optYellow)" stroke="#092e50" stroke-width="2.2" id="copy297-ellipse407" />
+      <ellipse cx="153.25845" cy="130.01085" rx="2.1644807" ry="1.6984993" fill="#ffffff" stroke="none" stroke-width="0" opacity="0.7" id="copy297-ellipse408" />
+    </g>
+    <g id="copy298-g423" transform="translate(0,-6)">
+      <ellipse cx="171.44009" cy="131.73285" rx="6.9263382" ry="7.6432471" fill="url(#optYellow)" stroke="#092e50" stroke-width="2.2" id="copy298-ellipse409" />
+      <ellipse cx="169.70851" cy="129.1851" rx="2.1644807" ry="1.6984993" fill="#ffffff" stroke="none" stroke-width="0" opacity="0.7" id="copy298-ellipse410" />
+    </g>
+    <g id="copy299-g425" transform="translate(2.2555508,37.592513)">
+      <ellipse cx="204.34019" cy="128.0838" rx="6.9263382" ry="7.6432471" fill="url(#optYellow)" stroke="#092e50" stroke-width="2.2" id="copy299-ellipse413" />
+      <ellipse cx="202.60861" cy="125.53605" rx="2.1644807" ry="1.6984993" fill="#ffffff" stroke="none" stroke-width="0" opacity="0.7" id="copy299-ellipse414" />
+    </g>
+    <g id="copy300-g426" transform="translate(-5.1339547,-1.1982767)">
+      <ellipse cx="220.79025" cy="127.47396" rx="6.9263382" ry="7.6432471" fill="url(#optYellow)" stroke="#092e50" stroke-width="2.2" id="copy300-ellipse415" />
+      <ellipse cx="219.05867" cy="124.92622" rx="2.1644807" ry="1.6984993" fill="#ffffff" stroke="none" stroke-width="0" opacity="0.7" id="copy300-ellipse416" />
+    </g>
+    <g id="copy301-g427" transform="translate(0,2)">
+      <ellipse cx="237.2403" cy="128.40363" rx="6.9263382" ry="7.6432471" fill="url(#optYellow)" stroke="#092e50" stroke-width="2.2" id="copy301-ellipse417" />
+      <ellipse cx="235.50871" cy="125.85588" rx="2.1644807" ry="1.6984993" fill="#ffffff" stroke="none" stroke-width="0" opacity="0.7" id="copy301-ellipse418" />
+    </g>
+    <g id="copy302-g430" transform="translate(-17.54798,44.503812)">
+      <ellipse cx="204.34019" cy="128.0838" rx="6.9263382" ry="7.6432471" fill="url(#optYellow)" stroke="#092e50" stroke-width="2.2" id="copy302-ellipse429" />
+      <ellipse cx="202.60861" cy="125.53605" rx="2.1644807" ry="1.6984993" fill="#ffffff" stroke="none" stroke-width="0" opacity="0.7" id="copy302-ellipse430" />
+    </g>
+  </g></g></g></svg>

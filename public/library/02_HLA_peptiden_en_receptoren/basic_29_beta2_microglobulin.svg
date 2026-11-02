@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="600" height="600" viewBox="-56.00000000000001 -56.00000000000001 112.00000000000001 112.00000000000001"><defs id="opt-soft-defs" /><title>β2-microglobulin</title><desc>β2-microglobulin. Schematic editable native vector component. Group labels describe its parts.</desc><defs>
+    <linearGradient id="beta" x2="1" y2="1">
+      <stop stop-color="#DAEEFC" id="stop4" />
+      <stop offset="1" stop-color="#88B9DE" id="stop5" />
+    </linearGradient>
+    </defs><g id="component-layer" inkscape:groupmode="layer" inkscape:label="β2-microglobulin"><g id="Non-membrane-beta-2-microglobulin-190" inkscape:label="Non-membrane beta-2 microglobulin" transform="translate(-36 86)"><g id="copy290-Beta2-microglobulin-non-membrane-subunit-3" inkscape:label="Beta2 microglobulin: non-membrane subunit">
+          <path d="M26 -111 C10 -103 14 -74 24 -62 C38 -46 57 -61 59 -79 C60 -98 47 -116 26 -111 Z" fill="url(#beta)" stroke="#092E50" stroke-width="3.3" stroke-linecap="round" stroke-linejoin="round" id="copy290-path37" />
+          <path d="M24 -99 L48 -79 M23 -88 L43 -69" fill="none" stroke="#7FB5DC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="copy290-path38" />
+        </g></g></g></svg>

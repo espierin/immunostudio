@@ -1,0 +1,24 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {JSDOM} from 'jsdom';
+test('Language switch translates dynamic UI and explanations without changing source content or category values',async()=>{
+ const dom=new JSDOM('<body><select id="interface-language"><option value="nl">Nederlands</option><option value="en">English</option></select><h2>Eigenschappen</h2><select id="category"><option>Cellen</option></select><input id="project-name" value="Nieuw"><svg><text>Naam</text></svg><div data-no-translate>Verplaatsen</div><div id="properties"><button data-sheet-action="align-left">Links</button><label>Breedte<input data-sheet-field="w" value="100"></label></div></body>',{url:'http://localhost/?qa=1'});
+ for(const name of ['document','location','localStorage','Node','NodeFilter','MutationObserver'])globalThis[name]=dom.window[name];
+ const {decorateUI}=await import('../src/ui-icons.js');
+ const {installI18n,setLanguage}=await import('../src/i18n.js');
+ decorateUI();installI18n();setLanguage('en');
+ assert.equal(document.querySelector('h2').textContent,'Properties');
+ assert.equal(document.querySelector('#category').value,'Cellen');
+ assert.equal(document.querySelector('#category option').textContent,'Cells');
+ assert.equal(document.querySelector('button').title,'Align the left edges of the selected objects.');
+ assert.equal(document.querySelector('[data-sheet-field]').title,'Object width. Use corner handles to resize proportionally.');
+ assert.equal(document.querySelector('#project-name').value,'Nieuw');
+ assert.equal(document.querySelector('svg text').textContent,'Naam');
+ assert.equal(document.querySelector('[data-no-translate]').textContent,'Verplaatsen');
+ const newLabel=document.createElement('label');newLabel.textContent='Dekking';document.body.append(newLabel);
+ await new Promise(resolve=>setTimeout(resolve,0));assert.equal(newLabel.textContent,'Opacity');
+ setLanguage('nl');assert.equal(document.querySelector('h2').textContent,'Eigenschappen');
+ assert.equal(document.querySelector('button').title,'Lijn de linkerranden van de selectie uit.');
+ assert.equal(newLabel.textContent,'Dekking');assert.equal(document.documentElement.lang,'nl');
+ dom.window.close();
+});

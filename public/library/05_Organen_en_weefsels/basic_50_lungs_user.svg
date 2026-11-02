@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:xlink="http://www.w3.org/1999/xlink" width="600" height="600" viewBox="-207.20000000000002 -252.20000000000002 414.40000000000003 414.40000000000003"><defs id="opt-soft-defs" /><title>Lungs – your simplified shape</title><desc>Lungs – your simplified shape. Schematic editable native vector component. Group labels describe its parts.</desc><defs>
+    <linearGradient id="lung" x2="1" y2="1">
+      <stop stop-color="#E1F1FC" id="stop25" />
+      <stop offset="1" stop-color="#9CC6E7" id="stop26" />
+    </linearGradient>
+    <linearGradient inkscape:collect="always" xlink:href="#lung" id="linearGradient395" x2="-18.001179" y2="79.494374" gradientTransform="scale(0.70828707,1.4118569)" x1="-192.61784" y1="-95.122289" gradientUnits="userSpaceOnUse" />
+    <linearGradient inkscape:collect="always" xlink:href="#lung" id="linearGradient396" x2="192.61784" y2="79.494374" gradientTransform="scale(0.70828707,1.4118569)" x1="18.001179" y1="-95.122289" gradientUnits="userSpaceOnUse" />
+  </defs><g id="component-layer" inkscape:groupmode="layer" inkscape:label="Lungs – your simplified shape"><g id="User-edited-lungs-231" inkscape:label="User-edited lungs" transform="scale(1.724137931) translate(-1119 -703)"><g id="copy335-Positioned-component-97" inkscape:label="Positioned component" transform="translate(1119 703) rotate(0) scale(0.58)">
+      <path d="m -20,-132 c -28,-2 -88,60 -107,147 -21,84 17.13836,134.41632 76,87 l 36,-29 z" fill="url(#lung)" stroke="#092e50" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" id="copy335-path317" style="fill:url(#linearGradient395)" sodipodi:nodetypes="ccscc" />
+      <path d="m 20,-132 c 28,-2 88,60 107,147 21,84 -17.13836,134.41632 -76,87 L 15,73 Z" fill="url(#lung)" stroke="#092e50" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" id="copy335-path318" style="fill:url(#linearGradient396)" sodipodi:nodetypes="ccscc" />
+      <path d="M -19.344828,-204 H 0.27021223 V -84 L 62,-39 M -3.0118843,-83 -62.720339,-38" fill="none" stroke="#092e50" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" id="copy335-path320" sodipodi:nodetypes="cccccc" />
+      <path d="m 0,-198 v 114 l 62,45 M 0,-84 -62,-38" fill="none" stroke="#8cb9db" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" id="copy335-path321" />
+      <path d="M -8,-193 H 8" fill="none" stroke="#2167ae" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="copy335-path322" />
+      <path d="M -8,-182 H 8" fill="none" stroke="#2167ae" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="copy335-path323" />
+      <path d="M -8,-171 H 8" fill="none" stroke="#2167ae" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="copy335-path324" />
+      <path d="M -8,-160 H 8" fill="none" stroke="#2167ae" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="copy335-path325" />
+      <path d="M -8,-149 H 8" fill="none" stroke="#2167ae" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="copy335-path326" />
+      <path d="M -8,-138 H 8" fill="none" stroke="#2167ae" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="copy335-path327" />
+      <path d="M -8,-127 H 8" fill="none" stroke="#2167ae" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="copy335-path328" />
+      <path d="M -8,-116 H 8" fill="none" stroke="#2167ae" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="copy335-path329" />
+      <path d="M -8,-105 H 8" fill="none" stroke="#2167ae" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="copy335-path330" />
+    </g>
+    </g></g></svg>

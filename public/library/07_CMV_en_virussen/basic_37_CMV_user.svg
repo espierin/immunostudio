@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="600" height="600" viewBox="-168.00000000000003 -168.00000000000003 336.00000000000006 336.00000000000006"><defs id="opt-soft-defs"><linearGradient id="optBlue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#B8DDF8" /><stop offset=".45" stop-color="#70AFE5" /><stop offset="1" stop-color="#2167AE" /></linearGradient><linearGradient id="optYellow"><stop stop-color="#FFE9A1" /><stop offset="1" stop-color="#FFC72C" /></linearGradient></defs><title>CMV – your envelope and capsid</title><desc>CMV – your envelope and capsid. Schematic editable native vector component. Group labels describe its parts.</desc><defs>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#78B9EB" id="stop1" />
+      <stop offset=".46" stop-color="#287CC4" id="stop2" />
+      <stop offset="1" stop-color="#125698" id="stop3" />
+    </linearGradient>
+    <linearGradient id="orange" x2="1" y2="1">
+      <stop stop-color="#FFB47D" id="stop6" />
+      <stop offset=".45" stop-color="#FF7546" id="stop7" />
+      <stop offset="1" stop-color="#E74D30" id="stop8" />
+    </linearGradient>
+    <radialGradient id="virus">
+      <stop stop-color="#D2E9F9" id="stop18" />
+      <stop offset="1" stop-color="#8FBFE4" id="stop19" />
+    </radialGradient>
+    </defs><g id="component-layer" inkscape:groupmode="layer" inkscape:label="CMV – your envelope and capsid"><g id="copy303-CMV-envelope-tegument-capsid-and-genome-43" inkscape:label="CMV: envelope, tegument, capsid and genome">
+        <g id="copy303-Envelope-glycoprotein-spike-22" inkscape:label="Envelope glycoprotein spike" transform="rotate(0)">
+          <path d="M-3 -92 L-5 -113 Q-17 -117 -12 -127 Q-9 -134 1 -129 Q11 -135 16 -126 Q21 -117 7 -112 L6 -92 Z" fill="url(#orange)" stroke="#092E50" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="copy303-path88" />
+        </g>
+        <g id="copy303-Envelope-glycoprotein-spike-23" inkscape:label="Envelope glycoprotein spike" transform="rotate(20)">
+          <path d="M-3 -92 L-5 -113 Q-17 -117 -12 -127 Q-9 -134 1 -129 Q11 -135 16 -126 Q21 -117 7 -112 L6 -92 Z" fill="url(#orange)" stroke="#092E50" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="copy303-path89" />
+        </g>
+        <g id="copy303-Envelope-glycoprotein-spike-24" inkscape:label="Envelope glycoprotein spike" transform="rotate(40)">
+          <path d="M-3 -92 L-5 -113 Q-17 -117 -12 -127 Q-9 -134 1 -129 Q11 -135 16 -126 Q21 -117 7 -112 L6 -92 Z" fill="url(#orange)" stroke="#092E50" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="copy303-path90" />
+        </g>
+        <g id="copy303-Envelope-glycoprotein-spike-25" inkscape:label="Envelope glycoprotein spike" transform="rotate(60)">
+          <path d="M-3 -92 L-5 -113 Q-17 -117 -12 -127 Q-9 -134 1 -129 Q11 -135 16 -126 Q21 -117 7 -112 L6 -92 Z" fill="url(#orange)" stroke="#092E50" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="copy303-path91" />
+        </g>
+        <g id="copy303-Envelope-glycoprotein-spike-26" inkscape:label="Envelope glycoprotein spike" transform="rotate(80)">
+          <path d="M-3 -92 L-5 -113 Q-17 -117 -12 -127 Q-9 -134 1 -129 Q11 -135 16 -126 Q21 -117 7 -112 L6 -92 Z" fill="url(#orange)" stroke="#092E50" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="copy303-path92" />
+        </g>
+        <g id="copy303-Envelope-glycoprotein-spike-27" inkscape:label="Envelope glycoprotein spike" transform="rotate(100)">
+          <path d="M-3 -92 L-5 -113 Q-17 -117 -12 -127 Q-9 -134 1 -129 Q11 -135 16 -126 Q21 -117 7 -112 L6 -92 Z" fill="url(#orange)" stroke="#092E50" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="copy303-path93" />
+        </g>
+        <g id="copy303-Envelope-glycoprotein-spike-28" inkscape:label="Envelope glycoprotein spike" transform="rotate(120)">
+          <path d="M-3 -92 L-5 -113 Q-17 -117 -12 -127 Q-9 -134 1 -129 Q11 -135 16 -126 Q21 -117 7 -112 L6 -92 Z" fill="url(#orange)" stroke="#092E50" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="copy303-path94" />
+        </g>
+        <g id="copy303-Envelope-glycoprotein-spike-29" inkscape:label="Envelope glycoprotein spike" transform="rotate(140)">
+          <path d="M-3 -92 L-5 -113 Q-17 -117 -12 -127 Q-9 -134 1 -129 Q11 -135 16 -126 Q21 -117 7 -112 L6 -92 Z" fill="url(#orange)" stroke="#092E50" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="copy303-path95" />
+        </g>
+        <g id="copy303-Envelope-glycoprotein-spike-30" inkscape:label="Envelope glycoprotein spike" transform="rotate(160)">
+          <path d="M-3 -92 L-5 -113 Q-17 -117 -12 -127 Q-9 -134 1 -129 Q11 -135 16 -126 Q21 -117 7 -112 L6 -92 Z" fill="url(#orange)" stroke="#092E50" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="copy303-path96" />
+        </g>
+        <g id="copy303-Envelope-glycoprotein-spike-31" inkscape:label="Envelope glycoprotein spike" transform="rotate(180)">
+          <path d="M-3 -92 L-5 -113 Q-17 -117 -12 -127 Q-9 -134 1 -129 Q11 -135 16 -126 Q21 -117 7 -112 L6 -92 Z" fill="url(#orange)" stroke="#092E50" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="copy303-path97" />
+        </g>
+        <g id="copy303-Envelope-glycoprotein-spike-32" inkscape:label="Envelope glycoprotein spike" transform="rotate(200)">
+          <path d="M-3 -92 L-5 -113 Q-17 -117 -12 -127 Q-9 -134 1 -129 Q11 -135 16 -126 Q21 -117 7 -112 L6 -92 Z" fill="url(#orange)" stroke="#092E50" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="copy303-path98" />
+        </g>
+        <g id="copy303-Envelope-glycoprotein-spike-33" inkscape:label="Envelope glycoprotein spike" transform="rotate(220)">
+          <path d="M-3 -92 L-5 -113 Q-17 -117 -12 -127 Q-9 -134 1 -129 Q11 -135 16 -126 Q21 -117 7 -112 L6 -92 Z" fill="url(#orange)" stroke="#092E50" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="copy303-path99" />
+        </g>
+        <g id="copy303-Envelope-glycoprotein-spike-34" inkscape:label="Envelope glycoprotein spike" transform="rotate(240)">
+          <path d="M-3 -92 L-5 -113 Q-17 -117 -12 -127 Q-9 -134 1 -129 Q11 -135 16 -126 Q21 -117 7 -112 L6 -92 Z" fill="url(#orange)" stroke="#092E50" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="copy303-path100" />
+        </g>
+        <g id="copy303-Envelope-glycoprotein-spike-35" inkscape:label="Envelope glycoprotein spike" transform="rotate(260)">
+          <path d="M-3 -92 L-5 -113 Q-17 -117 -12 -127 Q-9 -134 1 -129 Q11 -135 16 -126 Q21 -117 7 -112 L6 -92 Z" fill="url(#orange)" stroke="#092E50" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="copy303-path101" />
+        </g>
+        <g id="copy303-Envelope-glycoprotein-spike-36" inkscape:label="Envelope glycoprotein spike" transform="rotate(280)">
+          <path d="M-3 -92 L-5 -113 Q-17 -117 -12 -127 Q-9 -134 1 -129 Q11 -135 16 -126 Q21 -117 7 -112 L6 -92 Z" fill="url(#orange)" stroke="#092E50" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="copy303-path102" />
+        </g>
+        <g id="copy303-Envelope-glycoprotein-spike-37" inkscape:label="Envelope glycoprotein spike" transform="rotate(300)">
+          <path d="M-3 -92 L-5 -113 Q-17 -117 -12 -127 Q-9 -134 1 -129 Q11 -135 16 -126 Q21 -117 7 -112 L6 -92 Z" fill="url(#orange)" stroke="#092E50" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="copy303-path103" />
+        </g>
+        <g id="copy303-Envelope-glycoprotein-spike-38" inkscape:label="Envelope glycoprotein spike" transform="rotate(320)">
+          <path d="M-3 -92 L-5 -113 Q-17 -117 -12 -127 Q-9 -134 1 -129 Q11 -135 16 -126 Q21 -117 7 -112 L6 -92 Z" fill="url(#orange)" stroke="#092E50" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="copy303-path104" />
+        </g>
+        <g id="copy303-Envelope-glycoprotein-spike-39" inkscape:label="Envelope glycoprotein spike" transform="rotate(340)">
+          <path d="M-3 -92 L-5 -113 Q-17 -117 -12 -127 Q-9 -134 1 -129 Q11 -135 16 -126 Q21 -117 7 -112 L6 -92 Z" fill="url(#orange)" stroke="#092E50" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="copy303-path105" />
+        </g>
+        <ellipse cx="0" cy="0" rx="98" ry="98" fill="url(#virus)" stroke="#092E50" stroke-width="3.8" id="copy303-ellipse105" />
+        <ellipse cx="0" cy="0" rx="86" ry="86" fill="none" stroke="#2167AE" stroke-width="2.3" id="copy303-ellipse106" />
+        <g id="copy303-Viral-envelope-lipid-heads-40" inkscape:label="Viral envelope lipid heads">
+          <ellipse cx="92" cy="0" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse107" />
+          <ellipse cx="90.74523991305045" cy="15.142702305827518" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse108" />
+          <ellipse cx="87.01518623645839" cy="29.872351166830878" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse109" />
+          <ellipse cx="80.911585110997" cy="43.78716015941077" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse110" />
+          <ellipse cx="72.6009268644682" cy="56.50756956744944" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse111" />
+          <ellipse cx="62.309904589568184" cy="67.68659978192811" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse112" />
+          <ellipse cx="50.319230547263274" cy="77.01931600015263" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse113" />
+          <ellipse cx="36.9559790680732" cy="84.25114605226528" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse114" />
+          <ellipse cx="22.58466481695353" cy="89.18482446641839" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse115" />
+          <ellipse cx="7.59729978345458" cy="91.68577335661362" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse116" />
+          <ellipse cx="-7.597299783454568" cy="91.68577335661362" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse117" />
+          <ellipse cx="-22.5846648169535" cy="89.1848244664184" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse118" />
+          <ellipse cx="-36.955979068073184" cy="84.25114605226528" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse119" />
+          <ellipse cx="-50.31923054726329" cy="77.01931600015261" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse120" />
+          <ellipse cx="-62.30990458956816" cy="67.68659978192812" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse121" />
+          <ellipse cx="-72.60092686446819" cy="56.50756956744945" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse122" />
+          <ellipse cx="-80.91158511099698" cy="43.787160159410774" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse123" />
+          <ellipse cx="-87.01518623645839" cy="29.872351166830857" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse124" />
+          <ellipse cx="-90.74523991305045" cy="15.14270230582753" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse125" />
+          <ellipse cx="-92" cy="1.126675055215565e-14" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse126" />
+          <ellipse cx="-90.74523991305047" cy="-15.142702305827507" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse127" />
+          <ellipse cx="-87.01518623645839" cy="-29.872351166830875" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse128" />
+          <ellipse cx="-80.91158511099701" cy="-43.787160159410725" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse129" />
+          <ellipse cx="-72.60092686446824" cy="-56.50756956744941" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse130" />
+          <ellipse cx="-62.309904589568184" cy="-67.68659978192811" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse131" />
+          <ellipse cx="-50.319230547263274" cy="-77.01931600015263" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse132" />
+          <ellipse cx="-36.95597906807315" cy="-84.2511460522653" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse133" />
+          <ellipse cx="-22.58466481695352" cy="-89.18482446641839" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse134" />
+          <ellipse cx="-7.597299783454612" cy="-91.68577335661362" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse135" />
+          <ellipse cx="7.597299783454577" cy="-91.68577335661362" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse136" />
+          <ellipse cx="22.584664816953488" cy="-89.1848244664184" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse137" />
+          <ellipse cx="36.95597906807312" cy="-84.25114605226531" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse138" />
+          <ellipse cx="50.319230547263246" cy="-77.01931600015264" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse139" />
+          <ellipse cx="62.30990458956819" cy="-67.68659978192811" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse140" />
+          <ellipse cx="72.60092686446824" cy="-56.5075695674494" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse141" />
+          <ellipse cx="80.91158511099697" cy="-43.787160159410824" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse142" />
+          <ellipse cx="87.01518623645839" cy="-29.872351166830903" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse143" />
+          <ellipse cx="90.74523991305047" cy="-15.142702305827504" rx="5.5" ry="5.5" fill="#91C4EB" stroke="#2167AE" stroke-width="1.1" id="copy303-ellipse144" />
+        </g>
+        <g id="copy303-Tegument-proteins-41" inkscape:label="Tegument proteins">
+          <ellipse cx="61" cy="0" rx="2.8" ry="2.8" fill="url(#optYellow)" stroke="#064986" stroke-width="0.5" id="copy303-ellipse145" />
+          <ellipse cx="-48.623380329245336" cy="44.62921560320725" rx="3.8" ry="3.8" fill="url(#optBlue)" stroke="#064986" stroke-width="0.5" id="copy303-ellipse146" />
+          <ellipse cx="6.0709601191980775" cy="-70.73997061938255" rx="2.8" ry="2.8" fill="url(#optBlue)" stroke="#064986" stroke-width="0.5" id="copy303-ellipse147" />
+          <ellipse cx="46.41544784998114" cy="60.17978232667248" rx="3.8" ry="3.8" fill="url(#optBlue)" stroke="#064986" stroke-width="0.5" id="copy303-ellipse148" />
+          <ellipse cx="-60.108014297598686" cy="-10.393585387135262" rx="2.8" ry="2.8" fill="url(#optYellow)" stroke="#064986" stroke-width="0.5" id="copy303-ellipse149" />
+          <ellipse cx="55.516596773125634" cy="-35.691840562377514" rx="3.8" ry="3.8" fill="url(#optBlue)" stroke="#064986" stroke-width="0.5" id="copy303-ellipse150" />
+          <ellipse cx="-18.03533250099839" cy="68.6711495577177" rx="2.8" ry="2.8" fill="url(#optBlue)" stroke="#064986" stroke-width="0.5" id="copy303-ellipse151" />
+          <ellipse cx="-35.482896668928404" cy="-67.20836290211324" rx="3.8" ry="3.8" fill="url(#optBlue)" stroke="#064986" stroke-width="0.5" id="copy303-ellipse152" />
+          <ellipse cx="57.45814369837142" cy="20.483205870598002" rx="2.8" ry="2.8" fill="url(#optYellow)" stroke="#064986" stroke-width="0.5" id="copy303-ellipse153" />
+          <ellipse cx="-60.78620631314992" cy="25.710642194530514" rx="3.8" ry="3.8" fill="url(#optBlue)" stroke="#064986" stroke-width="0.5" id="copy303-ellipse154" />
+          <ellipse cx="29.47225377693179" cy="-64.59401100185782" rx="2.8" ry="2.8" fill="url(#optBlue)" stroke="#064986" stroke-width="0.5" id="copy303-ellipse155" />
+          <ellipse cx="23.512632815466844" cy="72.27140581229226" rx="3.8" ry="3.8" fill="url(#optBlue)" stroke="#064986" stroke-width="0.5" id="copy303-ellipse156" />
+          <ellipse cx="-53.12788481503047" cy="-29.973786131899562" rx="2.8" ry="2.8" fill="url(#optYellow)" stroke="#064986" stroke-width="0.5" id="copy303-ellipse157" />
+          <ellipse cx="64.27809693728746" cy="-14.977524966451478" rx="3.8" ry="3.8" fill="url(#optBlue)" stroke="#064986" stroke-width="0.5" id="copy303-ellipse158" />
+          <ellipse cx="-40.047246233633174" cy="58.627792633722386" rx="2.8" ry="2.8" fill="url(#optBlue)" stroke="#064986" stroke-width="0.5" id="copy303-ellipse159" />
+          <ellipse cx="-10.854731837506659" cy="-75.22084017568416" rx="3.8" ry="3.8" fill="url(#optBlue)" stroke="#064986" stroke-width="0.5" id="copy303-ellipse160" />
+          <ellipse cx="47.24387794303933" cy="38.5877700431523" rx="2.8" ry="2.8" fill="url(#optYellow)" stroke="#064986" stroke-width="0.5" id="copy303-ellipse161" />
+          <ellipse cx="-65.89014679271594" cy="3.8063835374729846" rx="3.8" ry="3.8" fill="url(#optBlue)" stroke="#064986" stroke-width="0.5" id="copy303-ellipse162" />
+          <ellipse cx="49.451039639156434" cy="-50.94697909205784" rx="2.8" ry="2.8" fill="url(#optBlue)" stroke="#064986" stroke-width="0.5" id="copy303-ellipse163" />
+          <ellipse cx="-2.1206204716818755" cy="75.97040850762278" rx="3.8" ry="3.8" fill="url(#optBlue)" stroke="#064986" stroke-width="0.5" id="copy303-ellipse164" />
+          <ellipse cx="-39.97820341035347" cy="-46.07323791617431" rx="2.8" ry="2.8" fill="url(#optYellow)" stroke="#064986" stroke-width="0.5" id="copy303-ellipse165" />
+          <ellipse cx="65.57521078361245" cy="7.47607722571123" rx="3.8" ry="3.8" fill="url(#optBlue)" stroke="#064986" stroke-width="0.5" id="copy303-ellipse166" />
+          <ellipse cx="-57.40861598477744" cy="41.77619909365088" rx="2.8" ry="2.8" fill="url(#optBlue)" stroke="#064986" stroke-width="0.5" id="copy303-ellipse167" />
+          <ellipse cx="15.033954317231853" cy="-74.49818935777826" rx="3.8" ry="3.8" fill="url(#optBlue)" stroke="#064986" stroke-width="0.5" id="copy303-ellipse168" />
+          <ellipse cx="31.543349013742475" cy="52.21127400281698" rx="2.8" ry="2.8" fill="url(#optYellow)" stroke="#064986" stroke-width="0.5" id="copy303-ellipse169" />
+          <ellipse cx="-63.34249934988809" cy="-18.539896874293202" rx="3.8" ry="3.8" fill="url(#optBlue)" stroke="#064986" stroke-width="0.5" id="copy303-ellipse170" />
+        </g>
+        <g id="copy303-Icosahedral-capsid-42" inkscape:label="Icosahedral capsid">
+          <path d="M0 -59 L52 -27 45 36 0 60 -49 30 -51 -28 Z" fill="url(#blue)" stroke="#092E50" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" id="copy303-path170" />
+          <path d="M0 -27 C-29 -17 24 -2 -3 8 S22 29 -5 32" fill="none" stroke="#E0F0FF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" id="copy303-path172" />
+        </g>
+      </g>
+    </g></svg>

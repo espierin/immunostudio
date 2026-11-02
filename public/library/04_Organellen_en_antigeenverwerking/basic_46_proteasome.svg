@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" width="600" height="600" viewBox="-112.00000000000001 -112.00000000000001 224.00000000000003 224.00000000000003" version="1.1" id="svg40" sodipodi:docname="basic_46_proteasome.svg" inkscape:version="1.4.2 (f4327f4, 2025-05-13)"><defs id="opt-soft-defs"><linearGradient id="optLight" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#EEF7FF" /><stop offset="1" stop-color="#A9C6E2" /></linearGradient></defs>
+  <sodipodi:namedview id="namedview40" pagecolor="#ffffff" bordercolor="#000000" borderopacity="0.25" inkscape:showpageshadow="2" inkscape:pageopacity="0.0" inkscape:pagecheckerboard="0" inkscape:deskcolor="#d1d1d1" inkscape:zoom="1.475" inkscape:cx="300" inkscape:cy="300" inkscape:window-width="1920" inkscape:window-height="1129" inkscape:window-x="1912" inkscape:window-y="-8" inkscape:window-maximized="1" inkscape:current-layer="Proteasome-barrel-227" />
+  <title id="title1">Proteasome</title>
+  <desc id="desc1">Proteasome. Schematic editable native vector component. Group labels describe its parts.</desc>
+  <defs id="defs38">
+    <linearGradient id="machine" x2="1" y2="1">
+      <stop stop-color="#ACD6F2" id="stop30" />
+      <stop offset="1" stop-color="#3183C5" id="stop31" />
+    </linearGradient>
+    </defs>
+  <g id="component-layer" inkscape:groupmode="layer" inkscape:label="Proteasome">
+    <g id="Proteasome-barrel-227" inkscape:label="Proteasome barrel">
+      <ellipse cx="-35" cy="0" rx="27" ry="55" fill="#D9E7F1" stroke="#092E50" stroke-width="3" id="ellipse38" />
+      <path id="rect38" style="fill:url(#machine);stroke:#092e50;stroke-width:3" d="m -19,-55 h 53 c 8.864,0 16,7.136 16,16 v 78 c 0,8.864 -7.136,16 -16,16 H -19 C -32.384894,55 -42.609384,25.354899 -42.321022,-3.1610413 -42.059819,-28.991229 -32.636697,-55 -19,-55 Z" sodipodi:nodetypes="ssssssss" />
+      <ellipse cx="50" cy="0" rx="27" ry="55" fill="url(#optLight)" stroke="#092E50" stroke-width="3" id="ellipse39" />
+      <ellipse cx="50" cy="0" rx="13" ry="36" fill="#064986" stroke="#092E50" stroke-width="2" id="ellipse40" />
+      <path d="m -15,-40 c 0,0 -6.72,12.812019 -6.72,40 0,27.187981 6.72,40 6.72,40 M 9,-40 C 9,-40 2.28,-27.947303 2.28,0 2.28,27.947303 9,40 9,40" fill="none" stroke="#2167ae" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" id="path40" sodipodi:nodetypes="czcczc" />
+    </g>
+  </g>
+</svg>

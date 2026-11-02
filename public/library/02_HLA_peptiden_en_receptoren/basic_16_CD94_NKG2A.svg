@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="600" height="600" viewBox="-137.20000000000002 -194.70000000000002 274.40000000000003 274.40000000000003"><defs id="opt-soft-defs"><linearGradient id="optBlue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#B8DDF8" /><stop offset=".45" stop-color="#70AFE5" /><stop offset="1" stop-color="#2167AE" /></linearGradient></defs><title>CD94/NKG2A – inhibitory</title><desc>CD94/NKG2A – inhibitory. Schematic editable native vector component. Group labels describe its parts.</desc><defs>
+    </defs><g id="component-layer" inkscape:groupmode="layer" inkscape:label="CD94/NKG2A – inhibitory"><g id="Positioned-component-158" inkscape:label="Positioned component" transform="translate(0 0) rotate(0) scale(1)"><g id="CD94-NKG2A-blue-lectin-heads-157" inkscape:label="CD94/NKG2A – blue lectin heads"><g id="copy248-CD94-NKG2A-heterodimer-17" inkscape:label="CD94/NKG2A heterodimer">
+        <path d="M-17 26 V-78" fill="none" stroke="#092E50" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" id="copy248-path69" />
+        <path d="M-17 18 V-77" fill="none" stroke="#2167AE" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" id="copy248-path70" />
+        <path d="M-38 -103 C-49 -118 -39 -145 -17 -147 C6 -150 14 -125 4 -106 Q-17 -85 -38 -103 Z" fill="url(#optBlue)" stroke="#092E50" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" id="copy248-path71" />
+        <path d="M-28 -129 Q-17 -138 -5 -126" fill="none" stroke="#A9C6E2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="copy248-path72" />
+        <path d="M17 26 V-78" fill="none" stroke="#092E50" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" id="copy248-path73" />
+        <path d="M17 18 V-77" fill="none" stroke="#2167AE" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" id="copy248-path74" />
+        <path d="M-4 -103 C-15 -118 -5 -145 17 -147 C40 -150 48 -125 38 -106 Q17 -85 -4 -103 Z" fill="url(#optBlue)" stroke="#092E50" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" id="copy248-path75" />
+        <path d="M6 -129 Q17 -138 29 -126" fill="none" stroke="#A9C6E2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="copy248-path76" />
+        <path d="M-11 -79 H11 M-17 -78 V-94 M17 -78 V-94 M-17 26 l-6 10 M17 26 l5 10" fill="none" stroke="#092E50" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" id="copy248-path77" />
+      </g>
+    </g></g></g></svg>

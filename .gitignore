@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.local/
+*.log
+
+# Local handover records and one-off migration helpers.
+docs/*
+!docs/KLEURSTIJLEN.md
+!docs/3d-bibliotheek-controle.json
+scripts/integrate-*.mjs
+
+# Only the curated index and its 190 source vectors are tracked explicitly.
+public/library/**

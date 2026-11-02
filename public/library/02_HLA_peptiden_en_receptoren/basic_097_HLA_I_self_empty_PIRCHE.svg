@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="800" height="957" viewBox="-115 -205 230 275"><title>HLA-I self, empty</title><desc>Native cartoon rebuilt from the current detailed component style; not a recolored copy of the old PIRCHE geometry. Rebuilt detailed HLA-I. Colored residue differences are illustrative, not a specified sequence.</desc><defs>
+</defs><g id="component-layer" inkscape:groupmode="layer" inkscape:label="HLA-I self, empty"><g id="HLA-I-one-heavy-chain-membrane-anchor-and-extracellular-beta2m-3" inkscape:label="HLA-I: one heavy-chain membrane anchor and extracellular beta2m"><g id="Positioned-component-2" inkscape:label="Positioned component" transform="translate(0 0) rotate(0) scale(1)"><g id="Basis-basic-27-HLA-I-empty-svg-1" inkscape:label="Basis: basic_27_HLA_I_empty.svg"><defs><linearGradient id="basis1-beta" x2="1" y2="1">
+      <stop stop-color="#DAEEFC" id="basis1-stop4" />
+      <stop offset="1" stop-color="#88B9DE" id="basis1-stop5" />
+    </linearGradient>
+    <linearGradient id="basis1-blue" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#78B9EB" id="basis1-stop1" />
+      <stop offset=".46" stop-color="#287CC4" id="basis1-stop2" />
+      <stop offset="1" stop-color="#125698" id="basis1-stop3" />
+    </linearGradient>
+    </defs><g id="basis1-component-layer" inkscape:label="HLA-I / HLA-E – unloaded"><g id="basis1-Positioned-component-186" inkscape:label="Positioned component" transform="translate(0 0) rotate(0) scale(1)"><g id="basis1-User-edited-HLA-I-HLA-E-185" inkscape:label="User-edited HLA-I / HLA-E"><g id="basis1-copy277-HLA-class-I-HLA-E-peptide-complex-9" inkscape:label="HLA class I / HLA-E peptide complex">
+        <g id="basis1-copy277-Heavy-chain-stalk-single-transmembrane-helix-and-cytoplasmic-tail-1" inkscape:label="Heavy chain: stalk, single transmembrane helix and cytoplasmic tail">
+          <path d="M-15 -53 Q-12 -30 -10 -15 L-10 27 Q-10 40 -18 49" fill="none" stroke="#092E50" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" id="basis1-copy277-path33" />
+          <path d="M-15 -53 Q-12 -30 -10 -15 L-10 27" fill="none" stroke="#2167AE" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" id="basis1-copy277-path34" />
+        </g>
+        <g id="basis1-copy277-Alpha3-immunoglobulin-like-domain-2" inkscape:label="Alpha3 immunoglobulin-like domain">
+          <path d="M-41 -108 C-54 -96 -50 -65 -33 -54 C-13 -39 12 -57 12 -80 C12 -102 -21 -121 -41 -108 Z" fill="url(#basis1-blue)" stroke="#092E50" stroke-width="3.7" stroke-linecap="round" stroke-linejoin="round" id="basis1-copy277-path35" />
+          <path d="M-37 -99 Q-12 -103 -1 -80 M-39 -90 Q-21 -93 -5 -70 M-33 -79 L-11 -61" fill="none" stroke="#72B3E5" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" id="basis1-copy277-path36" />
+        </g>
+        <g id="basis1-copy277-Beta2-microglobulin-non-membrane-subunit-3" inkscape:label="Beta2 microglobulin: non-membrane subunit">
+          <path d="M26 -111 C10 -103 14 -74 24 -62 C38 -46 57 -61 59 -79 C60 -98 47 -116 26 -111 Z" fill="url(#basis1-beta)" stroke="#092E50" stroke-width="3.3" stroke-linecap="round" stroke-linejoin="round" id="basis1-copy277-path37" />
+          <path d="M24 -99 L48 -79 M23 -88 L43 -69" fill="none" stroke="#7FB5DC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="basis1-copy277-path38" />
+        </g>
+        <g id="basis1-copy277-Alpha1-and-alpha2-peptide-binding-platform-4" inkscape:label="Alpha1 and alpha2 peptide-binding platform">
+          <path d="M-66 -168 C-83 -159 -76 -134 -61 -124 L-37 -106 C-21 -100 -8 -108 -4 -117 C1 -106 15 -105 28 -111 L58 -127 C77 -138 79 -161 63 -172 C46 -184 32 -170 28 -153 C14 -135 -23 -138 -31 -153 C-37 -173 -49 -180 -66 -168 Z" fill="url(#basis1-blue)" stroke="#092E50" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" id="basis1-copy277-path39" />
+          <path d="M-57 -165 Q-68 -148 -45 -133 M50 -164 Q64 -149 44 -133" fill="none" stroke="#8CC5EF" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" id="basis1-copy277-path40" />
+          <path d="M-40 -130 Q-1 -113 34 -133" fill="none" stroke="#0A4B8A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" id="basis1-copy277-path41" />
+        </g>
+      </g>
+    </g></g></g></g></g></g></g></svg>

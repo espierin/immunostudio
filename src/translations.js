@@ -1,0 +1,374 @@
+const entries = `
+Nieuw|New
+Nieuw project|New project
+Openen|Open
+Project|Project
+Projectnaam|Project name
+Exporteren ↗|Export ↗
+Bibliotheek|Library
+Basis set|Basic elements
+Basis set 2026|Basic elements 2026
+3D-modellen|3D models
+Bibliotheek doorzoeken|Search library
+Zoek Nederlands of Engels…|Search in Dutch or English…
+Zoek een molecuul…|Search for a molecule…
+Naam, UniProt of PDB-ID…|Name, UniProt or PDB ID…
+Categorie|Category
+Alle categorieën|All categories
+Actuele basisfiguren|Current basic figures
+Antistoffen|Antibodies
+Antigeenpresentatie|Antigen presentation
+Cellen|Cells
+Cellen zonder getekende receptoren|Cells without drawn receptors
+Receptoren|Receptors
+Geoptimaliseerde moleculaire contacten|Optimised molecular contacts
+Hergetekende PIRCHE-concepten|Redrawn PIRCHE concepts
+Laboratorium|Laboratory
+Nieuwe cartooncomponenten|New cartoon components
+Organellen|Organelles
+Organellen en antigeenverwerking|Organelles and antigen processing
+Organen|Organs
+Peptiden|Peptides
+Stamcel|Stem cells
+Weefsels|Tissues
+Genetica|Genetics
+PIRCHE-bronsegmenten en peptide-orientatie|PIRCHE source segments and peptide orientation
+Eigen modellen|My models
+Basisweergave|Basic element representation
+3D · afgerond volume|3D · rounded volume
+3D · reliëf|3D · relief
+Originele 2D-vector|Original 2D vector
+Jouw vormen. Eén werkplaats.|Your shapes. One studio.
+Basis set 2026 · native SVG + 3D|Basic elements 2026 · native SVG + 3D
+Eigenschappen|Properties
+Ongedaan maken|Undo
+Opnieuw|Redo
+Selecteren|Select
+Verplaatsen|Move
+Draaien|Rotate
+Membraan|Membrane
+Conformatie|Conformation
+✥ Pan|✥ Pan
+T Tekst|T Text
+↗ Pijl|↗ Arrow
+╱ Lijn|╱ Line
+▭ Kader|▭ Rectangle
+◯ Ellips|◯ Ellipse
+⌁ Tekenen|⌁ Draw
+⬡ Alles naar 3D|⬡ All vectors to 3D
+Pas blad|Fit page
+Uitzoomen|Zoom out
+Inzoomen|Zoom in
+Naam|Name
+Breedte|Width
+Hoogte|Height
+Rotatie (°)|Rotation (°)
+Rotatie|Rotation
+Dekking|Opacity
+Volumewerking|Volume shading
+Vergrendeld|Locked
+Dupliceren|Duplicate
+Verwijderen|Delete
+Ordenen|Arrange
+Vooraan|To front
+Achteraan|To back
+Vooruit|Raise
+Achteruit|Lower
+Groeperen|Group
+Losmaken|Ungroup
+Uitlijnen|Align
+Links|Left
+Midden X|Centre X
+Rechts|Right
+Boven|Top
+Midden Y|Centre Y
+Onder|Bottom
+Verdelen X|Distribute X
+Verdelen Y|Distribute Y
+2D tekenblad|2D drawing page
+Bladbreedte|Page width
+Bladhoogte|Page height
+Bladkleur|Page colour
+Raster tonen|Show grid
+Op raster uitlijnen|Snap to grid
+Tekst|Text
+Tekstgrootte|Font size
+Vet|Bold
+Vulling|Fill
+Contour|Stroke
+Lijndikte|Stroke width
+Lipidendubbellaag|Lipid bilayer
+Membraandikte|Membrane thickness
+＋ Punt toevoegen|＋ Add point
+3D-variant|3D variant
+⬡ Open 3D-variant|⬡ Open 3D variant
+Stylesheet|Illustration style
+Eigen stylesheet|Custom style
+Importeren|Import
+Scène|Scene
+Koppen|Heads
+Staarten|Tails
+Receptor|Receptor
+Kanaal|Channel
+Achtergr.|Background
+Schematisch 3D-model|Schematic 3D model
+Weergave|Representation
+Afgerond 3D-volume|Rounded 3D volume
+3D-reliëf|3D relief
+Geïllustreerde cartoon|Illustrated cartoon
+Gelobde schematische vorm|Lobed schematic shape
+Diepteniveau|Depth layer
+Midden-voor|Middle front
+Midden-achter|Middle back
+Vrije diepte|Free depth
+Positie langs membraan|Position along membrane
+Dieptepositie (nm)|Depth position (nm)
+Schaalfactor · illustratief|Scale · illustrative
+Kleur|Colour
+Stijlkleur|Style colour
+Label tonen|Show label
+Membraan losmaken|Detach from membrane
+Veranker op membraan|Anchor to membrane
+＋ Bewaar in eigen bibliotheek|＋ Save to my library
+Ruimtelijk model|3D model
+Draaien X (rad)|Rotate X (rad)
+Draaien Y (rad)|Rotate Y (rad)
+Volumediepte|Volume depth
+↓ 3D-model · GLB|↓ 3D model · GLB
+⬡ Bouw 3D-volume|⬡ Build 3D volume
+Dikte|Thickness
+Diepte|Depth
+Vervaging achterzijde|Rear fading
+⌁ Béziercurve bewerken|⌁ Edit Bézier curve
+＋ Curvepunt toevoegen|＋ Add curve point
+Camera & focus|Camera & focus
+Projectie|Projection
+Orthografisch|Orthographic
+Perspectief|Perspective
+Focusgedrag|Focus behaviour
+Volg anker|Follow anchor
+Vrije camera|Free camera
+MEMBRAANSCÈNE|MEMBRANE SCENE
+ORTHOGRAFISCH · ECHTE 3D|ORTHOGRAPHIC · REAL 3D
+PERSPECTIEF · ECHTE 3D|PERSPECTIVE · REAL 3D
+EXTRACELLULAIR|EXTRACELLULAR
+CYTOPLASMA|CYTOPLASM
+◎ Focus selectie|◎ Focus selection
+⌂ Standaardzicht|⌂ Default view
+◐ Doorsnede aan|◐ Cross-section on
+◑ Doorsnede uit|◑ Cross-section off
+Focus selectie|Focus selection
+Focus op selectie|Focus on selection
+Animatie afspelen|Play animation
+◇ Sleutelbeeld|◇ Keyframe
+Duur|Duration
+Verwijder key|Delete keyframe
+SCÈNE & CAMERA|SCENE & CAMERA
+? Handleiding|? Help
+Slepen: kijkhoek · rechtermuisknop: pan · scrollen: zoom|Drag: orbit · right mouse button: pan · scroll: zoom
+3D werkplaats lokaal op dit apparaat|3D studio running locally on this device
+Lokale opslag:|Local storage:
+Modellen:|Models:
+Sneltoetsen:|Keyboard shortcuts:
+Sluiten|Close
+Toevoegen|Add
+Annuleren|Cancel
+Nieuw label|New label
+Label toevoegen|Add label
+Huidig project downloaden|Download current project
+Lege scène starten|Start empty scene
+Download je huidige project om het als apart bestand te bewaren.|Download your current project to keep it as a separate file.
+Exporteer je illustratie|Export your illustration
+Afbeeldingen gebruiken de huidige kijkhoek, stijl en tijd.|Images use the current view, style and time.
+Formaat|Size
+1920 px breed|1920 px wide
+3840 px breed|3840 px wide
+Transparante achtergrond|Transparent background
+Letters als vectorcontouren in EMF/WMF|Convert text to vector outlines in EMF/WMF
+↓ PNG afbeelding|↓ PNG image
+↓ SVG-vector|↓ SVG vector
+↓ EMF · PowerPoint / Word|↓ EMF · PowerPoint / Word
+↓ WMF · compatibel metabestand|↓ WMF · compatible metafile
+↓ MP4 · H.264 (lokaal)|↓ MP4 · H.264 (local)
+↓ AVI · Motion JPEG (lokaal)|↓ AVI · Motion JPEG (local)
+↓ Geanimeerde GIF (lokaal)|↓ Animated GIF (local)
+● WebM animatie|● WebM animation
+↓ PNG-framereeks (ZIP)|↓ PNG frame sequence (ZIP)
+Animatie vanaf (s)|Animation from (s)
+Tot (s)|To (s)
+Export voorbereiden…|Preparing export…
+Export annuleren…|Cancelling export…
+Zoek structuren ↗|Search structures ↗
+Structuren zoeken…|Searching structures…
+Typ een molecuulnaam of PDB-ID.|Enter a molecule name or PDB ID.
+Zoek op naam of typ een PDB-ID. Kies vervolgens assemblage en ketens.|Search by name or enter a PDB ID. Then choose an assembly and chains.
+Biologische assemblage 1|Biological assembly 1
+Asymmetrische eenheid|Asymmetric unit
+Ketens|Chains
+Alle ketens|All chains
+Geen ketens geselecteerd|No chains selected
+Ruggengraat|Backbone
+Atoombollen|Atomic spheres
+Voeg structuur toe|Add structure
+Structuur toegevoegd. Controleer schaal en oriëntatie.|Structure added. Check scale and orientation.
+Lokaal project hersteld|Local project restored
+Lokaal project|Local project
+✓ Op dit apparaat bewaard|✓ Saved on this device
+Wijzigingen opslaan…|Saving changes…
+Project geopend|Project opened
+Stylesheet toegepast|Style applied
+Kies een vectorbouwsteen.|Choose a vector element.
+Selecteer eerst een vectorbouwsteen in 2D.|Select a vector element in 2D first.
+Native vector. Verhoudingen blijven behouden bij slepen van de hoekpunten.|Native vector. Drag the corner handles to resize proportionally.
+Voeg een losse bouwsteen toe of teken een vorm. Shift-klik voor meervoudige selectie.|Add an individual element or draw a shape. Shift-click to select multiple objects.
+Maak een draaibaar, schematisch volume van deze vector. De 2D-bron blijft behouden.|Create a rotatable schematic volume from this vector. The 2D source is retained.
+Ctrl+A selecteren · Ctrl+D dupliceren · Ctrl+G groeperen · Shift+Ctrl+G losmaken · pijltjes verplaatsen.|Ctrl+A select all · Ctrl+D duplicate · Ctrl+G group · Shift+Ctrl+G ungroup · arrow keys move.
+Selecteer een object in de scène of voeg een bouwsteen toe.|Select an object in the scene or add an element.
+Eigen SVG, GLB, PDB of mmCIF importeren|Import your own SVG, GLB, PDB or mmCIF
+Maak 3D-varianten van alle vectorbouwstenen op dit blad|Create 3D variants of all vector elements on this page
+Zichtbaarheid|Visibility
+Je immunologische werkplaats|Your immunological studio
+Voeg een 3D-model of bestaande SVG toe vanuit de bibliotheek.|Add a 3D model or an existing SVG from the library.
+Selecteer een molecuul en kies|Select a molecule and choose
+. Draai met de muis rond het anker.|. Use the mouse to orbit around the anchor.
+Pas de representatie, kleur en positie rechts aan. Stylesheets veranderen de hele scène.|Adjust representation, colour and position on the right. Illustration styles recolour the scene.
+Kies|Choose
+, klik op een IgG-arm en kies een scharnierhoek.|, click an IgG arm and choose a hinge angle.
+Leg op 0 seconden een sleutelbeeld vast. Schuif de tijd, wijzig de scène en leg het volgende vast.|Create a keyframe at 0 seconds. Move the timeline, change the scene and create another keyframe.
+Download je project en exporteer PNG of een animatie.|Download your project and export a PNG or animation.
+automatisch op dit apparaat. Download een .immuno-bestand voor overdracht en backup.|automatically on this device. Download an .immuno file for transfer and backup.
+Ctrl+Z ongedaan · Ctrl+Shift+Z opnieuw · Delete verwijdert selectie · Escape sluit dialoog.|Ctrl+Z undo · Ctrl+Shift+Z redo · Delete removes the selection · Escape closes the dialog.
+2D: selecteren, slepen en hoekpunten schalen.|2D: select, drag and resize using corner handles.
+2D: sleep een element om het te verplaatsen.|2D: drag an element to move it.
+2D: sleep rond de selectie om te draaien; Shift voor stappen van 15°.|2D: drag around the selection to rotate; hold Shift for 15° steps.
+EMF/WMF: 2D blijft vector. Bij 3D wordt een afbeelding ingesloten. Lettercontouren bewaren de fontweergave; het zijn geen ingesloten, bewerkbare fonts.|EMF/WMF: 2D stays vector-based. 3D embeds an image. Text outlines preserve font appearance; they are not embedded, editable fonts.
+MP4/AVI: 30 fps. GIF: 12 fps, 800 px breed, maximaal 15 s, oneindige herhaling. De lokale encoder houdt alle verwerking op dit apparaat.|MP4/AVI: 30 fps. GIF: 12 fps, 800 px wide, up to 15 s, continuous looping. The local encoder processes everything on this device.
+In 2D exporteert SVG het volledige tekenblad. In 3D exporteert SVG de geselecteerde vectorbouwsteen; PNG rendert de huidige kijkhoek.|In 2D, SVG exports the entire page. In 3D, SVG exports the selected source vector; PNG renders the current view.
+Taal|Language
+Interface-taal|Interface language
+Nederlands|Dutch
+Engels|English
+UMC Utrecht|UMC Utrecht
+Gereed|Ready
+Start opnieuw in 2D|Restart in 2D
+Beschikbaar in de lokale desktopversie.|Available in the local desktop version.
+EMF/WMF en MP4/AVI/GIF zijn beschikbaar in de lokale desktopversie. Online kun je PNG, SVG en projectbestanden exporteren; in 3D ook WebM en PNG-frames.|EMF/WMF and MP4/AVI/GIF are available in the local desktop version. Online you can export PNG, SVG and project files; in 3D also WebM and PNG frames.
+⤷ Conformatie|⤷ Conformation
+↖ Selecteren|↖ Select
+⌁ Membraan|⌁ Membrane
+✥ Verplaatsen|✥ Move
+⟳ Draaien|⟳ Rotate
+⚙ Eigenschappen|⚙ Properties
+3D werkplaats|3D studio
+lokaal op dit apparaat|local on this device
+ORTHOGRAFISCH|ORTHOGRAPHIC
+ECHTE 3D|REAL 3D
+Follow-me · verplaats mee|Follow-me · move with anchor
+Kijk naar focus|Look at focus
+◎ Gebruik selectie als focuspunt|◎ Use selection as focus
+Geen resultaten.|No results.
+Kies een scharnierpunt op het model en draai de Fab-arm.|Choose a hinge point on the model and rotate the Fab arm.
+Scharnier aanklikken|Select hinge point
+Bewegend deel|Moving part
+Fab links|Left Fab
+Fab rechts|Right Fab
+Scharnierhoek|Hinge angle
+Vast deel en anker blijven behouden. Schematische domeinrotatie.|The fixed part and anchor are retained. Schematic domain rotation.
+Bronconformatie|Source conformation
+Koppelen gebruikt modelorigine als handmatig anker. Controleer oriëntatie en transmembrangrens.|Attaching uses the model origin as a manual anchor. Check orientation and the transmembrane boundary.
+Bewerk het membraan met de vier Bézierpunten. Verankerde eiwitten volgen de vorm.|Edit the membrane using Bézier points. Anchored proteins follow its shape.
+ingebouwde vormen zijn schematisch. PDB/mmCIF toont echte atoomcoördinaten of de ruggengraat. De Basis set bevat originele vlakke SVG’s. Geïmporteerde GLB’s behouden hun eigen geometrie.|built-in shapes are schematic. PDB/mmCIF shows atomic coordinates or the backbone. Basic elements provide original SVGs and rounded volumes. Imported GLBs retain their own geometry.
+Geen structuren gevonden.|No structures found.
+Structuurtemplate ophalen|Fetch structure template
+Assemblage|Assembly
+Controleer na import de relevante ketens. De volledige assemblage kan meerdere kopieën bevatten.|Check the relevant chains after import. A complete assembly may contain multiple copies.
+Structuur ophalen|Fetch structure
+Sleep om de structuur te draaien. De preview toont alle geselecteerde ketens.|Drag to rotate the structure. The preview shows all selected chains.
+Atomen · van der Waals-bollen|Atoms · van der Waals spheres
+Ruggengraat · CA / P|Backbone · CA / P
+Coördinaten worden van Å naar nm omgerekend. Geen ontbrekende domeinen of membranen toegevoegd. Een geïllustreerde domeincartoon vereist een voorbereid model.|Coordinates are converted from Å to nm. Missing domains and membranes are not added. An illustrated domain cartoon requires a prepared model.
+Voeg geselecteerde ketens toe|Add selected chains
+Vectoren worden als 3D-geometrie opgebouwd…|Building 3D geometry from vectors…
+Lokale opslag is niet beschikbaar. Download je project om het te bewaren.|Local storage is unavailable. Download your project to save it.
+Opgeslagen project kon niet worden hersteld.|The saved project could not be restored.
+Lokale opslag is bijgewerkt. Download je project en herlaad dit tabblad.|Local storage has been updated. Download your project and reload this tab.
+Maximaal 200 objecten per scène.|Maximum of 200 objects per scene.
+Maximaal 200 objecten per 3D-scène.|Maximum of 200 objects per 3D scene.
+Voer een geldig getal in.|Enter a valid number.
+Schaalfactor moet tussen 0 en 10 liggen.|The scale factor must be between 0 and 10.
+Te dikke membraan voor deze bocht.|The membrane is too thick for this bend.
+Curve ongeldig of te scherpe bocht.|Invalid curve or bend too sharp.
+Selecteer eerst een SVG uit de Basis set.|Select an SVG from the basic elements first.
+Bewerkbare 2D-vector geëxporteerd|Editable 2D vector exported
+Object losgemaakt|Object detached
+Handmatig membraananker actief; controleer het model.|Manual membrane anchor active; check the model.
+Geen atomen voor deze ketenselectie.|No atoms in this chain selection.
+Bestand te groot (max. 30 MB).|File too large (maximum 30 MB).
+Projectbestand te groot (max. 60 MB).|Project file too large (maximum 60 MB).
+Importeer in 2D een SVG-vector.|Import an SVG vector in 2D mode.
+Ongeldige SVG|Invalid SVG
+Ondersteund: SVG, GLB, PDB en mmCIF.|Supported: SVG, GLB, PDB and mmCIF.
+Basisbibliotheek ontbreekt. Voer sync-library uit.|The basic library is missing. Run sync-library.
+2D-afbeelding kon niet worden gerenderd.|Could not render the 2D image.
+SVG ontbreekt|SVG is missing
+letters als contouren|text as outlines
+PNG-framereeks|PNG frame sequence
+Geen object geselecteerd.|No object selected.
+Wacht tot het model is opgebouwd.|Wait for the model to finish building.
+Selecteer een model om op te slaan.|Select a model to save.
+Vrij aanzicht: de membraansnijrand kan vanuit deze hoek dun zijn.|Free view: the membrane cut face may appear thin from this angle.
+Lokale encoder niet actief. Start ImmunoStudio met Start-ImmunoStudio.cmd; PNG-framereeks blijft beschikbaar.|The local encoder is not active. Start ImmunoStudio using Start-ImmunoStudio.cmd; PNG frame export remains available.
+De lokale Inkscape-exporter is niet actief. Herstart ImmunoStudio voor EMF/WMF.|The local Inkscape exporter is not active. Restart ImmunoStudio for EMF/WMF.
+Office-export mislukt|Office export failed
+Office-export duurde te lang.|Office export took too long.
+Slepen: kijkhoek · rechtermuisknop: pan · scrollen: zoom|Drag: orbit · right mouse button: pan · scroll: zoom
+Sleep de blauwe eindpunten en oranje Bézierhandvatten.|Drag the blue anchor points and orange Bézier handles.
+Klik een scharnierpunt op IgG. Sleep de rotatiering om de geselecteerde Fab-arm te draaien.|Click a hinge point on IgG. Drag the rotation ring to rotate the selected Fab arm.
+Vrij object: sleep de 3D-pijlen. Membraaneiwit: gebruik Positie langs membraan.|Free object: drag the 3D arrows. Membrane protein: use Position along membrane.
+`;
+export const english = Object.fromEntries(
+  entries
+    .trim()
+    .split("\n")
+    .filter(Boolean)
+    .map((line) => line.split("|")),
+);
+const patterns = [
+  [/^(\d+) losse elementen · 2D en 3D$/, "$1 individual elements · 2D and 3D"],
+  [/^(\d+) vectorobjecten · (.*)$/, "$1 vector objects · $2"],
+  [/^(\d+) geselecteerde elementen$/, "$1 selected elements"],
+  [
+    /^(\d+) curvepunten\.(.*)$/,
+    "$1 curve points. Drag the anchor points and orange handles. Double-click the membrane to add a point.",
+  ],
+  [
+    /^(\d+) ruimtelijke vormen · (\d+) driehoeken$/,
+    "$1 volume shapes · $2 triangles",
+  ],
+  [/^(.+): (\d+) ruimtelijke vormen$/, "$1: $2 volume shapes"],
+  [
+    /^(\d+) objecten · (.*) · illustratieve schaal$/,
+    "$1 objects · $2 · illustrative scale",
+  ],
+  [
+    /^(\d+) modellen · cartoons en eigen structuren$/,
+    "$1 models · cartoons and imported structures",
+  ],
+  [/^(.+) toegevoegd$/, "$1 added"],
+  [/^(.+) geëxporteerd(.*)$/, "$1 exported$2"],
+  [/^(.+) voorbereiden…$/, "Preparing $1…"],
+  [
+    /^(\d+) 3D-varianten? beschikbaar · bronvectoren behouden$/,
+    "$1 3D variants available · source vectors retained",
+  ],
+  [/^2D: (.+) tekenen\.$/, "2D: draw $1."],
+  [/^Frames exporteren: (.*)$/, "Exporting frames: $1"],
+  [/^Animatie opnemen: (.*)$/, "Recording animation: $1"],
+  [/^Openen mislukt: (.*)$/, "Could not open: $1"],
+  [/^3D-volume opbouwen: (.*)$/, "Building 3D volume: $1"],
+];
+export function translateDynamic(value) {
+  for (const [pattern, replacement] of patterns)
+    if (pattern.test(value)) return value.replace(pattern, replacement);
+  return value;
+}

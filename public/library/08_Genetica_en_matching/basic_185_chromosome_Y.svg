@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="600" height="726" viewBox="-95 -115 190 230"><title>Y chromosome</title><desc>Schematic native vector, not quantitative data.</desc><defs>
+<linearGradient id="exWarm" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#FFC7A4" /><stop offset=".55" stop-color="#FF8C5F" /><stop offset="1" stop-color="#FF5A36" /></linearGradient></defs><g id="component-layer" inkscape:groupmode="layer" inkscape:label="Y chromosome"><path d="M-34 -87 Q-63 -111 -69 -75 L-20 -4 -20 78 Q-1 109 20 79 L20 -4 69 -75 Q61 -110 33 -86 L0 -37 Z" fill="url(#exWarm)" stroke="#064986" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" /></g></svg>
