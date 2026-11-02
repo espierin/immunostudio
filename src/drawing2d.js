@@ -1,3 +1,8 @@
+import {
+  selectionViewport,
+  pageFormats,
+  pageFormatControls,
+} from "./page-layout.js";
 import { SelectionBar } from "./selection-bar.js";
 import { uid, clone } from "./model.js";
 import { shapeMembrane } from "./shape-membrane.js";
@@ -1065,6 +1070,10 @@ export class Drawing2D {
     });
     document.addEventListener("change", (e) => {
       if (document.documentElement.dataset.editor !== "2d") return;
+      if (e.target.hasAttribute("data-sheet-preset")) {
+        if (e.target.value) this.command("page-format-" + e.target.value);
+        return;
+      }
       const field = e.target.dataset.sheetField,
         page = e.target.dataset.sheetPage;
       if (field) {
@@ -1446,6 +1455,50 @@ export class Drawing2D {
       this.clipboard = clone(items);
       return;
     }
+    if (cmd.startsWith("page-format-")) {
+      const format = pageFormats[cmd.slice(12)];
+      if (!format) return;
+      this.beforeChange();
+      [this.doc.width, this.doc.height] = format;
+      Object.assign(this.doc, { zoom: 1, panX: 0, panY: 0 });
+      this.notify();
+      return;
+    }
+    if (cmd === "fit-selection") {
+      if (!items.length) return;
+      let box = sheetBounds(items);
+      try {
+        const inverse = this.svg.getScreenCTM().inverse(),
+          points = [];
+        for (const item of items) {
+          const entity = this.svg.querySelector(`[data-entity="${item.id}"]`),
+            b = entity.getBBox(),
+            matrix = entity.getScreenCTM();
+          for (const [x, y] of [
+            [b.x, b.y],
+            [b.x + b.width, b.y],
+            [b.x, b.y + b.height],
+            [b.x + b.width, b.y + b.height],
+          ]) {
+            const p = new DOMPoint(x, y)
+              .matrixTransform(matrix)
+              .matrixTransform(inverse);
+            points.push(p);
+          }
+        }
+        const xs = points.map((p) => p.x),
+          ys = points.map((p) => p.y);
+        box = {
+          x: Math.min(...xs),
+          y: Math.min(...ys),
+          w: Math.max(...xs) - Math.min(...xs),
+          h: Math.max(...ys) - Math.min(...ys),
+        };
+      } catch {}
+      Object.assign(this.doc, selectionViewport(this.doc, box));
+      this.render();
+      return;
+    }
     if (cmd === "fit") {
       this.doc.zoom = 1;
       this.doc.panX = 0;
@@ -1600,7 +1653,7 @@ export class Drawing2D {
       )
       .join(
         "",
-      )}</div><div class="row"><button data-sheet-action="distribute-x">Verdelen X</button><button data-sheet-action="distribute-y">Verdelen Y</button></div></div><label>Bladbreedte<input type="number" data-sheet-page="width" min="100" max="10000" value="${this.doc.width}"></label><label>Bladhoogte<input type="number" data-sheet-page="height" min="100" max="10000" value="${this.doc.height}"></label><label>Bladkleur<input type="color" data-sheet-page="background" value="${this.doc.background}"></label><label class="check"><input type="checkbox" data-sheet-page="grid" ${this.doc.grid ? "checked" : ""}> Raster tonen</label><label class="check"><input type="checkbox" data-sheet-page="snap" ${this.doc.snap ? "checked" : ""}> Op raster uitlijnen</label><p class="muted">Ctrl+A selecteren · Ctrl+D dupliceren · Ctrl+G groeperen · Shift+Ctrl+G losmaken · pijltjes verplaatsen.</p></div>`;
+      )}</div><div class="row"><button data-sheet-action="distribute-x">Verdelen X</button><button data-sheet-action="distribute-y">Verdelen Y</button></div></div>${pageFormatControls()}<label>Bladbreedte<input type="number" data-sheet-page="width" min="100" max="10000" value="${this.doc.width}"></label><label>Bladhoogte<input type="number" data-sheet-page="height" min="100" max="10000" value="${this.doc.height}"></label><label>Bladkleur<input type="color" data-sheet-page="background" value="${this.doc.background}"></label><label class="check"><input type="checkbox" data-sheet-page="grid" ${this.doc.grid ? "checked" : ""}> Raster tonen</label><label class="check"><input type="checkbox" data-sheet-page="snap" ${this.doc.snap ? "checked" : ""}> Op raster uitlijnen</label><p class="muted">Ctrl+A selecteren · Ctrl+D dupliceren · Ctrl+G groeperen · Shift+Ctrl+G losmaken · pijltjes verplaatsen.</p></div>`;
     return includeTools
       ? html
       : html.slice(0, html.indexOf('<div class="sheet-arrange">')) + "</div>";
