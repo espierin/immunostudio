@@ -70,7 +70,7 @@ export class FloatingDrawingTools {
         selected.length === 1 ? lineAppearanceControls(selected[0]) : "";
     for (const input of this.element.querySelectorAll("[data-anchor-field]")) {
       const key = input.dataset.anchorField;
-      input.disabled = !a;
+      input.disabled = !a || selected[0].locked;
       if (document.activeElement !== input)
         input.value = a
           ? key === "offset"
@@ -114,7 +114,7 @@ export class FloatingDrawingTools {
       if (!Number.isFinite(value)) return;
       this.drawing.beforeChange();
       for (const i of this.drawing.selectedItems())
-        if (i.anchor2d)
+        if (i.anchor2d && !i.locked)
           i.anchor2d[key] =
             key === "offset"
               ? Math.max(-300, Math.min(300, value))

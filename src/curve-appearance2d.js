@@ -44,6 +44,8 @@ export function curvePath(item) {
 
 // Cell walls, nuclei and apical detail use the same curvilinear coordinates.
 // Rebuilding from the curve transports the complete layer after every edit.
+export const curvePosition = (u, closed) =>
+  closed ? ((u % 1) + 1) % 1 : Math.max(0, Math.min(1, u));
 export function tissueMarkup(item, style) {
   const points = membranePoints(item),
     table = arcTable(points),
@@ -63,7 +65,7 @@ export function tissueMarkup(item, style) {
     cytoplasm = item.fill || style.head || "#C5E4F4",
     nucleus = style.nucleus || style.receptor || "#579BD0";
   const at = (u, offset) => {
-    const t = arcT(table, Math.max(0, Math.min(1, u))),
+    const t = arcT(table, curvePosition(u, item.closed)),
       p = bezier(points, t),
       v = tangent(points, t);
     return [p[0] - v[1] * offset * side, p[1] + v[0] * offset * side];

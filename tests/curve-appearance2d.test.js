@@ -6,6 +6,7 @@ import {
   tissueMarkup,
   curvePath,
   moveCurveControl,
+  curvePosition,
 } from "../src/curve-appearance2d.js";
 import { shapeMembrane } from "../src/shape-membrane.js";
 import {
@@ -181,4 +182,18 @@ test("B�zier controls extend beyond the initial line box and closed seams stay
   assert.deepEqual(moved[0], moved[last]);
   assert.notDeepEqual(moved[1], loop.curve[1]);
   assert.notDeepEqual(moved[last - 1], loop.curve[last - 1]);
+});
+
+test("closed tissue samples wrap across the seam; open ends stay bounded", () => {
+  assert.ok(Math.abs(curvePosition(-0.01, true) - 0.99) < 1e-12);
+  assert.ok(Math.abs(curvePosition(1.01, true) - 0.01) < 1e-12);
+  assert.equal(curvePosition(1, true), 0);
+  assert.equal(curvePosition(-0.01, false), 0);
+  assert.equal(curvePosition(1.01, false), 1);
+  const loop = shapeMembrane({ ...curve, kind: "ellipse" });
+  for (const lineStyle of ["skin", "intestine"])
+    assert.doesNotMatch(
+      tissueMarkup({ ...loop, lineStyle }, style),
+      /NaN|Infinity/,
+    );
 });

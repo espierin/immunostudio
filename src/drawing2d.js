@@ -992,6 +992,7 @@ export class Drawing2D {
     this.svg.addEventListener("dblclick", (e) => {
       const id = e.target.closest("[data-entity]")?.dataset.entity,
         item = this.doc.items.find((i) => i.id === id);
+      if (item?.locked) return;
       if (item?.kind === "text") {
         this.select([id]);
         document.querySelector('[data-sheet-field="text"]')?.focus();
