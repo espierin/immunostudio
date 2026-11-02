@@ -230,11 +230,18 @@ export function arcTable(points, n = 300) {
   return { rows, length: sum };
 }
 export function arcT(table, s) {
-  const target = Math.max(0, Math.min(1, s)) * table.length;
-  const i = table.rows.findIndex((r) => r.s >= target);
-  if (i <= 0) return 0;
-  const a = table.rows[i - 1],
-    b = table.rows[i];
+  const target =
+    Math.max(0, Math.min(1, Number.isFinite(s) ? s : 0)) * table.length;
+  let lo = 0,
+    hi = table.rows.length - 1;
+  while (lo < hi) {
+    const mid = (lo + hi) >>> 1;
+    if (table.rows[mid].s < target) lo = mid + 1;
+    else hi = mid;
+  }
+  if (lo === 0) return 0;
+  const a = table.rows[lo - 1],
+    b = table.rows[lo];
   return a.t + ((b.t - a.t) * (target - a.s)) / (b.s - a.s || 1);
 }
 export function effectiveDepth(project, item) {

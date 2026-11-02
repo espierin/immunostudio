@@ -330,8 +330,7 @@ function autosave() {
 function refresh() {
   openingPage?.update(project);
   time = Math.max(0, Math.min(project.duration, project.currentTime || 0));
-  view.build(project);
-  view.setCamera(project.camera);
+  // setEditorMode builds the 3D scene only when it will be displayed.
   $("#project-name").value = project.name;
   $("#duration").value = project.duration;
   renderInspector();
@@ -1180,10 +1179,12 @@ $("#project-name").addEventListener("change", (e) => {
   project.name = e.target.value || "Naamloos project";
   autosave();
 });
+let librarySearchTimer;
 $("#search").addEventListener("input", (e) => {
   query = e.target.value;
   page = 0;
-  if (tab !== "pdb") renderLibrary();
+  clearTimeout(librarySearchTimer);
+  if (tab !== "pdb") librarySearchTimer = setTimeout(renderLibrary, 120);
 });
 $("#search").addEventListener("keydown", (e) => {
   if (e.key === "Enter" && tab === "pdb")
