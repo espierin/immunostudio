@@ -8,7 +8,14 @@ import {
   searchWikiIndex,
   searchReactome,
   searchPathways,
+  searchCommons,
+  commonsId,
 } from "../src/pathway-search.js";
+import {
+  pathwayTopics,
+  topicSearch,
+  keggSearchURL,
+} from "../src/pathway-topics.js";
 const index = {
   pathwayInfo: [
     {
@@ -259,4 +266,150 @@ test("timeout returns actionable provider errors; cancellation rejects stale wor
   );
   controller.abort();
   await assert.rejects(pending, { name: "AbortError" });
+});
+
+test("Pathway Commons IDs use exact URI lookup and preserve original provider", async () => {
+  const id = "netpath:Pathway_TCR";
+  const r = await searchCommons(
+    { query: id, mode: "id" },
+    async (url, options) => {
+      assert.equal(url, "https://www.pathwaycommons.org/pc2/v2/search");
+      assert.equal(options.method, "POST");
+      const body = JSON.parse(options.body);
+      assert.equal(body.q, `uri:"${id}"`);
+      assert.deepEqual(body.organism, ["9606"]);
+      return response({
+        numHits: 1,
+        searchHit: [
+          {
+            uri: id,
+            biopaxClass: "Pathway",
+            name: "TCR",
+            dataSource: ["pc14:netpath"],
+            organism: ["http://bioregistry.io/ncbitaxon:9606"],
+          },
+        ],
+      });
+    },
+  );
+  assert.equal(r.results[0].id, id);
+  assert.deepEqual(r.results[0].providers, ["pc14:netpath"]);
+  assert.equal(new URL(r.results[0].url).hostname, "www.pathwaycommons.org");
+  assert.equal(commonsId("javascript:alert(1)"), null);
+  assert.equal(commonsId("https://evil.test/pathway"), null);
+  assert.equal(commonsId('netpath:Pathway_TCR" OR *'), null);
+});
+test("Commons molecule matches use indexed pathway membership, skip empty references and retain canonical entities", async () => {
+  const uri = "http://bioregistry.io/reactome:R-HSA-983169";
+  let calls = 0;
+  const r = await searchCommons(
+    { query: "AKT1", mode: "molecule" },
+    async (url, options) => {
+      calls++;
+      const body = JSON.parse(options.body);
+      if (body.type === "EntityReference")
+        return response({
+          numHits: 10,
+          searchHit: [
+            ...Array.from({ length: 9 }, (_, i) => ({
+              uri: `pc14:ProteinReference_${i}`,
+              name: "AKT1",
+              pathway: [],
+            })),
+            {
+              uri: "http://bioregistry.io/uniprot:P31749",
+              name: "RAC-alpha kinase",
+              pathway: [uri],
+            },
+          ],
+        });
+      assert.equal(body.q, `uri:"${uri}"`);
+      return response({
+        numHits: 1,
+        searchHit: [
+          {
+            uri,
+            biopaxClass: "Pathway",
+            name: "Antigen presentation",
+            organism: ["http://bioregistry.io/ncbitaxon:9606"],
+          },
+        ],
+      });
+    },
+  );
+  assert.equal(calls, 2);
+  assert.equal(r.results.length, 1);
+  assert.deepEqual(r.results[0].matched, ["RAC-alpha kinase"]);
+  assert.equal(r.limited, true);
+});
+test("Commons name queries are scoped and species filters are sent to the provider", async () => {
+  const r = await searchCommons(
+    { query: "antigen", mode: "name", species: "Mus musculus" },
+    async (url, options) => {
+      const body = JSON.parse(options.body);
+      assert.equal(body.q, "name:*antigen*");
+      assert.deepEqual(body.organism, ["10090"]);
+      return response({ numHits: 0, searchHit: [] });
+    },
+  );
+  assert.equal(r.total, 0);
+});
+test("Commons routing is isolated and other providers remain usable on Commons failure", async () => {
+  const r = await searchPathways(
+    { query: "netpath:Pathway_TCR", mode: "id" },
+    {
+      fetcher: async (url, options) => {
+        assert.match(url, /pathwaycommons.org/);
+        return response({ numHits: 0, searchHit: [] });
+      },
+    },
+  );
+  assert.equal(r.sources.length, 1);
+  assert.equal(r.sources[0].source, "Pathway Commons");
+  const partial = await searchPathways(
+    { query: "AKT1", mode: "molecule" },
+    {
+      fetcher: async (url) => {
+        if (url.includes("wikipathways.org")) return response(index);
+        throw Error("offline");
+      },
+    },
+  );
+  assert.equal(partial.sources.length, 3);
+  assert.equal(partial.results[0].id, "WP127");
+  assert.equal(partial.sources[2].error, "unavailable");
+});
+test("immune/cellular discovery shortcuts are unique, source-linked human pathway references", () => {
+  assert.equal(pathwayTopics.length, 15);
+  assert.equal(new Set(pathwayTopics.map((t) => t.key)).size, 15);
+  for (const topic of pathwayTopics) {
+    const options = topicSearch(topic.key);
+    assert.equal(options.species, "Homo sapiens");
+    assert.equal(options.mode, "id");
+    assert.ok(pathwayURL(options.source, options.query));
+    assert.ok(topic.name);
+    assert.equal(topic.verified, "2026-11-02");
+  }
+  assert.equal(topicSearch("mhc-i").query, "R-HSA-983169");
+  assert.equal(topicSearch("mhc-ii").query, "R-HSA-2132295");
+  assert.equal(topicSearch("cross").query, "R-HSA-1236975");
+  assert.equal(topicSearch("unknown"), null);
+});
+test("KEGG is a safe external website entry with the correct species and exact ID route", () => {
+  assert.equal(
+    new URL(keggSearchURL("R-HSA-2132295")).searchParams.get("keyword"),
+    "antigen processing",
+  );
+  assert.equal(
+    keggSearchURL("path:hsa04612"),
+    "https://www.kegg.jp/pathway/hsa04612",
+  );
+  const url = new URL(keggSearchURL("antigen & processing", "Mus musculus"));
+  assert.equal(url.hostname, "www.kegg.jp");
+  assert.equal(url.searchParams.get("map"), "mmu");
+  assert.equal(url.searchParams.get("keyword"), "antigen & processing");
+  assert.equal(
+    new URL(keggSearchURL("javascript:alert(1)")).protocol,
+    "https:",
+  );
 });

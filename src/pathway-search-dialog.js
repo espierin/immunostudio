@@ -1,3 +1,4 @@
+import { pathwayTopics, topicSearch, keggSearchURL } from "./pathway-topics.js";
 import { searchPathways } from "./pathway-search.js";
 import { translate } from "./i18n.js";
 import "./pathway-search.css";
@@ -12,17 +13,44 @@ export class PathwaySearchDialog {
     this.dialog = document.createElement("dialog");
     this.dialog.className = "pathway-search-dialog";
     this.dialog.setAttribute("aria-labelledby", "pathway-search-title");
-    this.dialog.innerHTML = `<div class="pathway-search-heading"><div><small>Reactome · WikiPathways</small><h2 id="pathway-search-title">Pathways zoeken</h2></div><button type="button" data-pathway-close aria-label="Sluiten" title="Sluiten">×</button></div>
+    this.dialog.innerHTML = `<div class="pathway-search-heading"><div><small>Reactome · WikiPathways · Pathway Commons</small><h2 id="pathway-search-title">Pathways zoeken</h2></div><button type="button" data-pathway-close aria-label="Sluiten" title="Sluiten">×</button></div>
       <p>Zoek op een molecuul, pathway-ID of een deel van de pathwaynaam.</p>
+      <details class="pathway-topics"><summary>Immunologie en celbiologie</summary><p>Gecontroleerde humane referentiepathways. Een thema stelt bron, ID en organisme in.</p><div class="pathway-topic-groups"></div></details>
       <form class="pathway-search-form"><label class="pathway-query">Zoekterm<input name="query" type="search" minlength="2" maxlength="160" required placeholder="Bijvoorbeeld AKT1, interleukin, WP127…" autocomplete="off"></label>
       <label>Zoeken op<select name="mode" aria-label="Zoeken op"><option value="auto">Automatisch</option><option value="name">Pathwaynaam</option><option value="molecule">Molecuulnaam</option><option value="id">Pathway-ID</option></select></label>
-      <label>Database<select name="source" aria-label="Database"><option value="both">Beide databases</option><option value="Reactome">Reactome</option><option value="WikiPathways">WikiPathways</option></select></label>
+      <label>Database<select name="source" aria-label="Database"><option value="all">Alle gekoppelde databases</option><option value="Reactome">Reactome</option><option value="WikiPathways">WikiPathways</option><option value="Pathway Commons">Pathway Commons</option></select></label>
       <label>Organisme<select name="species" aria-label="Organisme"><option value="Homo sapiens">Homo sapiens</option><option value="Mus musculus">Mus musculus</option><option value="">Alle organismen</option></select></label>
       <div class="pathway-search-buttons"><button class="primary" type="submit">Zoeken</button><button type="button" data-pathway-cancel hidden>Annuleren</button></div></form>
+      <div class="pathway-kegg"><a class="pathway-kegg-link" target="_blank" rel="noopener noreferrer">Zoek verder op de KEGG-website ↗</a><small>Externe ingang: KEGG-resultaten verschijnen op de KEGG-website. Voor moleculen is daar een aanvullende gen-/compoundzoekactie nodig.</small></div>
       <div class="pathway-search-status" role="status" aria-live="polite"></div><div class="pathway-search-results"></div><div class="pathway-search-more"></div>
       <footer>Zoekresultaten openen bij de bron. Het automatisch opbouwen van een volledig pathway is nog niet beschikbaar.</footer>`;
     document.body.append(this.dialog);
     this.form = this.dialog.querySelector("form");
+    const topicGroups = this.dialog.querySelector(".pathway-topic-groups");
+    for (const group of [...new Set(pathwayTopics.map((t) => t.group))]) {
+      const section = node("section"),
+        heading = node("h3", group),
+        buttons = node("div");
+      for (const topic of pathwayTopics.filter((t) => t.group === group)) {
+        const button = node("button", topic.label);
+        button.type = "button";
+        button.title = topic.name + " · " + topic.id;
+        button.onclick = () => {
+          for (const [key, value] of Object.entries(topicSearch(topic.key)))
+            this.form.elements[key].value = value;
+          this.updateKegg();
+          this.dialog.querySelector(".pathway-topics").open = false;
+          this.form.elements.query.focus();
+          this.search();
+        };
+        buttons.append(button);
+      }
+      section.append(heading, buttons);
+      topicGroups.append(section);
+    }
+    this.form.addEventListener("input", () => this.updateKegg());
+    this.form.addEventListener("change", () => this.updateKegg());
+    this.updateKegg();
     this.status = this.dialog.querySelector("[role=status]");
     this.results = this.dialog.querySelector(".pathway-search-results");
     this.more = this.dialog.querySelector(".pathway-search-more");
@@ -43,11 +71,19 @@ export class PathwaySearchDialog {
       if (this.previous?.isConnected) this.previous.focus();
     });
   }
-  show() {
+  updateKegg() {
+    this.dialog.querySelector(".pathway-kegg-link").href = keggSearchURL(
+      this.form.elements.query.value,
+      this.form.elements.species.value,
+    );
+  }
+  show({ topics = false, kegg = false } = {}) {
     if (this.dialog.open) return;
     this.previous = document.activeElement;
+    this.dialog.querySelector(".pathway-topics").open = topics;
     this.dialog.showModal();
-    this.form.elements.query.focus();
+    if (kegg) this.dialog.querySelector(".pathway-kegg-link").focus();
+    else this.form.elements.query.focus();
   }
   abort() {
     this.request = (this.request || 0) + 1;
@@ -97,7 +133,7 @@ export class PathwaySearchDialog {
               : source.limited
                 ? source.source === "WikiPathways"
                   ? "Eerste 50 pathways getoond. Verfijn de zoekterm voor een kleinere selectie."
-                  : "Beperkte selectie. Maximaal 50 pathways; Reactome onderzoekt maximaal 8 molecuultreffers. Verfijn de zoekterm."
+                  : "Beperkte selectie. Maximaal 50 pathways en 8 molecuultreffers per bron. Verfijn de zoekterm."
                 : "Zoekopdracht voltooid.",
           ),
         );
@@ -140,6 +176,11 @@ export class PathwaySearchDialog {
       const heading = node("h3", row.name);
       heading.dataset.noTranslate = "";
       content.append(source, heading);
+      if (row.providers?.length) {
+        const providers = node("small", row.providers.join(" · "));
+        providers.dataset.noTranslate = "";
+        content.append(providers);
+      }
       if (row.matched.length) {
         const match = node("p", undefined, "pathway-matched");
         const names = node("span", row.matched.join(", "));

@@ -670,6 +670,39 @@ Object.assign(english, {
   "Gebruik een Reactome-ID (R-HSA-168256) of WikiPathways-ID (WP127).":
     "Use a Reactome ID (R-HSA-168256) or WikiPathways ID (WP127).",
 });
+Object.assign(english, {
+  "Immunologie en celbiologie": "Immunology and cell biology",
+  "Immunologie en celbiologie…": "Immunology and cell biology…",
+  "KEGG (externe website)…": "KEGG (external website)…",
+  "Gecontroleerde humane referentiepathways. Een thema stelt bron, ID en organisme in.":
+    "Verified human reference pathways. A topic sets the source, ID and organism.",
+  Immunologie: "Immunology",
+  Celbiologie: "Cell biology",
+  "MHC-I-antigeenverwerking": "MHC-I antigen processing",
+  "MHC-II-antigeenpresentatie": "MHC-II antigen presentation",
+  "Cross-presentatie": "Cross-presentation",
+  "Ubiquitine en proteasoom": "Ubiquitin and proteasome",
+  "T-celreceptorsignalering": "T-cell receptor signaling",
+  "B-celreceptorsignalering": "B-cell receptor signaling",
+  Cytokinesignalering: "Cytokine signaling",
+  Complementsysteem: "Complement system",
+  "Aangeboren afweer": "Innate immunity",
+  "Adaptieve afweer": "Adaptive immunity",
+  Autofagie: "Autophagy",
+  Apoptose: "Apoptosis",
+  "Vesiculair transport": "Vesicle-mediated transport",
+  Membraantransport: "Membrane trafficking",
+  "ER-stress / UPR": "ER stress / UPR",
+  "Alle gekoppelde databases": "All connected databases",
+  "Zoek verder op de KEGG-website ↗":
+    "Continue searching on the KEGG website ↗",
+  "Externe ingang: KEGG-resultaten verschijnen op de KEGG-website. Voor moleculen is daar een aanvullende gen-/compoundzoekactie nodig.":
+    "External source: KEGG results appear on the KEGG website. Molecules require an additional gene/compound lookup there.",
+  "Gebruik een Reactome-ID, WikiPathways-ID of Pathway Commons-URI.":
+    "Use a Reactome ID, WikiPathways ID or Pathway Commons URI.",
+  "Beperkte selectie. Maximaal 50 pathways en 8 molecuultreffers per bron. Verfijn de zoekterm.":
+    "Limited selection. Up to 50 pathways and 8 molecule matches per source. Refine your search.",
+});
 const patterns = [
   [/^(\d+) pathway-elementen · 2D$/, "$1 pathway elements · 2D"],
   [

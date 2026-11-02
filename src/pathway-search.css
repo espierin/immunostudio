@@ -178,3 +178,69 @@
     justify-content: flex-start;
   }
 }
+
+.pathway-topics {
+  margin: 12px 0;
+  border: 1px solid #ccdde8;
+  border-radius: 8px;
+  padding: 10px 14px;
+  background: #f1f7fa;
+}
+.pathway-topics > summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+.pathway-topics p {
+  font-size: 12px;
+  color: #526f82;
+  margin: 10px 0;
+}
+.pathway-topic-groups {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 16px;
+}
+.pathway-topic-groups h3 {
+  font-size: 12px;
+  margin: 0 0 8px;
+}
+.pathway-topic-groups section > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.pathway-topic-groups button {
+  font-size: 11px;
+  text-align: left;
+}
+.pathway-kegg {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin: 14px 0;
+  padding: 10px 12px;
+  background: #eef4f8;
+  border-radius: 8px;
+}
+.pathway-kegg a {
+  font-size: 12px;
+  white-space: nowrap;
+  color: #006a9d;
+}
+.pathway-kegg small {
+  font-size: 11px;
+  color: #526f82;
+  line-height: 1.4;
+}
+@media (max-width: 640px) {
+  .pathway-topic-groups {
+    grid-template-columns: 1fr;
+  }
+  .pathway-kegg {
+    display: block;
+  }
+  .pathway-kegg small {
+    display: block;
+    margin-top: 6px;
+  }
+}
