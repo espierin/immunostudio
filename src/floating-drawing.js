@@ -6,11 +6,12 @@ export class FloatingDrawingTools {
       "immunostudio-floating-tools" +
       (new URLSearchParams(location.search).has("qa") ? "-qa" : "");
     this.state = {
-      x: 300,
+      x: Math.max(0, innerWidth - 310),
       y: 170,
       minimized: true,
       wide: false,
       hidden: false,
+      collapsed: [],
     };
     try {
       Object.assign(
@@ -22,6 +23,17 @@ export class FloatingDrawingTools {
     this.element.className = "floating-drawing";
     this.element.setAttribute("aria-label", "Sculpting en modifiers");
     this.element.innerHTML = `<div class="floating-grip" tabindex="0" title="Sleep deze balk om het menu te verplaatsen. Pijltjestoetsen verplaatsen het menu."><strong>Sculpting en modifiers</strong><button data-floating="minimize" title="Minimaliseren of openen" aria-expanded="false">▾</button><button data-floating="expand" title="Breder of smaller maken">⤢</button><button data-floating="close" title="Zwevend menu sluiten">×</button></div><div class="floating-content"><p class="floating-selection" data-no-translate></p><div class="drawing-grid"><button data-sheet-tool="select">Selecteren</button><button data-sheet-tool="nodes">Punten bewerken</button><button data-sheet-tool="sculpt">Sculpten</button><button data-sheet-action="contour-reset">Contour herstellen</button></div><div class="floating-line-appearance"></div><details open><summary>Sculptpenseel</summary><label>Werking<select data-sculpt-option="mode"><option value="drag">Duwen en trekken</option><option value="inflate">Opbollen</option><option value="deflate">Induwen</option><option value="smooth">Lokaal gladmaken</option></select></label><label>Radius (px)<input type="number" min="10" max="400" step="5" value="100" data-sculpt-option="radius"></label><label>Sterkte (%)<input type="range" min="5" max="100" value="70" data-sculpt-option="strength"></label><label>Binnenstructuren meevormen<input type="checkbox" data-sculpt-option="interior" checked></label><p class="muted">Selecteer een cel of weefsel en sleep bij de rand. Kies eerst een onderdeel met Punten bewerken voor een specifieke contour. Shift keert duwen en opbollen om.</p></details><details open><summary>Contourmodifiers</summary><label>Afstand / tolerantie (px)<input type="number" min=".5" max="100" step=".5" value="8" data-sculpt-option="amount"></label><div class="drawing-grid"><button data-sheet-action="contour-smooth">Gladmaken</button><button data-sheet-action="contour-simplify">Vereenvoudigen</button><button data-sheet-action="contour-inset">Krimpen</button><button data-sheet-action="contour-outset">Vergroten</button><button data-sheet-action="mirror-x">Horizontaal spiegelen</button><button data-sheet-action="mirror-y">Verticaal spiegelen</button></div><p class="muted">Contourmodifiers volgen de gekozen membraanrand. Spiegelen werkt op het hele object. Gebruik Ongedaan maken om een stap terug te gaan.</p></details><details open><summary>Membraanankers</summary><p class="floating-target" data-no-translate></p><div class="drawing-grid"><button data-sheet-action="anchor-target">Gebruik als membraan</button><button data-sheet-action="anchor-attach">Koppel selectie</button><button data-sheet-action="anchor-detach">Losmaken van membraan</button><button data-sheet-action="anchor-flip">Andere membraanzijde</button></div><button class="wide" data-sheet-action="anchor-mark-embedded">Onderdeel als membraanmolecuul</button><label>Positie langs rand (%)<input type="number" data-anchor-field="u" min="0" max="100" step=".5"></label><label>Afstand tot rand (px)<input type="number" data-anchor-field="offset" min="-300" max="300" step="1"></label><label>Ankerhoogte in molecuul (%)<input type="number" data-anchor-field="pivotY" min="0" max="100" step="1"></label><p class="muted">Kies eerst de cel of het membraan als doel, selecteer daarna de losse moleculen en koppel ze. Gekoppelde moleculen volgen de rand en blijven haaks staan. Ingebouwde herkenbare receptorgroepen bewegen automatisch mee bij sculpten.</p></details></div>`;
+    const panels = ["sculpt", "modifiers", "anchors"];
+    for (const [index, details] of [
+      ...this.element.querySelectorAll(".floating-content > details"),
+    ].entries())
+      details.dataset.floatingPanel = panels[index];
+    for (const details of this.element.querySelectorAll(
+      "[data-floating-panel]",
+    ))
+      details.open = !this.state.collapsed?.includes(
+        details.dataset.floatingPanel,
+      );
     document.body.append(this.element);
     this.bind();
     this.place();
@@ -65,9 +77,41 @@ export class FloatingDrawingTools {
     this.element.querySelector(".floating-target").textContent =
       target?.name || "—";
     const appearance = this.element.querySelector(".floating-line-appearance");
-    if (!appearance.contains(document.activeElement))
-      appearance.innerHTML =
-        selected.length === 1 ? lineAppearanceControls(selected[0]) : "";
+    const nextHTML =
+        selected.length === 1 ? lineAppearanceControls(selected[0]) : "",
+      selectionId = selected.map((i) => i.id).join(",");
+    if (
+      (this.appearanceHTML !== nextHTML &&
+        !appearance.contains(document.activeElement)) ||
+      this.appearanceSelection !== selectionId
+    ) {
+      appearance.innerHTML = nextHTML;
+      this.appearanceHTML = nextHTML;
+      this.appearanceSelection = selectionId;
+      const details = appearance.querySelector("details");
+      if (details) {
+        details.dataset.floatingPanel = "appearance";
+        details.open = !this.state.collapsed?.includes("appearance");
+      }
+    }
+    for (const input of appearance.querySelectorAll("input,select,button"))
+      input.disabled = !!selected[0]?.locked;
+    const editable = selected.some((i) => !i.locked),
+      single = selected.length === 1 && !selected[0].locked;
+    for (const button of this.element.querySelectorAll("[data-sheet-action]")) {
+      const action = button.dataset.sheetAction;
+      if (action.startsWith("contour-") || action.startsWith("mirror-"))
+        button.disabled = !editable;
+      if (action === "anchor-target")
+        button.disabled = !single || !!selected[0]?.anchor2d;
+      if (action === "anchor-attach")
+        button.disabled =
+          !target || !selected.some((i) => !i.locked && i.id !== target.id);
+      if (action === "anchor-detach" || action === "anchor-flip")
+        button.disabled = !selected.some((i) => i.anchor2d && !i.locked);
+      if (action === "anchor-mark-embedded")
+        button.disabled = !single || d.nodeEdit?.itemId !== selected[0]?.id;
+    }
     for (const input of this.element.querySelectorAll("[data-anchor-field]")) {
       const key = input.dataset.anchorField;
       input.disabled = !a || selected[0].locked;
@@ -80,6 +124,22 @@ export class FloatingDrawingTools {
     }
   }
   bind() {
+    this.element.addEventListener(
+      "toggle",
+      (e) => {
+        const key = e.target.dataset.floatingPanel;
+        if (!key || !e.target.isConnected) return;
+        const collapsed = new Set(this.state.collapsed || []);
+        if (e.target.open) collapsed.delete(key);
+        else collapsed.add(key);
+        this.state.collapsed = [...collapsed];
+        this.save();
+      },
+      true,
+    );
+    this.element.addEventListener("focusout", () =>
+      queueMicrotask(() => this.update()),
+    );
     this.element.addEventListener("click", (e) => {
       const action = e.target.closest("[data-floating]")?.dataset.floating;
       if (!action) return;
