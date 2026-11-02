@@ -280,3 +280,36 @@ html[data-ui] .opening-page .opening-primary {
   color: #647c8d;
   margin-bottom: 0;
 }
+.library-filters {
+  display: flex;
+  gap: 6px;
+  padding: 4px 14px 8px;
+}
+.library-filters[hidden] {
+  display: none;
+}
+.library-filters button {
+  font-size: 11px;
+  flex: 1;
+  padding: 5px;
+}
+.asset-with-favorite {
+  position: relative;
+}
+.asset-with-favorite .asset-card {
+  padding-right: 27px;
+}
+.asset-with-favorite .favorite-toggle {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  z-index: 1;
+  border: 0;
+  background: transparent;
+  padding: 2px;
+  font-size: 17px;
+  color: #6d899c;
+}
+.favorite-toggle[aria-pressed="true"] {
+  color: #0077b6;
+}
