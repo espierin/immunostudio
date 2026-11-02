@@ -16,6 +16,7 @@ import {
   presets,
   catalog,
   newProject,
+  removeLegacyStarter,
   makeItem,
   curveValid,
   frame,
@@ -107,11 +108,13 @@ request.onsuccess = () => {
     if (tx.result && !dirty && undo.length === 0) {
       try {
         project = validateProject(tx.result);
+        const removedStarter = removeLegacyStarter(project);
         project.editorMode = "2d";
         selected = project.items[0]?.id;
         refresh();
         $("#save-state").textContent = "✓ Op dit apparaat bewaard";
         toast("Lokaal project hersteld");
+        if (removedStarter) autosave();
       } catch {
         toast("Opgeslagen project kon niet worden hersteld.");
       }

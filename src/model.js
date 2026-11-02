@@ -116,10 +116,11 @@ export function makeItem(kind, extra = {}) {
     ...extra,
   };
 }
-export function newProject() {
+export function newProject({ demo = false } = {}) {
   return {
     version: 1,
     editorMode: "2d",
+    starterSceneVersion: 2,
     name: "Immunologische membraanscène",
     curve: [
       [-16, 0],
@@ -134,14 +135,32 @@ export function newProject() {
     style: clone(presets.basis),
     duration: 8,
     camera: { position: [20, 14, 32], target: [0, 2, 0], zoom: 1 },
-    items: [
-      makeItem("hla", { s: 0.24 }),
-      makeItem("channel", { s: 0.52 }),
-      makeItem("tcr", { s: 0.78 }),
-      makeItem("igg", { x: -8, y: 7, z: 1, rotation: -0.2, scale: 0.75 }),
-    ],
+    items: demo
+      ? [
+          makeItem("hla", { s: 0.24 }),
+          makeItem("channel", { s: 0.52 }),
+          makeItem("tcr", { s: 0.78 }),
+          makeItem("igg", { x: -8, y: 7, z: 1, rotation: -0.2, scale: 0.75 }),
+        ]
+      : [],
     keys: [],
   };
+}
+/** Remove only the exact, untouched four-object starter from older autosaves. */
+export function removeLegacyStarter(project) {
+  if (project.starterSceneVersion >= 2) return 0;
+  project.starterSceneVersion = 2;
+  if (project.keys?.length || project.items.length < 4) return 0;
+  const templates = newProject({ demo: true }).items;
+  const matches = templates.every((template, index) => {
+    const item = project.items[index];
+    return [...new Set([...Object.keys(template), ...Object.keys(item)])]
+      .filter((k) => k !== "id")
+      .every((k) => JSON.stringify(item[k]) === JSON.stringify(template[k]));
+  });
+  if (!matches) return 0;
+  project.items = project.items.slice(4);
+  return 4;
 }
 export function bezier(points, t) {
   if (points.length > 4) {

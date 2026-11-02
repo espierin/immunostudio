@@ -4,7 +4,7 @@ import * as T from "three";
 import { StudioScene } from "../src/scene.js";
 import { newProject, arcTable } from "../src/model.js";
 test("Membrane geometry removes a full footprint around a channel", () => {
-  const p = newProject();
+  const p = newProject({ demo: true });
   p.curve = [
     [-16, 0],
     [-5.3, 0],
@@ -20,9 +20,21 @@ test("Membrane geometry removes a full footprint around a channel", () => {
   scene.table = arcTable(p.curve);
   scene.membrane(p);
   const surfaces = scene.membraneGroup.children.filter(
-    (c) => c.isMesh && !c.isInstancedMesh && c!==scene.cap,
+    (c) => c.isMesh && !c.isInstancedMesh,
   );
   assert.equal(surfaces.length, 2);
+  const lipidMeshes = scene.membraneGroup.children.filter(
+    (c) => c.isInstancedMesh,
+  );
+  assert.equal(
+    lipidMeshes.length,
+    2,
+    "Heads and tails remain visible without an opaque cut-face slab",
+  );
+  assert.ok(
+    lipidMeshes[1].material.isMeshBasicMaterial,
+    "Thin tails retain their colour without lighting glare",
+  );
   for (const m of surfaces) {
     const a = m.geometry.attributes.position;
     for (let i = 0; i < a.count; i++)

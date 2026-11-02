@@ -31,7 +31,7 @@ test("Arc-length mapping gives uniform travel on a nonuniform Bézier curve", ()
   assert.ok(Math.max(...lengths) / Math.min(...lengths) < 1.03);
 });
 test("Membrane anchors keep depth and remain normal when the curve changes", () => {
-  const p = newProject(),
+  const p = newProject({ demo: true }),
     item = p.items[0];
   item.depth = 2;
   const a = frame(p, item);
@@ -68,10 +68,10 @@ test("Invalid folds and non-finite points are rejected", () => {
     ),
     false,
   );
-  assert.ok(curveValid(newProject().curve, 1.6));
+  assert.ok(curveValid(newProject({ demo: true }).curve, 1.6));
 });
 test("Animation evaluates from immutable keyframes, including a full 360 degree turn", () => {
-  const p = newProject(),
+  const p = newProject({ demo: true }),
     a = snapshot(p);
   p.items[0].rotation = Math.PI * 2;
   p.items[0].s = 0.8;
@@ -87,7 +87,7 @@ test("Animation evaluates from immutable keyframes, including a full 360 degree 
   assert.equal(evaluate(p, 9).items[0].rotation, Math.PI * 2);
 });
 test("Project validates round-trip and malformed styles", () => {
-  const p = newProject();
+  const p = newProject({ demo: true });
   assert.equal(validateProject(JSON.parse(JSON.stringify(p))).items.length, 4);
   assert.throws(() => validateStyle({ name: "broken" }));
   p.items[0].scale = -1;

@@ -3,7 +3,6 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { TransformControls } from "three/addons/controls/TransformControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { buildBasisVolume } from "./basis3d.js";
-import { membraneCutGeometry } from "./membrane-cut.js";
 import { lipidTailGeometry } from "./lipids.js";
 import { isHemisphereCell } from "./cell-look.js";
 import { recolorSourceColor } from "./palettes.js";
@@ -404,22 +403,7 @@ export class StudioScene {
     };
     addInstances(sphere, head, p.style.head);
     addInstances(lipidTailGeometry(), tails, p.style.tail, true);
-    // One continuous camera-plane intersection, rather than individual bright slabs.
-    this.cap = new T.Mesh(
-      new T.BufferGeometry(),
-      new T.MeshBasicMaterial({
-        color: new T.Color(p.style.tail).lerp(
-          new T.Color(p.style.core || "#D9EAF6"),
-          0.35,
-        ),
-        side: T.DoubleSide,
-        polygonOffset: true,
-        polygonOffsetFactor: -1,
-        polygonOffsetUnits: -1,
-      }),
-    );
-    this.cap.userData.cutKey = null;
-    group.add(this.cap);
+    // Leave the cut face open: heads and paired tails form the cross-section.
     this.pores = pores;
   }
   addItem(item, p) {
@@ -985,28 +969,6 @@ export class StudioScene {
           if (o.material?.clippingPlanes)
             o.material.clippingPlanes = this.project.cut ? [this.clip] : [];
         });
-      if (this.cap) {
-        const n = normal;
-        const usable = this.project.cut && Math.abs(n.z) > 0.15;
-        this.cap.visible = usable;
-        const key = [
-          ...n.toArray(),
-          ...this.controls.target.toArray(),
-          this.project.depth,
-          this.project.thickness,
-        ].join("|");
-        if (usable && this.cap.userData.cutKey !== key) {
-          this.cap.geometry.dispose();
-          this.cap.geometry = membraneCutGeometry(
-            this.project,
-            this.table,
-            n,
-            this.controls.target,
-            this.pores,
-          );
-          this.cap.userData.cutKey = key;
-        }
-      }
       this.outline?.update();
     }
   }

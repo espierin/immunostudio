@@ -8,7 +8,7 @@ import {
   evaluate,
 } from "../src/model.js";
 test("Four depth levels keep index and membrane anchor after depth changes", () => {
-  const p = newProject(),
+  const p = newProject({ demo: true }),
     i = p.items[0];
   i.level = 2;
   const a = frame(p, i);
@@ -25,7 +25,7 @@ test("Four depth levels keep index and membrane anchor after depth changes", () 
   assert.ok(levels[0] > levels[3]);
 });
 test("Transitions between depth levels interpolate physical coordinates", () => {
-  const p = newProject(),
+  const p = newProject({ demo: true }),
     i = p.items[0];
   i.level = 0;
   const a = snapshot(p);
@@ -40,7 +40,7 @@ test("Transitions between depth levels interpolate physical coordinates", () => 
   assert.ok(Math.abs(mid.depth) < 1e-9);
 });
 test("Follow-me moves the camera by the animated anchor displacement", () => {
-  const p = newProject(),
+  const p = newProject({ demo: true }),
     i = p.items[0];
   p.camera.anchorId = i.id;
   p.camera.mode = "follow";
