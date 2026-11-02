@@ -1,3 +1,4 @@
+import { starterProject } from "./starter-projects.js";
 import { OpeningPage, hasArtwork } from "./opening-page.js";
 import "./opening-page.css";
 import { splitBezier } from "./model.js";
@@ -1739,12 +1740,54 @@ fetch("./library/index.json")
     if (tab === "basis") renderLibrary();
   })
   .catch(() => toast("Basisbibliotheek ontbreekt. Voer sync-library uit."));
+async function loadStarter(kind) {
+  try {
+    let molecule = null;
+    if (kind === "membrane") {
+      const data = library.length
+        ? library
+        : await fetch("./library/index.json").then((r) => r.json());
+      const asset = data.find((a) =>
+        a.file.split("/").at(-1).startsWith("basic_151_"),
+      );
+      if (asset) {
+        const r = await fetch(assetUrl(asset.file));
+        if (!r.ok) throw Error("SVG ontbreekt");
+        molecule = { ...asset, svg: await r.text() };
+      }
+    }
+    const next = validateProject(starterProject(kind, molecule));
+    checkpoint();
+    project = next;
+    selected = null;
+    time = 0;
+    stop();
+    refresh();
+    autosave();
+    $("#modal").close();
+    openingPage.hide();
+  } catch (error) {
+    toast(error.message);
+  }
+}
+document.addEventListener("click", (e) => {
+  const kind = e.target.closest("[data-start-confirm]")?.dataset.startConfirm;
+  if (kind) loadStarter(kind);
+});
 openingPage = new OpeningPage({
   resume: () => drawing2D.svg.focus(),
   open: () => action("open"),
-  create: () => {
-    if (hasArtwork(project)) action("new");
-    else action("new-confirm");
+  create: (kind) => {
+    if (kind === "blank") {
+      if (hasArtwork(project)) action("new");
+      else action("new-confirm");
+      return;
+    }
+    if (hasArtwork(project))
+      showModal(
+        `<h2>Start een voorbeeld</h2><p>Download je huidige project om het als apart bestand te bewaren.</p><div class="row"><button data-action="save">Huidig project downloaden</button><button class="primary" data-start-confirm="${kind}">Voorbeeld starten</button></div>`,
+      );
+    else loadStarter(kind);
   },
 });
 document.querySelector(".brand").addEventListener("click", (e) => {
