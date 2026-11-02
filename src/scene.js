@@ -1,4 +1,5 @@
 import * as T from "three";
+import { vesicleModel } from "./vesicle3d.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { TransformControls } from "three/addons/controls/TransformControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -259,7 +260,8 @@ export class StudioScene {
     this.clear();
     this.renderer.setClearColor(p.style.background);
     this.table = arcTable(p.curve);
-    this.membrane(p);
+    this.membraneGroup = null;
+    if (p.membraneEnabled !== false) this.membrane(p);
     for (const item of p.items) this.addItem(item, p);
     this.updateHandles();
     this.select(this.selected);
@@ -355,15 +357,16 @@ export class StudioScene {
             scale: [0.22, 0.185, 0.22],
             angle: 0,
           });
-          tails.push({
-            pos: [
-              pos[0] - tan[1] * p.thickness * 0.38 * side,
-              pos[1] + tan[0] * p.thickness * 0.38 * side,
-              z,
-            ],
-            scale: [1, p.thickness * 0.35, 1],
-            angle: Math.atan2(tan[1], tan[0]) + (side < 0 ? Math.PI : 0),
-          });
+          if (i === 0 || i === nu || j === 0 || j === nv)
+            tails.push({
+              pos: [
+                pos[0] - tan[1] * p.thickness * 0.38 * side,
+                pos[1] + tan[0] * p.thickness * 0.38 * side,
+                z,
+              ],
+              scale: [1, p.thickness * 0.35, 1],
+              angle: Math.atan2(tan[1], tan[0]) + (side < 0 ? Math.PI : 0),
+            });
         }
       }
     }
@@ -506,7 +509,8 @@ export class StudioScene {
       this.rod(g, [0, -1.6, 0], [0, 1.3, 0], 0.16, c);
       domain(g, 0, 2.2, 0, 0.65, 1.1, 0.6);
       if (item.kind === "pdl1") domain(g, 0, 4.1, 0, 0.6, 1, 0.55);
-    } else if (item.kind === "structure") this.structure(g, item, p);
+    } else if (item.kind === "vesicle") g.add(vesicleModel(item, p.style));
+    else if (item.kind === "structure") this.structure(g, item, p);
     else if (item.kind === "svg3d") {
       const key =
         item.url + "|" + item.representation + "|" + (item.volumeDepth || 1);
@@ -810,13 +814,16 @@ export class StudioScene {
           .filter((i) => i.kind === "channel")
           .map((i) => [i.id, i.s, effectiveDepth(doc, i), i.scale, i.visible]),
       );
-    if (signature(p) !== signature(this.project)) {
-      this.membraneGroup.traverse((o) => {
+    if (
+      p.membraneEnabled !== false &&
+      signature(p) !== signature(this.project)
+    ) {
+      this.membraneGroup?.traverse((o) => {
         if (o.geometry && o.geometry !== sphere && o.geometry !== cylinder)
           o.geometry.dispose();
         o.material?.dispose();
       });
-      this.membraneGroup.removeFromParent();
+      this.membraneGroup?.removeFromParent();
       this.membrane(p);
     }
     this.updateFrame(p);
@@ -960,7 +967,7 @@ export class StudioScene {
         normal.clone().negate(),
         this.controls.target,
       );
-      this.membraneGroup.traverse((o) => {
+      this.membraneGroup?.traverse((o) => {
         if (o.material && o.material.clippingPlanes)
           o.material.clippingPlanes = this.project.cut ? [this.clip] : [];
       });

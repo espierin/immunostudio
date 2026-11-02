@@ -1,9 +1,10 @@
 import { sourceStyles } from "./palettes.js";
+import { evaluateTimeline, framePlan } from "./animation.js";
 export const clone = (x) => structuredClone(x);
 export const uid = () => crypto.randomUUID();
 export const presets = {
   basis: {
-    name: "Basis set 2026",
+    name: "Default",
     background: "#f4f7fa",
     head: "#a9c6e2",
     tail: "#80b2d8",
@@ -40,6 +41,15 @@ export const presets = {
   },
   ...sourceStyles,
 };
+export const presetOrder = [
+  "basis",
+  "umcu",
+  "nordicLight",
+  "nordicDark",
+  "efi",
+  "light",
+  "dark",
+];
 export const catalog = [
   {
     kind: "hla",
@@ -132,6 +142,7 @@ export function newProject({ demo = false } = {}) {
     depth: 12,
     fade: 0.45,
     cut: true,
+    membraneEnabled: demo,
     style: clone(presets.basis),
     duration: 8,
     camera: { position: [20, 14, 32], target: [0, 2, 0], zoom: 1 },
@@ -348,75 +359,7 @@ export function snapshot(p) {
   };
 }
 export function evaluate(p, time) {
-  const out = clone(p);
-  if (!p.keys.length) return out;
-  const keys = [...p.keys].sort((a, b) => a.time - b.time);
-  let a = keys[0],
-    b = keys.at(-1);
-  if (time <= a.time) b = a;
-  else if (time >= b.time) a = b;
-  else
-    for (let i = 0; i < keys.length - 1; i++)
-      if (time >= keys[i].time && time <= keys[i + 1].time) {
-        a = keys[i];
-        b = keys[i + 1];
-        break;
-      }
-  const t = a === b ? 0 : (time - a.time) / (b.time - a.time);
-  const mix = (x, y) => x + (y - x) * t;
-  for (const item of out.items) {
-    const x = a.state.items.find((i) => i.id === item.id),
-      y = b.state.items.find((i) => i.id === item.id);
-    if (x && y) {
-      for (const k of [
-        "s",
-        "depth",
-        "x",
-        "y",
-        "z",
-        "rotation",
-        "scale",
-        "hinge",
-      ])
-        item[k] = mix(x[k], y[k]);
-      item.rotationX = mix(x.rotationX || 0, y.rotationX || 0);
-      item.rotationY = mix(x.rotationY || 0, y.rotationY || 0);
-      if (Number.isInteger(x.level) || Number.isInteger(y.level)) {
-        const dx = effectiveDepth(p, { ...item, ...x }),
-          dy = effectiveDepth(p, { ...item, ...y });
-        item.level = null;
-        if (item.anchored) item.depth = mix(dx, dy);
-        else item.z = mix(dx, dy);
-      }
-      item.visible = t < 0.5 ? x.visible : y.visible;
-    }
-  }
-  out.camera = {
-    anchorId: a.state.camera.anchorId,
-    mode: a.state.camera.mode,
-    projection: a.state.camera.projection,
-    position: a.state.camera.position.map((x, i) =>
-      mix(x, b.state.camera.position[i]),
-    ),
-    target: a.state.camera.target.map((x, i) =>
-      mix(x, b.state.camera.target[i]),
-    ),
-    zoom: mix(a.state.camera.zoom, b.state.camera.zoom),
-  };
-  if (out.camera.anchorId && out.camera.mode !== "free") {
-    const item = out.items.find((i) => i.id === out.camera.anchorId);
-    if (item) {
-      const pos = item.anchored
-        ? frame(out, item).position
-        : [item.x, item.y, effectiveDepth(out, item)];
-      if (out.camera.mode !== "look")
-        out.camera.position = out.camera.position.map(
-          (x, k) => x + pos[k] - out.camera.target[k],
-        );
-      out.camera.target = pos;
-    }
-  }
-  return out;
+  return evaluateTimeline(p, time, { frame, effectiveDepth });
 }
 export function validateProject(p) {
   if (
@@ -431,6 +374,28 @@ export function validateProject(p) {
     if (!Number.isFinite(p[k]) || p[k] <= 0 || p[k] > 120)
       throw Error("Ongeldige afmetingen of tijdsduur.");
   validateStyle(p.style);
+  if (p.membraneEnabled === undefined)
+    p.membraneEnabled =
+      p.items.some((i) => i.anchored && i.visible) ||
+      JSON.stringify(p.curve) !== JSON.stringify(newProject().curve);
+  if (p.animation) {
+    framePlan(p);
+    const a = p.animation;
+    if (
+      ![12, 24, 25, 30, 50, 60].includes(a.fps) ||
+      ![a.startFrame, a.endFrame, a.frameStep, a.width, a.height].every(
+        Number.isFinite,
+      ) ||
+      a.width < 320 ||
+      a.width > 3840 ||
+      a.height < 240 ||
+      a.height > 2160 ||
+      a.startFrame < 1 ||
+      a.endFrame < a.startFrame ||
+      a.frameStep < 1
+    )
+      throw Error("Invalid animation settings.");
+  }
   if (p.sheet) {
     if (
       p.sheet.version !== 1 ||
@@ -541,6 +506,8 @@ export function validateProject(p) {
   return p;
 }
 export function validateStyle(s) {
+  if (["Basis set 2026", "Basic set 2026"].includes(s?.name))
+    s.name = "Default";
   if (["UMCU · Hyderabad", "UMCU Hyderabad"].includes(s?.name))
     s.name = "UMC Utrecht";
   for (const k of Object.keys(presets.basis).filter((x) => x !== "name"))

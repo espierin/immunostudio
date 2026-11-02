@@ -1,4 +1,25 @@
 export const explanations = {
+  nodes: [
+    "Klik een vectoronderdeel om zijn ankerpunten en Bézier-handvatten te bewerken.",
+    "Click a vector part to edit its anchor points and Bézier handles.",
+  ],
+  "to-membrane": [
+    "Zet de geselecteerde lijn of vorm om in een lipidendubbellaag. Gesloten vormen worden vesikels.",
+    "Convert the selected line or shape to a lipid bilayer. Closed shapes become vesicles.",
+  ],
+  "select-all": [
+    "Selecteer alle zichtbare elementen op het blad.",
+    "Select all visible objects on the page.",
+  ],
+  "select-none": ["Maak de selectie leeg.", "Clear the selection."],
+  "invert-selection": [
+    "Selecteer alle zichtbare elementen die nu niet geselecteerd zijn.",
+    "Select all visible objects that are currently not selected.",
+  ],
+  "node-add": [
+    "Verdeel het gekozen lijn- of Béziersegment in twee segmenten zonder de vorm te veranderen.",
+    "Split the chosen line or Bézier segment into two without changing its shape.",
+  ],
   front: [
     "Plaats de selectie vóór alle andere elementen.",
     "Move the selection in front of all other objects.",

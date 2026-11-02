@@ -2,9 +2,9 @@ import { english, translateDynamic } from "./translations.js";
 const storageKey =
   "immunostudio-language" +
   (new URLSearchParams(location.search).has("qa") ? "-qa" : "");
-let language = "nl";
+let language = "en";
 try {
-  language = localStorage.getItem(storageKey) === "en" ? "en" : "nl";
+  language = localStorage.getItem(storageKey) === "nl" ? "nl" : "en";
 } catch {}
 const originals = new WeakMap();
 export function translate(text, lang = language) {

@@ -1,4 +1,16 @@
 import { uid, clone } from "./model.js";
+import { shapeMembrane } from "./shape-membrane.js";
+import {
+  parsePath,
+  pathData,
+  pathPoints,
+  movePathPoint,
+  splitPathSegment,
+  elementPath,
+  vectorElements,
+  annotateVectors,
+  updateVectorPath,
+} from "./vector-nodes.js";
 import { recolorSourceColor } from "./palettes.js";
 import { isCellElement, enhanceCellVector } from "./cell-look.js";
 import { membraneMarkup, membranePoints } from "./membrane2d.js";
@@ -213,6 +225,7 @@ export class Drawing2D {
             ? "2D: selecteren, slepen en hoekpunten schalen."
             : "2D: " + tool + " tekenen.",
     );
+    this.render();
   }
   select(ids) {
     this.selected = [...new Set(ids)];
@@ -325,6 +338,7 @@ export class Drawing2D {
     if (this.marquee)
       html += `<rect x="${this.marquee.x}" y="${this.marquee.y}" width="${this.marquee.w}" height="${this.marquee.h}" fill="#0077b610" stroke="#0077b6" stroke-dasharray="5 3"/>`;
     this.svg.innerHTML = html;
+    this.renderVectorNodes();
   }
   itemMarkup(i) {
     if (i.kind === "membrane") return membraneMarkup(i, this.style);
@@ -354,6 +368,9 @@ export class Drawing2D {
           recolorSourceColor(hex, this.style),
         );
         if (i.volumeLook) markup = enhanceCellVector(markup, i.id);
+        markup = annotateVectors(markup);
+        if (this.cache.size >= 80)
+          this.cache.delete(this.cache.keys().next().value);
         this.cache.set(key, markup);
       }
       return markup.replace(
@@ -416,6 +433,51 @@ export class Drawing2D {
           panX: this.doc.panX,
           panY: this.doc.panY,
         };
+        return;
+      }
+      if (this.tool === "nodes" && curveHandle === undefined) {
+        const point = e.target.closest("[data-vector-point]")?.dataset
+          .vectorPoint;
+        if (point !== undefined && this.nodeEdit) {
+          const item = this.doc.items.find(
+            (i) => i.id === this.nodeEdit.itemId,
+          );
+          if (!item || item.locked) return;
+          const source = this.svg.querySelector(
+            `[data-entity="${item.id}"] [data-node-path="${this.nodeEdit.index}"]`,
+          );
+          this.beforeChange();
+          this.nodeEdit.selectedPoint = +point;
+          interaction = {
+            type: "vector-point",
+            start: p,
+            item,
+            point: +point,
+            commands: clone(this.nodeEdit.commands),
+            inverse: source.getScreenCTM().inverse(),
+          };
+          return;
+        }
+        const source = e.target.closest("[data-node-path]"),
+          item = this.doc.items.find((i) => i.id === hit);
+        if (source && item?.kind === "svg" && !item.locked) {
+          const index = +source.dataset.nodePath,
+            doc = new DOMParser().parseFromString(item.svg, "image/svg+xml");
+          this.selected = [item.id];
+          this.nodeEdit = {
+            itemId: item.id,
+            index,
+            commands: elementPath(vectorElements(doc)[index]),
+            currentSVG: item.svg,
+          };
+          this.render();
+          this.onSelect(this.selected);
+        } else if (item?.kind === "membrane") {
+          this.select([hit]);
+        } else {
+          this.nodeEdit = null;
+          this.render();
+        }
         return;
       }
       if (handle) {
@@ -548,6 +610,25 @@ export class Drawing2D {
       if (x.type === "pan") {
         this.doc.panX += dx;
         this.doc.panY += dy;
+        this.render();
+        return;
+      }
+      if (x.type === "vector-point") {
+        const local = new DOMPoint(e.clientX, e.clientY).matrixTransform(
+          x.inverse,
+        );
+        this.nodeEdit.commands = movePathPoint(
+          x.commands,
+          x.point,
+          local.x,
+          local.y,
+        );
+        x.item.svg = updateVectorPath(
+          x.item.svg,
+          this.nodeEdit.index,
+          this.nodeEdit.commands,
+        );
+        this.nodeEdit.currentSVG = x.item.svg;
         this.render();
         return;
       }
@@ -795,6 +876,7 @@ export class Drawing2D {
       if (field) {
         this.beforeChange();
         for (const item of this.selectedItems()) {
+          if (item.locked && field !== "locked") continue;
           const value =
             e.target.type === "checkbox"
               ? e.target.checked
@@ -869,9 +951,28 @@ export class Drawing2D {
     });
   }
   command(cmd) {
-    const items = this.selectedItems();
+    let items = this.selectedItems();
     if (cmd === "select-all") {
       this.select(this.doc.items.filter((i) => i.visible).map((i) => i.id));
+      return;
+    }
+    if (cmd === "select-none") {
+      this.nodeEdit = null;
+      this.select([]);
+      return;
+    }
+    if (cmd === "invert-selection") {
+      this.select(
+        this.doc.items
+          .filter((i) => i.visible && !this.selected.includes(i.id))
+          .map((i) => i.id),
+      );
+      return;
+    }
+    if (cmd === "select-unlocked") {
+      this.select(
+        this.doc.items.filter((i) => i.visible && !i.locked).map((i) => i.id),
+      );
       return;
     }
     if (cmd === "copy") {
@@ -894,8 +995,38 @@ export class Drawing2D {
       this.onSelect(this.selected);
       return;
     }
+    items = items.filter((i) => !i.locked);
     this.beforeChange();
-    if (cmd === "delete")
+    if (cmd === "to-membrane") {
+      try {
+        for (const item of items) {
+          if (item.locked) continue;
+          Object.assign(item, shapeMembrane(item));
+        }
+      } catch (error) {
+        this.onStatus(error.message);
+      }
+    } else if (cmd === "node-add" && this.nodeEdit) {
+      const edit = this.nodeEdit,
+        item = items[0],
+        point = pathPoints(edit.commands)[edit.selectedPoint || 0];
+      const index = Math.max(1, point?.command || 1);
+      try {
+        edit.commands = splitPathSegment(edit.commands, index);
+        item.svg = updateVectorPath(item.svg, edit.index, edit.commands);
+        edit.currentSVG = item.svg;
+      } catch (error) {
+        this.onStatus(error.message);
+      }
+    } else if (cmd === "rotate-left" || cmd === "rotate-right")
+      items
+        .filter((i) => !i.locked)
+        .forEach(
+          (i) =>
+            (i.rotation =
+              (i.rotation || 0) + (cmd === "rotate-left" ? -90 : 90)),
+        );
+    else if (cmd === "delete")
       this.doc.items = this.doc.items.filter(
         (i) => !this.selected.includes(i.id) || i.locked,
       );
@@ -915,7 +1046,7 @@ export class Drawing2D {
       items.forEach((i) => (i.groupId = groupId));
     } else if (cmd === "ungroup") items.forEach((i) => delete i.groupId);
     else if (cmd === "front" || cmd === "back") {
-      const rest = this.doc.items.filter((i) => !this.selected.includes(i.id));
+      const rest = this.doc.items.filter((i) => !items.includes(i));
       this.doc.items =
         cmd === "front" ? [...rest, ...items] : [...items, ...rest];
     } else if (cmd === "forward" || cmd === "backward") {
@@ -939,12 +1070,12 @@ export class Drawing2D {
       distributeItems(items, cmd.slice(-1));
     this.notify();
   }
-  propertiesHTML() {
+  propertiesHTML(includeTools = false) {
     const items = this.selectedItems(),
       i = items[0];
     const number = (title, key, value) =>
       `<label>${title}<input type="number" data-sheet-field="${key}" value="${Math.round(value * 100) / 100}" step="1"></label>`;
-    return `<div class="details-body"><strong ${i ? "data-no-translate" : ""}>${items.length > 1 ? items.length + " geselecteerde elementen" : i ? escape(i.name) : "2D tekenblad"}</strong>${i ? `<label>Naam<input data-sheet-field="name" value="${escape(i.name)}"></label><div class="coordinates">${number("X", "x", i.x)}${number("Y", "y", i.y)}</div><div class="coordinates">${number("Breedte", "w", i.w)}${number("Hoogte", "h", i.h)}</div>${number("Rotatie (°)", "rotation", i.rotation || 0)}<label>Dekking<input type="range" data-sheet-field="opacity" min="0" max="1" step=".05" value="${i.opacity}"></label>${i.kind === "membrane" ? `<div class="hinge-box"><strong>Lipidendubbellaag</strong>${number("Membraandikte", "bilayerThickness", i.bilayerThickness || 34)}<p class="muted">${(i.curve.length - 1) / 3 + 1} curvepunten. Sleep de punten en oranje handvatten. Dubbelklik op het membraan om een extra punt toe te voegen.</p><button data-sheet-action="add-curve-point">＋ Punt toevoegen</button></div>` : ""}${i.kind === "text" ? `<label>Tekst<textarea data-sheet-field="text">${escape(i.text)}</textarea></label>${number("Tekstgrootte", "fontSize", i.fontSize)}<label class="check"><input type="checkbox" data-sheet-field="bold" ${i.bold ? "checked" : ""}> Vet</label>` : ""}${i.kind !== "svg" ? `<div class="row"><label>Vulling <input type="color" data-sheet-field="fill" value="${i.fill || "#ffffff"}"></label><label>Contour <input type="color" data-sheet-field="stroke" value="${i.stroke || "#064986"}"></label></div>${number("Lijndikte", "strokeWidth", i.strokeWidth || 3)}` : '<p class="muted">Native vector. Verhoudingen blijven behouden bij slepen van de hoekpunten.</p>'}${i.kind === "svg" && isCellElement(i) ? `<label class="check"><input type="checkbox" data-sheet-field="volumeLook" ${i.volumeLook ? "checked" : ""}> Volumewerking</label>` : ""}${i.kind === "svg" ? `<div class="hinge-box"><strong>3D-variant</strong><p class="muted">Maak een draaibaar, schematisch volume van deze vector. De 2D-bron blijft behouden.</p><button class="wide" data-action="create-3d-variant">⬡ Open 3D-variant</button></div>` : ""}<label class="check"><input type="checkbox" data-sheet-field="locked" ${i.locked ? "checked" : ""}> Vergrendeld</label><div class="row"><button data-sheet-action="duplicate">Dupliceren</button><button data-sheet-action="delete" class="danger">Verwijderen</button></div>` : '<p class="muted">Voeg een losse bouwsteen toe of teken een vorm. Shift-klik voor meervoudige selectie.</p>'}<div class="sheet-arrange"><strong>Ordenen</strong><div class="view-buttons">${[
+    const html = `<div class="details-body"><strong ${i ? "data-no-translate" : ""}>${items.length > 1 ? items.length + " geselecteerde elementen" : i ? escape(i.name) : "2D tekenblad"}</strong>${i ? `<label>Naam<input data-sheet-field="name" value="${escape(i.name)}"></label><div class="coordinates">${number("X", "x", i.x)}${number("Y", "y", i.y)}</div><div class="coordinates">${number("Breedte", "w", i.w)}${number("Hoogte", "h", i.h)}</div>${number("Rotatie (°)", "rotation", i.rotation || 0)}<label>Dekking<input type="range" data-sheet-field="opacity" min="0" max="1" step=".05" value="${i.opacity}"></label>${i.kind === "membrane" ? `<div class="hinge-box"><strong>Lipidendubbellaag</strong>${number("Membraandikte", "bilayerThickness", i.bilayerThickness || 34)}<p class="muted">${(i.curve.length - 1) / 3 + 1} curvepunten. Sleep de punten en oranje handvatten. Dubbelklik op het membraan om een extra punt toe te voegen.</p><button data-sheet-action="add-curve-point">＋ Punt toevoegen</button></div>` : ""}${i.kind === "text" ? `<label>Tekst<textarea data-sheet-field="text">${escape(i.text)}</textarea></label>${number("Tekstgrootte", "fontSize", i.fontSize)}<label class="check"><input type="checkbox" data-sheet-field="bold" ${i.bold ? "checked" : ""}> Vet</label>` : ""}${i.kind !== "svg" ? `<div class="row"><label>Vulling <input type="color" data-sheet-field="fill" value="${i.fill || "#ffffff"}"></label><label>Contour <input type="color" data-sheet-field="stroke" value="${i.stroke || "#064986"}"></label></div>${number("Lijndikte", "strokeWidth", i.strokeWidth || 3)}` : '<p class="muted">Native vector. Verhoudingen blijven behouden bij slepen van de hoekpunten.</p>'}${i.kind === "svg" && isCellElement(i) ? `<label class="check"><input type="checkbox" data-sheet-field="volumeLook" ${i.volumeLook ? "checked" : ""}> Volumewerking</label>` : ""}<label class="check"><input type="checkbox" data-sheet-field="locked" ${i.locked ? "checked" : ""}> Vergrendeld</label><div class="row"><button data-sheet-action="duplicate">Dupliceren</button><button data-sheet-action="delete" class="danger">Verwijderen</button></div>` : '<p class="muted">Voeg een losse bouwsteen toe of teken een vorm. Shift-klik voor meervoudige selectie.</p>'}<div class="sheet-arrange"><strong>Ordenen</strong><div class="view-buttons">${[
       ["front", "Vooraan"],
       ["back", "Achteraan"],
       ["forward", "Vooruit"],
@@ -971,6 +1102,81 @@ export class Drawing2D {
       .join(
         "",
       )}</div><div class="row"><button data-sheet-action="distribute-x">Verdelen X</button><button data-sheet-action="distribute-y">Verdelen Y</button></div></div><label>Bladbreedte<input type="number" data-sheet-page="width" min="100" max="10000" value="${this.doc.width}"></label><label>Bladhoogte<input type="number" data-sheet-page="height" min="100" max="10000" value="${this.doc.height}"></label><label>Bladkleur<input type="color" data-sheet-page="background" value="${this.doc.background}"></label><label class="check"><input type="checkbox" data-sheet-page="grid" ${this.doc.grid ? "checked" : ""}> Raster tonen</label><label class="check"><input type="checkbox" data-sheet-page="snap" ${this.doc.snap ? "checked" : ""}> Op raster uitlijnen</label><p class="muted">Ctrl+A selecteren · Ctrl+D dupliceren · Ctrl+G groeperen · Shift+Ctrl+G losmaken · pijltjes verplaatsen.</p></div>`;
+    return includeTools
+      ? html
+      : html.slice(0, html.indexOf('<div class="sheet-arrange">')) + "</div>";
+  }
+  toolsHTML() {
+    const button = (cmd, label) =>
+      `<button data-sheet-action="${cmd}">${label}</button>`;
+    const html = this.propertiesHTML(true),
+      tail = html.slice(html.indexOf('<div class="sheet-arrange">'));
+    return `<div class="details-body drawing-details"><h2>Tekenen</h2><p class="muted">${this.selected.length} geselecteerde elementen</p><strong>Selectie</strong><div class="drawing-grid">${[
+      ["select-all", "Alles selecteren"],
+      ["select-none", "Niets selecteren"],
+      ["invert-selection", "Selectie omkeren"],
+      ["select-unlocked", "Onvergrendeld"],
+    ]
+      .map(([c, l]) => button(c, l))
+      .join("")}</div><strong>Gereedschap</strong><div class="drawing-grid">${[
+      ["select", "Selecteren"],
+      ["move", "Verplaatsen"],
+      ["rotate", "Draaien"],
+      ["nodes", "Punten bewerken"],
+    ]
+      .map(
+        ([c, l]) =>
+          `<button data-sheet-tool="${c}" class="${this.tool === c ? "active" : ""}">${l}</button>`,
+      )
+      .join(
+        "",
+      )}</div><p class="muted">Kies Punten bewerken en klik een onderdeel van een vectorbouwsteen. Sleep blauwe ankerpunten en oranje handvatten.</p>${this.nodeEdit ? button("node-add", "Punt toevoegen") : ""}<strong>Bewerken</strong><div class="drawing-grid">${[
+      ["to-membrane", "Omzetten naar membraan"],
+      ["copy", "Kopiëren"],
+      ["paste", "Plakken"],
+      ["duplicate", "Dupliceren"],
+      ["delete", "Verwijderen"],
+      ["rotate-left", "90° linksom"],
+      ["rotate-right", "90° rechtsom"],
+    ]
+      .map(([c, l]) => button(c, l))
+      .join("")}</div>${tail}`;
+  }
+  renderVectorNodes() {
+    if (this.tool !== "nodes" || !this.nodeEdit) return;
+    const edit = this.nodeEdit,
+      item = this.doc.items.find((i) => i.id === edit.itemId);
+    if (!item || !this.selected.includes(item.id)) return;
+    if (item.svg !== edit.currentSVG) {
+      this.nodeEdit = null;
+      return;
+    }
+    const source = this.svg.querySelector(
+      `[data-entity="${item.id}"] [data-node-path="${edit.index}"]`,
+    );
+    if (!source) return;
+    const matrix = this.svg
+        .getScreenCTM()
+        .inverse()
+        .multiply(source.getScreenCTM()),
+      scale =
+        1 / Math.hypot(this.svg.getScreenCTM().a, this.svg.getScreenCTM().b);
+    const points = pathPoints(edit.commands);
+    let markup = "";
+    for (let n = 0; n < points.length; n++) {
+      const point = points[n],
+        p = new DOMPoint(point.x, point.y).matrixTransform(matrix);
+      if (point.control && n) {
+        const prior = points[n - 1],
+          a = new DOMPoint(prior.x, prior.y).matrixTransform(matrix);
+        markup += `<line x1="${a.x}" y1="${a.y}" x2="${p.x}" y2="${p.y}" stroke="#F15B4A" stroke-width="${scale}"/>`;
+      }
+      markup += `<circle data-vector-point="${n}" cx="${p.x}" cy="${p.y}" r="${(point.control ? 4 : 6) * scale}" fill="${point.control ? "#F15B4A" : "#0077B6"}" stroke="white" stroke-width="${1.5 * scale}"/>`;
+    }
+    this.svg.insertAdjacentHTML(
+      "beforeend",
+      `<g class="vector-node-handles">${markup}</g>`,
+    );
   }
   layersHTML() {
     return [...this.doc.items]

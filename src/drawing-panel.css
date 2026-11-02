@@ -1,0 +1,124 @@
+.inspector-tabs {
+  display: flex;
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: #fff;
+  border-bottom: 1px solid #d8e3ea;
+  padding: 10px;
+  gap: 6px;
+}
+.workspace {
+  min-height: 0;
+  height: 100%;
+}
+#viewport {
+  flex-basis: 0;
+}
+#viewport > canvas {
+  position: absolute;
+  inset: 0;
+}
+[data-editor="3d"] #basis-representation {
+  display: none !important;
+}
+#animation-settings > strong {
+  display: block;
+  margin: 16px 0 8px;
+}
+#animation-settings > button {
+  width: 100%;
+  margin-top: 8px;
+}
+.inspector-tabs button {
+  flex: 1;
+}
+.inspector-tabs button.active {
+  border-bottom: 3px solid #0077b6;
+}
+.drawing-details h2 {
+  font-size: 16px;
+  margin: 12px 0;
+}
+.drawing-details > strong {
+  display: block;
+  margin: 15px 0 8px;
+}
+.drawing-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.drawing-grid button {
+  font-size: 12px;
+  min-height: 34px;
+}
+.vector-node-handles circle {
+  cursor: crosshair;
+}
+.vector-node-handles line {
+  pointer-events: none;
+}
+.sheet-canvas[data-tool="nodes"] [data-node-path] {
+  cursor: crosshair;
+}
+.sheet-canvas[data-tool="nodes"] .sheet-selection {
+  display: none;
+}
+[hidden] {
+  display: none !important;
+}
+[data-editor="3d"] #drawing-tools {
+  display: none;
+}
+[data-editor="2d"] .timeline,
+[data-editor="2d"] [data-action="create-3d-variant"],
+[data-editor="2d"] [data-action="create-all-3d-variants"] {
+  display: none !important;
+}
+[data-editor="2d"] .workspace {
+  grid-template-rows: auto 1fr;
+}
+[data-editor="2d"] #inspector-properties .three-properties {
+  display: none !important;
+}
+[data-editor="2d"] .three-source-controls {
+  display: none;
+}
+.three-source-controls {
+  display: flex;
+  gap: 6px;
+  padding: 10px;
+  flex-wrap: wrap;
+}
+.three-source-controls button {
+  font-size: 11px;
+}
+.drawing-details .sheet-arrange {
+  margin-top: 6px;
+}
+.drawing-details [data-sheet-action="to-membrane"] {
+  grid-column: 1/-1;
+}
+.keyframe-list {
+  display: grid;
+  gap: 5px;
+  margin-top: 12px;
+}
+.keyframe-row {
+  display: grid;
+  grid-template-columns: 55px 1fr 70px 25px;
+  gap: 4px;
+  align-items: center;
+  font-size: 10px;
+}
+.keyframe-row input,
+.keyframe-row select {
+  padding: 4px !important;
+  min-width: 0;
+}
+.keyframe-row span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

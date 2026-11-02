@@ -251,6 +251,61 @@ Engels|English
 UMC Utrecht|UMC Utrecht
 Gereed|Ready
 Start opnieuw in 2D|Restart in 2D
+Default|Default
+Tekenen|Drawing
+Werkpanelen|Workspace panels
+Selectie|Selection
+Gereedschap|Tools
+Bewerken|Edit
+Alles selecteren|Select all
+Niets selecteren|Deselect all
+Selectie omkeren|Invert selection
+Onvergrendeld|Unlocked objects
+Punten bewerken|Edit nodes
+Punt toevoegen|Add node
+Kopiëren|Copy
+Plakken|Paste
+90° linksom|Rotate 90° left
+90° rechtsom|Rotate 90° right
+Omzetten naar membraan|Convert to membrane
+Kies Punten bewerken en klik een onderdeel van een vectorbouwsteen. Sleep blauwe ankerpunten en oranje handvatten.|Choose Edit nodes and click a part of a vector element. Drag blue anchor points and orange handles.
+Membraan tonen|Show membrane
+3D uit 2D-tekening|3D from 2D drawing
+Vesikel toevoegen|Add vesicle
+Animatie en render|Animation & render
+Keyframes bepalen camera- en objectbeweging. Tussenframes worden automatisch berekend.|Keyframes control camera and object motion. In-between frames are calculated automatically.
+Framerate|Frame rate
+Startframe|Start frame
+Eindframe|End frame
+Framestap|Frame step
+Renderbreedte|Render width
+Renderhoogte|Render height
+Interpolatie|Interpolation
+Lineair|Linear
+Vloeiend · Bézier|Smooth · Bézier
+Keyframe voor|Keyframe target
+Scène en camera|Scene and camera
+Geselecteerd object|Selected object
+Alleen camera|Camera only
+Automatische keyframes|Auto keying
+Herhalen|Loop
+Keyframe invoegen|Insert keyframe
+Camera-acties|Camera actions
+Dolly naar focus|Dolly towards focus
+Zoom naar focus|Zoom towards focus
+Pan horizontaal|Pan horizontally
+Object 360° draaien|Rotate object 360°
+Keyframe verwijderen|Delete keyframe
+Renderinstellingen|Render settings
+Kies een lijn, vrije lijn, cirkel, ellips of rechthoek.|Choose a line, freehand line, circle, ellipse or rectangle.
+Gebruik één doorlopende lijn.|Use a single continuous line.
+De lijn heeft minstens twee punten nodig.|The line needs at least two points.
+Klik een vectoronderdeel om zijn ankerpunten en Bézier-handvatten te bewerken.|Click a vector part to edit its anchor points and Bézier handles.
+Zet de geselecteerde lijn of vorm om in een lipidendubbellaag. Gesloten vormen worden vesikels.|Convert the selected line or shape to a lipid bilayer. Closed shapes become vesicles.
+Selecteer alle zichtbare elementen op het blad.|Select all visible objects on the page.
+Maak de selectie leeg.|Clear the selection.
+Selecteer alle zichtbare elementen die nu niet geselecteerd zijn.|Select all visible objects that are currently not selected.
+Verdeel het gekozen lijn- of Béziersegment in twee segmenten zonder de vorm te veranderen.|Split the chosen line or Bézier segment into two without changing its shape.
 Beschikbaar in de lokale desktopversie.|Available in the local desktop version.
 EMF/WMF en MP4/AVI/GIF zijn beschikbaar in de lokale desktopversie. Online kun je PNG, SVG en projectbestanden exporteren; in 3D ook WebM en PNG-frames.|EMF/WMF and MP4/AVI/GIF are available in the local desktop version. Online you can export PNG, SVG and project files; in 3D also WebM and PNG frames.
 ⤷ Conformatie|⤷ Conformation
@@ -333,7 +388,32 @@ export const english = Object.fromEntries(
     .filter(Boolean)
     .map((line) => line.split("|")),
 );
+Object.assign(english, {
+  "2D: gebruik Tekenen voor selecteren, uitlijnen en punten bewerken. Kies Punten bewerken en klik op een deel van een SVG-bouwsteen. Blauwe punten zijn ankers; oranje punten zijn Bézier-handvatten.":
+    "2D: use Drawing for selection, alignment and node editing. Choose Edit nodes and click a part of an SVG element. Blue points are anchors; orange points are Bézier handles.",
+  "Teken een lijn of ellips en kies Omzetten naar membraan. Een gesloten vorm wordt een vesikel. In 3D maakt 3D uit 2D-tekening een gekoppelde ruimtelijke variant.":
+    "Draw a line or ellipse and choose Convert to membrane. A closed shape becomes a vesicle. In 3D, use 3D from 2D drawing to create a linked volume variant.",
+  "3D: open Animatie en render. Kies het object of de camera als keyframe-doel. Leg een beginpose vast, verplaats de tijd, wijzig de pose en voeg een keyframe toe. Tussenframes worden automatisch berekend. Automatische keyframes leggen volgende transformaties vast.":
+    "3D: open Animation & render. Choose the object or camera as the keyframe target. Insert a starting pose, move the timeline, change the pose and insert another keyframe. In-between frames are calculated automatically. Auto keying records subsequent transformations.",
+  "Camera-acties maken een orbit, dolly, zoom of pan over het renderbereik. Stel framerate, start- en eindframe, framestap en afmetingen in voor export.":
+    "Camera actions create an orbit, dolly, zoom or pan across the render range. Set frame rate, start and end frame, frame step and output dimensions before export.",
+  "Schematische volumes behouden de basisfiguur. PDB-referenties kunnen fragmenten of complexen zijn; controleer de ketens vóór import. Projecten worden lokaal opgeslagen. Download een .immuno-bestand voor overdracht en backup.":
+    "Schematic volumes retain the basic illustration. PDB references may be fragments or complexes; check chains before import. Projects are stored locally. Download an .immuno file for transfer and backup.",
+  "Béziercurve bewerken": "Edit Bézier curve",
+  "Experimentele structuur": "Experimental structure",
+  "PDB-referenties kunnen fragmenten of complexen zijn. Controleer soort, allel, peptide en ketens.":
+    "PDB references may be fragments or complexes. Check species, allele, peptide and chains.",
+  "Schematisch 3D-volume. Geen eenduidige PDB-koppeling vastgesteld.":
+    "Schematic 3D volume. No unambiguous PDB reference established.",
+  "Zoek bij RCSB PDB": "Search RCSB PDB",
+  "MP4/AVI gebruiken de renderinstellingen. GIF: 12 fps, 800 px breed, maximaal 15 s. Een framestap groter dan 1 slaat frames over. WebM neemt in realtime op; PNG en lokale video renderen ieder gekozen frame.":
+    "MP4/AVI use the render settings. GIF: 12 fps, 800 px wide, up to 15 s. Frame steps above 1 skip frames. WebM records in real time; PNG and local video render every selected frame.",
+});
 const patterns = [
+  [
+    /^Huidig frame: (\d+)\. Camera-acties gebruiken het renderbereik\.$/,
+    "Current frame: $1. Camera actions use the render range.",
+  ],
   [/^(\d+) losse elementen · 2D en 3D$/, "$1 individual elements · 2D and 3D"],
   [/^(\d+) vectorobjecten · (.*)$/, "$1 vector objects · $2"],
   [/^(\d+) geselecteerde elementen$/, "$1 selected elements"],
@@ -358,7 +438,7 @@ const patterns = [
   [/^(.+) geëxporteerd(.*)$/, "$1 exported$2"],
   [/^(.+) voorbereiden…$/, "Preparing $1…"],
   [
-    /^(\d+) 3D-varianten? beschikbaar · bronvectoren behouden$/,
+    /^(\d+) 3D-variant(?:en)? beschikbaar · bronvectoren behouden$/,
     "$1 3D variants available · source vectors retained",
   ],
   [/^2D: (.+) tekenen\.$/, "2D: draw $1."],

@@ -1,621 +1,855 @@
 {
-  "date": "2026-11-02T10:34:19.619Z",
+  "date": "2026-11-02T12:19:01.028Z",
   "total": 190,
   "passed": 190,
   "assets": [
     {
       "file": "01_Cellen_en_immuniteit/basic_239_B_cell_receptor_free.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "B cell — receptor-free",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 5,
       "pathCount": 16,
-      "triangles": 21852,
+      "triangles": 36163,
       "warnings": [],
       "sourceTitle": "B cell — receptor-free",
       "size": [
         7.127833191853142,
         7.127528603715406,
-        1.2540193168995994
+        4.134653768078368
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_248_basophil_receptor_free.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "Basophil — receptor-free",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 92,
       "pathCount": 104,
-      "triangles": 134612,
+      "triangles": 140191,
       "warnings": [],
       "sourceTitle": "Basophil — receptor-free",
       "size": [
         7.125445095997936,
         6.9763044681189195,
-        1.413735124300111
+        4.220149049219096
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_165_erythrocyte_biconcave.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "Biconcave erythrocyte",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 2,
       "pathCount": 3,
-      "triangles": 7124,
+      "triangles": 19939,
       "warnings": [],
       "sourceTitle": "Biconcave erythrocyte",
       "size": [
         7.117462428270188,
         4.568677649033808,
-        1.2587842899086201
+        2.871147392070399
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_241_T_CD4_receptor_free.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "CD4 helper T cell — receptor-free",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 5,
       "pathCount": 16,
-      "triangles": 21852,
+      "triangles": 36163,
       "warnings": [],
       "sourceTitle": "CD4 helper T cell — receptor-free",
       "size": [
         7.127833191853142,
         7.127528603715406,
-        1.2540193168995994
+        4.134653768078368
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_242_T_CD8_receptor_free.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "Cytotoxic CD8 T cell — receptor-free",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 17,
       "pathCount": 28,
-      "triangles": 60684,
+      "triangles": 74995,
       "warnings": [],
       "sourceTitle": "Cytotoxic CD8 T cell — receptor-free",
       "size": [
         7.127833191853142,
         7.127528603715406,
-        1.2540193455910216
+        4.133903774302898
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_245_NK_cytotoxic_receptor_free.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "Cytotoxic NK cell — receptor-free",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 17,
       "pathCount": 28,
-      "triangles": 60684,
+      "triangles": 74995,
       "warnings": [],
       "sourceTitle": "Cytotoxic NK cell — receptor-free",
       "size": [
         7.127833191853142,
         7.127528603715406,
-        1.2540193455910216
+        4.133903774302898
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_131_T_CD8_effector_cartoon.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "Cytotoxic T cell",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 53,
       "pathCount": 100,
-      "triangles": 140004,
+      "triangles": 150157,
       "warnings": [],
       "sourceTitle": "Cytotoxic T cell",
       "size": [
         6.715382260328172,
         7.0662263079457235,
-        1.2540192505913734
+        3.004776667620316
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_158_dendritic_HLA_I_II.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "Dendritic cell with HLA-I and II",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 56,
       "pathCount": 84,
-      "triangles": 93980,
+      "triangles": 107850,
       "warnings": [],
       "sourceTitle": "Dendritic cell with HLA-I and II",
       "size": [
         7.038810151663401,
         4.948777470184373,
-        1.1995433830340922
+        3.0593046997531417
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_250_dendritic_receptor_free.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "Dendritic cell — receptor-free",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 5,
       "pathCount": 14,
-      "triangles": 20664,
+      "triangles": 34534,
       "warnings": [],
       "sourceTitle": "Dendritic cell — receptor-free",
       "size": [
         7.062860351238367,
         7.062860351238367,
-        1.2550866178593179
+        4.135543381309712
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_161_T_effector_granulated_alternative.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "Effector T-cell alternative",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 60,
       "pathCount": 107,
-      "triangles": 146410,
+      "triangles": 154641,
       "warnings": [],
       "sourceTitle": "Effector T-cell alternative",
       "size": [
         6.317683245452014,
         7.067727362019934,
-        1.2550498633149192
+        2.8254812894426116
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_247_eosinophil_receptor_free.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "Eosinophil — receptor-free",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 25,
       "pathCount": 37,
-      "triangles": 45112,
+      "triangles": 57927,
       "warnings": [],
       "sourceTitle": "Eosinophil — receptor-free",
       "size": [
         7.125445095997936,
         6.9763044681189195,
-        1.2641252436727848
+        4.071270474847758
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_153_macrophage_phagocyte.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "Macrophage",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 24,
       "pathCount": 34,
-      "triangles": 42412,
+      "triangles": 55227,
       "warnings": [],
       "sourceTitle": "Macrophage",
       "size": [
         7.125445095997936,
         6.9763044681189195,
-        1.2254108213028818
+        4.054491241023225
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_159_macrophage_phagocytosis.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "Macrophage and engulfed material",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 33,
       "pathCount": 44,
-      "triangles": 57156,
+      "triangles": 69971,
       "warnings": [],
       "sourceTitle": "Macrophage and engulfed material",
       "size": [
         7.089485305307157,
         6.640661607408738,
-        1.2560238560218981
+        3.910404119790937
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_251_macrophage_receptor_free.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "Macrophage — receptor-free",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 24,
       "pathCount": 34,
-      "triangles": 42412,
+      "triangles": 55227,
       "warnings": [],
       "sourceTitle": "Macrophage — receptor-free",
       "size": [
         7.125445095997936,
         6.9763044681189195,
-        1.2254108213028818
+        4.054491241023225
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_252_mast_cell_receptor_free.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "Mast cell — receptor-free",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 24,
       "pathCount": 35,
-      "triangles": 41740,
+      "triangles": 54555,
       "warnings": [],
       "sourceTitle": "Mast cell — receptor-free",
       "size": [
         7.125445095997936,
         6.9763044681189195,
-        1.2550498854439214
+        4.069287282116008
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_243_T_memory_receptor_free.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "Memory T cell — receptor-free",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 5,
       "pathCount": 16,
-      "triangles": 21872,
+      "triangles": 34687,
       "warnings": [],
       "sourceTitle": "Memory T cell — receptor-free",
       "size": [
         7.125445095997936,
         6.9763044681189195,
-        1.255049853954675
+        4.070237249698279
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_160_T_memory_round_alternative.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "Memory T-cell alternative",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 41,
       "pathCount": 88,
-      "triangles": 136418,
+      "triangles": 140287,
       "warnings": [],
       "sourceTitle": "Memory T-cell alternative",
       "size": [
         6.317683245452014,
         7.067727362019934,
-        1.2550498633149192
+        2.825537818623399
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_154_monocyte_kidney_nucleus.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "Monocyte",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 5,
       "pathCount": 15,
-      "triangles": 22544,
+      "triangles": 35359,
       "warnings": [],
       "sourceTitle": "Monocyte",
       "size": [
         7.125445095997936,
         6.9763044681189195,
-        1.2254107898136355
+        4.055534416774534
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_249_monocyte_receptor_free.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "Monocyte — receptor-free",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 5,
       "pathCount": 15,
-      "triangles": 22544,
+      "triangles": 35359,
       "warnings": [],
       "sourceTitle": "Monocyte — receptor-free",
       "size": [
         7.125445095997936,
         6.9763044681189195,
-        1.2254107898136355
+        4.055534416774534
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_155_neutrophil_lobulated.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "Neutrophil",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 27,
       "pathCount": 38,
-      "triangles": 51736,
+      "triangles": 64551,
       "warnings": [],
       "sourceTitle": "Neutrophil",
       "size": [
         7.125445095997936,
         6.9763044681189195,
-        1.0461465412715696
+        3.9618908774177983
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_246_neutrophil_receptor_free.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "Neutrophil — receptor-free",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 27,
       "pathCount": 38,
-      "triangles": 51736,
+      "triangles": 64551,
       "warnings": [],
       "sourceTitle": "Neutrophil — receptor-free",
       "size": [
         7.125445095997936,
         6.9763044681189195,
-        1.0461465412715696
+        3.9618908774177983
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_132_NK_effector_cartoon.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "NK cell with lectin receptors",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 35,
       "pathCount": 99,
-      "triangles": 120284,
+      "triangles": 127287,
       "warnings": [],
       "sourceTitle": "NK cell with lectin receptors",
       "size": [
         7.07025311695962,
         6.741506206056698,
-        1.2540193512587186
+        3.0152653054104426
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_163_NK_inhibitory_alternative.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "NK cell with NKG2A",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 36,
       "pathCount": 89,
-      "triangles": 108508,
+      "triangles": 121323,
       "warnings": [],
       "sourceTitle": "NK cell with NKG2A",
       "size": [
         6.39154971095356,
         7.077187493858326,
-        1.2550498822531537
+        2.9102956232663564
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_244_NK_cell_receptor_free.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "NK cell — receptor-free",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 27,
       "pathCount": 40,
-      "triangles": 40412,
+      "triangles": 52042,
       "warnings": [],
       "sourceTitle": "NK cell — receptor-free",
       "size": [
         7.119401702710056,
         7.119178134071457,
-        1.5017712616539758
+        4.382353994686242
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_08_NK_cytotoxic.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "NK cytotoxic",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 76,
       "pathCount": 134,
-      "triangles": 131120,
+      "triangles": 135442,
       "warnings": [],
       "sourceTitle": "Cytotoxic NK cell",
       "size": [
         6.479135337087975,
         7.076644714279882,
-        1.4114324550786814
+        3.096908808624119
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_06_NK_NKG2A_positive.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "NK NKG2A positive",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 41,
       "pathCount": 94,
-      "triangles": 114596,
+      "triangles": 126226,
       "warnings": [],
       "sourceTitle": "NKG2A-positive NK cell",
       "size": [
         6.479135337087975,
         7.076644714279882,
-        1.4116547040530798
+        3.097220071139634
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_07_NK_NKG2C_adaptive.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "NK NKG2C adaptive",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 66,
       "pathCount": 124,
-      "triangles": 130432,
+      "triangles": 133242,
       "warnings": [],
       "sourceTitle": "NKG2C-positive NK cell",
       "size": [
         6.479135337087975,
         7.076644714279882,
-        1.4114746170809238
+        3.0969678003653023
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_162_NK_round_alternative.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "NK-cell alternative",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 42,
       "pathCount": 101,
-      "triangles": 120484,
+      "triangles": 125991,
       "warnings": [],
       "sourceTitle": "NK-cell alternative",
       "size": [
         6.39154971095356,
         7.077187493858326,
-        1.2550498822531535
+        2.910258231737415
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_253_plasma_cell_receptor_free.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "Plasma cell — receptor-free",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 5,
       "pathCount": 21,
-      "triangles": 24172,
+      "triangles": 36987,
       "warnings": [],
       "sourceTitle": "Plasma cell — receptor-free",
       "size": [
         7.124218557482568,
         6.0637465860242035,
-        1.2545980159367356
+        3.612267957669552
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_164_plasma_cell_eccentric.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "Plasma cell, eccentric nucleus",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 29,
       "pathCount": 81,
-      "triangles": 82636,
+      "triangles": 95451,
       "warnings": [],
       "sourceTitle": "Plasma cell, eccentric nucleus",
       "size": [
         7.075682286460961,
         4.684140244395971,
-        1.2545980020412764
+        2.9340444994840786
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_166_platelet_granules.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "Platelet",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 4,
       "pathCount": 4,
-      "triangles": 21580,
+      "triangles": 26986,
       "warnings": [],
       "sourceTitle": "Platelet",
       "size": [
         7.14841418683687,
         6.117077814805413,
-        0.6176968658002049
+        3.3042681312055104
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_152_dendritic_stellate.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "Stellate dendritic cell",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 5,
       "pathCount": 14,
-      "triangles": 20664,
+      "triangles": 34534,
       "warnings": [],
       "sourceTitle": "Stellate dendritic cell",
       "size": [
         7.062860351238367,
         7.062860351238367,
-        1.2550498585268175
+        4.135525001643462
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_02_T_CD8_cytotoxic.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "T CD8 cytotoxic",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 89,
       "pathCount": 134,
-      "triangles": 153860,
+      "triangles": 161332,
       "warnings": [],
       "sourceTitle": "Cytotoxic CD8 T cell",
       "size": [
         6.7137749436048235,
         7.072377180351873,
-        1.4074340014896771
+        3.0393075872330497
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_03_T_CD8_memory.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "T CD8 memory",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 79,
       "pathCount": 124,
-      "triangles": 153164,
+      "triangles": 158998,
       "warnings": [],
       "sourceTitle": "CD8 memory T cell",
       "size": [
         6.7137749436048235,
         7.072377180351873,
-        1.4074761249596337
+        3.0393665772143503
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_05_T_CD8_NKG2C_positive.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "T CD8 NKG2C positive",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 82,
       "pathCount": 135,
-      "triangles": 157846,
+      "triangles": 160530,
       "warnings": [],
       "sourceTitle": "NKG2C-positive CD8 T cell",
       "size": [
         6.434794165760585,
         7.07514502073235,
-        1.406914341229205
+        3.0318715190308336
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_01_T_CD8_resting.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "T CD8 resting",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 59,
       "pathCount": 104,
-      "triangles": 150206,
+      "triangles": 152890,
       "warnings": [],
       "sourceTitle": "CD8 T cell – resting",
       "size": [
         6.7137749436048235,
         7.072377180351873,
-        1.407584687073261
+        3.0395185470500667
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_240_T_cell_receptor_free.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "T cell — receptor-free",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 27,
       "pathCount": 40,
-      "triangles": 40412,
+      "triangles": 52042,
       "warnings": [],
       "sourceTitle": "T cell — receptor-free",
       "size": [
         7.119401702710056,
         7.119178134071457,
-        1.5017712616539758
+        4.382353994686242
       ]
     },
     {
       "file": "01_Cellen_en_immuniteit/basic_04_T_HLAE_restricted.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "T HLA-E restricted",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 79,
       "pathCount": 124,
-      "triangles": 153164,
+      "triangles": 158998,
       "warnings": [],
       "sourceTitle": "HLA-E-restricted CD8 T cell",
       "size": [
         6.7137749436048235,
         7.072377180351873,
-        1.4074761249596337
+        3.0393665772143503
       ]
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_128_allopeptide_shape_PIRCHE.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Allopeptide, groove shape",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 18,
       "pathCount": 26,
       "triangles": 31660,
@@ -629,9 +863,19 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_29_beta2_microglobulin.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1AKJ",
+          "title": "COMPLEX OF THE HUMAN MHC CLASS I GLYCOPROTEIN HLA-A2 AND THE T CELL CORECEPTOR CD8",
+          "url": "https://www.rcsb.org/structure/1AKJ"
+        }
+      },
       "title": "beta2 microglobulin",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 1,
       "pathCount": 2,
       "triangles": 5004,
@@ -645,9 +889,15 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_73_cardiomyocyte_HLA.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "cardiomyocyte HLA",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 24,
       "pathCount": 46,
       "triangles": 51320,
@@ -661,9 +911,19 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_21_CD16.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1FNL",
+          "title": "CRYSTAL STRUCTURE OF THE EXTRACELLULAR DOMAIN OF A HUMAN FCGRIII",
+          "url": "https://www.rcsb.org/structure/1FNL"
+        }
+      },
       "title": "CD16",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 2,
       "pathCount": 3,
       "triangles": 14452,
@@ -677,9 +937,19 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_150_CD4_coreceptor_four_domains.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1CDH",
+          "title": "STRUCTURES OF AN HIV AND MHC BINDING FRAGMENT FROM HUMAN CD4 AS REFINED IN TWO CRYSTAL LATTICES",
+          "url": "https://www.rcsb.org/structure/1CDH"
+        }
+      },
       "title": "CD4 coreceptor with four Ig-like domains",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 4,
       "pathCount": 10,
       "triangles": 13256,
@@ -693,9 +963,19 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_15_CD8_coreceptor.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1AKJ",
+          "title": "COMPLEX OF THE HUMAN MHC CLASS I GLYCOPROTEIN HLA-A2 AND THE T CELL CORECEPTOR CD8",
+          "url": "https://www.rcsb.org/structure/1AKJ"
+        }
+      },
       "title": "CD8 coreceptor",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 2,
       "pathCount": 4,
       "triangles": 13680,
@@ -709,9 +989,20 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_16_CD94_NKG2A.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "3BDW",
+          "title": "Human CD94/NKG2A",
+          "url": "https://www.rcsb.org/structure/3BDW",
+          "checkedAt": "2026-11-02T12:08:42.519222+00:00"
+        }
+      },
       "title": "CD94 NKG2A",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 2,
       "pathCount": 9,
       "triangles": 11128,
@@ -725,9 +1016,20 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_17_CD94_NKG2C.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "2L35",
+          "title": "Structure of the DAP12-NKG2C transmembrane heterotrimer",
+          "url": "https://www.rcsb.org/structure/2L35",
+          "checkedAt": "2026-11-02T12:15:36.868634+00:00"
+        }
+      },
       "title": "CD94 NKG2C",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 4,
       "pathCount": 13,
       "triangles": 25200,
@@ -741,9 +1043,20 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_24_DAP12.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "2L34",
+          "title": "Structure of the DAP12 transmembrane homodimer",
+          "url": "https://www.rcsb.org/structure/2L34",
+          "checkedAt": "2026-11-02T12:11:13.470872+00:00"
+        }
+      },
       "title": "DAP12",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 4,
       "pathCount": 5,
       "triangles": 20480,
@@ -757,9 +1070,15 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_229_HLA_derived_peptide_I_red.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Free HLA-derived peptide: class-I-length example",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 18,
       "pathCount": 26,
       "triangles": 39744,
@@ -773,9 +1092,15 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_230_HLA_derived_peptide_II_red.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Free HLA-derived peptide: class-II-length example",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 30,
       "pathCount": 44,
       "triangles": 66280,
@@ -789,9 +1114,15 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_233_Peptide_anchor_recognition_guide_I.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Free-form peptide and receptor-facing residues: HLA-I",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 22,
       "pathCount": 29,
       "triangles": 24720,
@@ -805,9 +1136,19 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_234_Peptide_anchor_recognition_guide_II.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1DLH",
+          "title": "CRYSTAL STRUCTURE OF THE HUMAN CLASS II MHC PROTEIN HLA-DR1 COMPLEXED WITH AN INFLUENZA VIRUS PEPTIDE",
+          "url": "https://www.rcsb.org/structure/1DLH"
+        }
+      },
       "title": "Free-form peptide and receptor-facing residues: HLA-II",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 31,
       "pathCount": 41,
       "triangles": 35652,
@@ -821,9 +1162,15 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_180_HA3M_peptide.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "HA-3M peptide",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 9,
       "pathCount": 17,
       "triangles": 30308,
@@ -837,9 +1184,15 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_179_HA3T_peptide.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "HA-3T peptide",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 9,
       "pathCount": 17,
       "triangles": 30308,
@@ -853,9 +1206,19 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_151_HLA_II_peptide_modern.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1DLH",
+          "title": "CRYSTAL STRUCTURE OF THE HUMAN CLASS II MHC PROTEIN HLA-DR1 COMPLEXED WITH AN INFLUENZA VIRUS PEPTIDE",
+          "url": "https://www.rcsb.org/structure/1DLH"
+        }
+      },
       "title": "HLA class II peptide complex",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 30,
       "pathCount": 41,
       "triangles": 58836,
@@ -869,9 +1232,19 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_26_HLA_E_peptide_user.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "3BZE",
+          "title": "The human non-classical major histocompatibility complex molecule HLA-E",
+          "url": "https://www.rcsb.org/structure/3BZE"
+        }
+      },
       "title": "HLA E peptide user",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 21,
       "pathCount": 29,
       "triangles": 56000,
@@ -885,9 +1258,19 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_28_HLA_I_allogeneic.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1AKJ",
+          "title": "COMPLEX OF THE HUMAN MHC CLASS I GLYCOPROTEIN HLA-A2 AND THE T CELL CORECEPTOR CD8",
+          "url": "https://www.rcsb.org/structure/1AKJ"
+        }
+      },
       "title": "HLA I allogeneic",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 21,
       "pathCount": 29,
       "triangles": 56000,
@@ -901,9 +1284,19 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_27_HLA_I_empty.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1AKJ",
+          "title": "COMPLEX OF THE HUMAN MHC CLASS I GLYCOPROTEIN HLA-A2 AND THE T CELL CORECEPTOR CD8",
+          "url": "https://www.rcsb.org/structure/1AKJ"
+        }
+      },
       "title": "HLA I empty",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 3,
       "pathCount": 9,
       "triangles": 24228,
@@ -917,9 +1310,19 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_25_HLA_I_peptide_user.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1AKJ",
+          "title": "COMPLEX OF THE HUMAN MHC CLASS I GLYCOPROTEIN HLA-A2 AND THE T CELL CORECEPTOR CD8",
+          "url": "https://www.rcsb.org/structure/1AKJ"
+        }
+      },
       "title": "HLA I peptide user",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 21,
       "pathCount": 29,
       "triangles": 56000,
@@ -933,9 +1336,19 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_102_HLA_I_allo_allo_peptide_PIRCHE.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1AKJ",
+          "title": "COMPLEX OF THE HUMAN MHC CLASS I GLYCOPROTEIN HLA-A2 AND THE T CELL CORECEPTOR CD8",
+          "url": "https://www.rcsb.org/structure/1AKJ"
+        }
+      },
       "title": "HLA-I allogeneic + allopeptide",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 21,
       "pathCount": 29,
       "triangles": 56000,
@@ -949,9 +1362,19 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_101_HLA_I_allo_self_peptide_PIRCHE.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1AKJ",
+          "title": "COMPLEX OF THE HUMAN MHC CLASS I GLYCOPROTEIN HLA-A2 AND THE T CELL CORECEPTOR CD8",
+          "url": "https://www.rcsb.org/structure/1AKJ"
+        }
+      },
       "title": "HLA-I allogeneic + self peptide",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 21,
       "pathCount": 29,
       "triangles": 56000,
@@ -965,9 +1388,19 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_100_HLA_I_allo_empty_PIRCHE.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1AKJ",
+          "title": "COMPLEX OF THE HUMAN MHC CLASS I GLYCOPROTEIN HLA-A2 AND THE T CELL CORECEPTOR CD8",
+          "url": "https://www.rcsb.org/structure/1AKJ"
+        }
+      },
       "title": "HLA-I allogeneic, empty",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 3,
       "pathCount": 9,
       "triangles": 24228,
@@ -981,9 +1414,20 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_124_HLA_I_TCR_surface_peptide_PIRCHE.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "6JXR",
+          "title": "Structure of human T cell receptor-CD3 complex",
+          "url": "https://www.rcsb.org/structure/6JXR",
+          "checkedAt": "2026-11-02T12:08:41.016023+00:00"
+        }
+      },
       "title": "HLA-I contact surface + peptide",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 22,
       "pathCount": 26,
       "triangles": 53324,
@@ -997,9 +1441,19 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_122_HLA_I_groove_allopeptide_PIRCHE.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1AKJ",
+          "title": "COMPLEX OF THE HUMAN MHC CLASS I GLYCOPROTEIN HLA-A2 AND THE T CELL CORECEPTOR CD8",
+          "url": "https://www.rcsb.org/structure/1AKJ"
+        }
+      },
       "title": "HLA-I groove + allopeptide",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 22,
       "pathCount": 26,
       "triangles": 53324,
@@ -1013,9 +1467,19 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_126_HLA_I_mixed_polymorphism_PIRCHE.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1AKJ",
+          "title": "COMPLEX OF THE HUMAN MHC CLASS I GLYCOPROTEIN HLA-A2 AND THE T CELL CORECEPTOR CD8",
+          "url": "https://www.rcsb.org/structure/1AKJ"
+        }
+      },
       "title": "HLA-I mixed polymorphism",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 25,
       "pathCount": 33,
       "triangles": 68816,
@@ -1029,9 +1493,19 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_121_HLA_I_groove_variant_PIRCHE.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1AKJ",
+          "title": "COMPLEX OF THE HUMAN MHC CLASS I GLYCOPROTEIN HLA-A2 AND THE T CELL CORECEPTOR CD8",
+          "url": "https://www.rcsb.org/structure/1AKJ"
+        }
+      },
       "title": "HLA-I polymorphic groove",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 4,
       "pathCount": 6,
       "triangles": 21552,
@@ -1045,9 +1519,19 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_099_HLA_I_self_allo_peptide_PIRCHE.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1AKJ",
+          "title": "COMPLEX OF THE HUMAN MHC CLASS I GLYCOPROTEIN HLA-A2 AND THE T CELL CORECEPTOR CD8",
+          "url": "https://www.rcsb.org/structure/1AKJ"
+        }
+      },
       "title": "HLA-I self + allopeptide",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 21,
       "pathCount": 29,
       "triangles": 56000,
@@ -1061,9 +1545,19 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_098_HLA_I_self_self_peptide_PIRCHE.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1AKJ",
+          "title": "COMPLEX OF THE HUMAN MHC CLASS I GLYCOPROTEIN HLA-A2 AND THE T CELL CORECEPTOR CD8",
+          "url": "https://www.rcsb.org/structure/1AKJ"
+        }
+      },
       "title": "HLA-I self + self peptide",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 21,
       "pathCount": 29,
       "triangles": 56000,
@@ -1077,9 +1571,19 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_097_HLA_I_self_empty_PIRCHE.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1AKJ",
+          "title": "COMPLEX OF THE HUMAN MHC CLASS I GLYCOPROTEIN HLA-A2 AND THE T CELL CORECEPTOR CD8",
+          "url": "https://www.rcsb.org/structure/1AKJ"
+        }
+      },
       "title": "HLA-I self, empty",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 3,
       "pathCount": 9,
       "triangles": 24228,
@@ -1093,9 +1597,19 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_226_HLA_I_alpha_source_segment.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1AKJ",
+          "title": "COMPLEX OF THE HUMAN MHC CLASS I GLYCOPROTEIN HLA-A2 AND THE T CELL CORECEPTOR CD8",
+          "url": "https://www.rcsb.org/structure/1AKJ"
+        }
+      },
       "title": "HLA-I source: marked heavy-alpha-chain sequence",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 22,
       "pathCount": 31,
       "triangles": 59980,
@@ -1109,9 +1623,19 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_106_HLA_II_allo_allo_peptide_PIRCHE.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1DLH",
+          "title": "CRYSTAL STRUCTURE OF THE HUMAN CLASS II MHC PROTEIN HLA-DR1 COMPLEXED WITH AN INFLUENZA VIRUS PEPTIDE",
+          "url": "https://www.rcsb.org/structure/1DLH"
+        }
+      },
       "title": "HLA-II allogeneic + allopeptide",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 30,
       "pathCount": 41,
       "triangles": 58836,
@@ -1125,9 +1649,19 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_105_HLA_II_allo_self_peptide_PIRCHE.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1DLH",
+          "title": "CRYSTAL STRUCTURE OF THE HUMAN CLASS II MHC PROTEIN HLA-DR1 COMPLEXED WITH AN INFLUENZA VIRUS PEPTIDE",
+          "url": "https://www.rcsb.org/structure/1DLH"
+        }
+      },
       "title": "HLA-II allogeneic + self peptide",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 30,
       "pathCount": 41,
       "triangles": 58836,
@@ -1141,9 +1675,19 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_104_HLA_II_self_allo_peptide_PIRCHE.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1DLH",
+          "title": "CRYSTAL STRUCTURE OF THE HUMAN CLASS II MHC PROTEIN HLA-DR1 COMPLEXED WITH AN INFLUENZA VIRUS PEPTIDE",
+          "url": "https://www.rcsb.org/structure/1DLH"
+        }
+      },
       "title": "HLA-II self + allopeptide",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 30,
       "pathCount": 41,
       "triangles": 58836,
@@ -1157,9 +1701,19 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_103_HLA_II_self_self_peptide_PIRCHE.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1DLH",
+          "title": "CRYSTAL STRUCTURE OF THE HUMAN CLASS II MHC PROTEIN HLA-DR1 COMPLEXED WITH AN INFLUENZA VIRUS PEPTIDE",
+          "url": "https://www.rcsb.org/structure/1DLH"
+        }
+      },
       "title": "HLA-II self + self peptide",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 30,
       "pathCount": 41,
       "triangles": 58836,
@@ -1173,9 +1727,19 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_227_HLA_II_alpha_source_segment.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1DLH",
+          "title": "CRYSTAL STRUCTURE OF THE HUMAN CLASS II MHC PROTEIN HLA-DR1 COMPLEXED WITH AN INFLUENZA VIRUS PEPTIDE",
+          "url": "https://www.rcsb.org/structure/1DLH"
+        }
+      },
       "title": "HLA-II source: marked alpha-chain sequence",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 31,
       "pathCount": 43,
       "triangles": 62816,
@@ -1189,9 +1753,19 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_228_HLA_II_beta_source_segment.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1DLH",
+          "title": "CRYSTAL STRUCTURE OF THE HUMAN CLASS II MHC PROTEIN HLA-DR1 COMPLEXED WITH AN INFLUENZA VIRUS PEPTIDE",
+          "url": "https://www.rcsb.org/structure/1DLH"
+        }
+      },
       "title": "HLA-II source: marked beta-chain sequence",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 31,
       "pathCount": 43,
       "triangles": 62816,
@@ -1205,9 +1779,19 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_18_KIR_2_domain.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1EFX",
+          "title": "STRUCTURE OF A COMPLEX BETWEEN THE HUMAN NATURAL KILLER CELL RECEPTOR KIR2DL2 AND A CLASS I MHC LIGAND HLA-CW3",
+          "url": "https://www.rcsb.org/structure/1EFX"
+        }
+      },
       "title": "KIR 2 domain",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 2,
       "pathCount": 6,
       "triangles": 14172,
@@ -1221,9 +1805,19 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_19_KIR_3_domain.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "3VH8",
+          "title": "KIR3DL1 in complex with HLA-B*5701",
+          "url": "https://www.rcsb.org/structure/3VH8"
+        }
+      },
       "title": "KIR 3 domain",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 3,
       "pathCount": 9,
       "triangles": 21228,
@@ -1237,9 +1831,19 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_20_NKG2D.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1HYR",
+          "title": "CRYSTAL STRUCTURE OF HUMAN MICA IN COMPLEX WITH NATURAL KILLER CELL RECEPTOR NKG2D",
+          "url": "https://www.rcsb.org/structure/1HYR"
+        }
+      },
       "title": "NKG2D",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 10,
       "pathCount": 16,
       "triangles": 19488,
@@ -1253,9 +1857,15 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_32_peptide_freeform_user.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "peptide freeform user",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 18,
       "pathCount": 20,
       "triangles": 32804,
@@ -1269,9 +1879,15 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_31_peptide_linear.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "peptide linear",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 18,
       "pathCount": 26,
       "triangles": 31676,
@@ -1285,9 +1901,15 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_231_PIRCHE_I_bound_HLA_derived_peptide.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "PIRCHE-I: HLA-derived peptide in recipient HLA-I",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 21,
       "pathCount": 29,
       "triangles": 56000,
@@ -1301,9 +1923,19 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_232_PIRCHE_II_bound_HLA_derived_peptide.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1DLH",
+          "title": "CRYSTAL STRUCTURE OF THE HUMAN CLASS II MHC PROTEIN HLA-DR1 COMPLEXED WITH AN INFLUENZA VIRUS PEPTIDE",
+          "url": "https://www.rcsb.org/structure/1DLH"
+        }
+      },
       "title": "PIRCHE-II: HLA-derived peptide in recipient HLA-II",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 34,
       "pathCount": 47,
       "triangles": 67412,
@@ -1317,9 +1949,15 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_183_peptide_cleavage_symbol.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Protein cleavage symbol",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 6,
       "pathCount": 11,
       "triangles": 20232,
@@ -1333,9 +1971,20 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_107_TCR_PIRCHE.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "6JXR",
+          "title": "Structure of human T cell receptor-CD3 complex",
+          "url": "https://www.rcsb.org/structure/6JXR",
+          "checkedAt": "2026-11-02T12:08:41.016023+00:00"
+        }
+      },
       "title": "T-cell receptor",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 6,
       "pathCount": 12,
       "triangles": 39408,
@@ -1349,9 +1998,20 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_13_TCR_CD3_user.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "6JXR",
+          "title": "Structure of human T cell receptor-CD3 complex",
+          "url": "https://www.rcsb.org/structure/6JXR",
+          "checkedAt": "2026-11-02T12:08:41.016023+00:00"
+        }
+      },
       "title": "TCR CD3 user",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 6,
       "pathCount": 12,
       "triangles": 39408,
@@ -1365,9 +2025,20 @@
     },
     {
       "file": "02_HLA_peptiden_en_receptoren/basic_14_TCR_CD8.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "6JXR",
+          "title": "Structure of human T cell receptor-CD3 complex",
+          "url": "https://www.rcsb.org/structure/6JXR",
+          "checkedAt": "2026-11-02T12:08:41.016023+00:00"
+        }
+      },
       "title": "TCR CD8",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 8,
       "pathCount": 16,
       "triangles": 53088,
@@ -1381,9 +2052,15 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_119_allo_cell_membrane_patch_PIRCHE.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Allogeneic cell membrane patch",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 91,
       "pathCount": 133,
       "triangles": 117576,
@@ -1397,9 +2074,15 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_172_clathrin_vesicle.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Coated endocytic vesicle",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 8,
       "pathCount": 27,
       "triangles": 43244,
@@ -1413,9 +2096,19 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_112_HLA_I_allo_processing_PIRCHE.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1AKJ",
+          "title": "COMPLEX OF THE HUMAN MHC CLASS I GLYCOPROTEIN HLA-A2 AND THE T CELL CORECEPTOR CD8",
+          "url": "https://www.rcsb.org/structure/1AKJ"
+        }
+      },
       "title": "Donor HLA-I source sequence and derived peptide",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 41,
       "pathCount": 59,
       "triangles": 59948,
@@ -1429,9 +2122,15 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_136_endolysosomal_compartment.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Endolysosomal compartment",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 12,
       "pathCount": 21,
       "triangles": 41380,
@@ -1445,9 +2144,15 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_170_endosome_vesicle.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Endosome",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 8,
       "pathCount": 9,
       "triangles": 27044,
@@ -1461,9 +2166,15 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_42_ER_lumen.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "ER lumen",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 1,
       "pathCount": 2,
       "triangles": 15040,
@@ -1477,9 +2188,15 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_43_Golgi.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Golgi",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 2,
       "pathCount": 10,
       "triangles": 10344,
@@ -1493,9 +2210,15 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_176_Golgi_stack_vesicles.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Golgi stack with transport vesicles",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 2,
       "pathCount": 12,
       "triangles": 11136,
@@ -1509,9 +2232,19 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_138_HLA_I_membrane_cartoon.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1AKJ",
+          "title": "COMPLEX OF THE HUMAN MHC CLASS I GLYCOPROTEIN HLA-A2 AND THE T CELL CORECEPTOR CD8",
+          "url": "https://www.rcsb.org/structure/1AKJ"
+        }
+      },
       "title": "HLA class I in membrane",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 92,
       "pathCount": 135,
       "triangles": 117176,
@@ -1525,9 +2258,15 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_34_HLA_leader_precursor.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "HLA class I: attached N-terminal leader on heavy alpha chain",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 31,
       "pathCount": 39,
       "triangles": 41600,
@@ -1541,9 +2280,19 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_137_HLA_II_membrane_cartoon.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1DLH",
+          "title": "CRYSTAL STRUCTURE OF THE HUMAN CLASS II MHC PROTEIN HLA-DR1 COMPLEXED WITH AN INFLUENZA VIRUS PEPTIDE",
+          "url": "https://www.rcsb.org/structure/1DLH"
+        }
+      },
       "title": "HLA class II in membrane",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 69,
       "pathCount": 99,
       "triangles": 150338,
@@ -1557,9 +2306,19 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_238_HLA_II_leader_precursor.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1DLH",
+          "title": "CRYSTAL STRUCTURE OF THE HUMAN CLASS II MHC PROTEIN HLA-DR1 COMPLEXED WITH AN INFLUENZA VIRUS PEPTIDE",
+          "url": "https://www.rcsb.org/structure/1DLH"
+        }
+      },
       "title": "HLA class II: attached N-terminal leaders on alpha and beta chains",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 60,
       "pathCount": 69,
       "triangles": 64096,
@@ -1573,9 +2332,19 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_30_HLA_heavy_chain.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1AKJ",
+          "title": "COMPLEX OF THE HUMAN MHC CLASS I GLYCOPROTEIN HLA-A2 AND THE T CELL CORECEPTOR CD8",
+          "url": "https://www.rcsb.org/structure/1AKJ"
+        }
+      },
       "title": "HLA heavy chain",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 2,
       "pathCount": 7,
       "triangles": 19224,
@@ -1589,9 +2358,15 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_181_leader_P2_M.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "HLA-B leader VL9 P2 M",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 9,
       "pathCount": 17,
       "triangles": 30308,
@@ -1605,9 +2380,15 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_182_leader_P2_T.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "HLA-B leader VL9 P2 T",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 9,
       "pathCount": 17,
       "triangles": 30308,
@@ -1621,9 +2402,15 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_36_leader_M_T_symbol.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "leader M T symbol",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 34,
       "pathCount": 50,
       "triangles": 62920,
@@ -1637,9 +2424,15 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_171_lysosome_vesicle.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Lysosome",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 18,
       "pathCount": 19,
       "triangles": 30604,
@@ -1653,9 +2446,15 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_48_lytic_granules.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "lytic granules",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 15,
       "pathCount": 15,
       "triangles": 49084,
@@ -1669,9 +2468,15 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_41_membrane_curved.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "membrane curved",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 29,
       "pathCount": 43,
       "triangles": 96736,
@@ -1685,9 +2490,15 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_40_membrane_flat_user.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "membrane flat user",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 25,
       "pathCount": 37,
       "triangles": 81856,
@@ -1701,9 +2512,15 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_44_mitochondrion.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "mitochondrion",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 1,
       "pathCount": 2,
       "triangles": 8060,
@@ -1717,9 +2534,15 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_175_mitochondrion_cristae.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Mitochondrion cutaway alternative",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 1,
       "pathCount": 4,
       "triangles": 7432,
@@ -1733,9 +2556,15 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_168_nucleus_chromatin.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Nucleus and chromatin",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 2,
       "pathCount": 4,
       "triangles": 8024,
@@ -1749,9 +2578,19 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_65_perforin_pore.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "3NSJ",
+          "title": "The X-ray crystal structure of lymphocyte perforin",
+          "url": "https://www.rcsb.org/structure/3NSJ"
+        }
+      },
       "title": "perforin pore",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 29,
       "pathCount": 42,
       "triangles": 104080,
@@ -1765,9 +2604,15 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_144_processed_peptide_chains_cartoon.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Processed peptide chains",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 54,
       "pathCount": 78,
       "triangles": 91484,
@@ -1781,9 +2626,15 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_115_processed_peptides_PIRCHE.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Processed peptide fragments",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 36,
       "pathCount": 51,
       "triangles": 61632,
@@ -1797,9 +2648,15 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_114_processed_peptides_with_epitope_PIRCHE.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Processed peptides + epitope",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 40,
       "pathCount": 57,
       "triangles": 68408,
@@ -1813,9 +2670,19 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_117_proteasomal_cleavage_PIRCHE.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1IRU",
+          "title": "Crystal Structure of the mammalian 20S proteasome at 2.75 A resolution",
+          "url": "https://www.rcsb.org/structure/1IRU"
+        }
+      },
       "title": "Proteasomal cleavage",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 50,
       "pathCount": 70,
       "triangles": 46896,
@@ -1829,9 +2696,19 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_116_proteasomal_cleavage_epitope_PIRCHE.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1IRU",
+          "title": "Crystal Structure of the mammalian 20S proteasome at 2.75 A resolution",
+          "url": "https://www.rcsb.org/structure/1IRU"
+        }
+      },
       "title": "Proteasomal cleavage + epitope",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 44,
       "pathCount": 63,
       "triangles": 43332,
@@ -1845,9 +2722,19 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_46_proteasome.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1IRU",
+          "title": "Crystal Structure of the mammalian 20S proteasome at 2.75 A resolution",
+          "url": "https://www.rcsb.org/structure/1IRU"
+        }
+      },
       "title": "proteasome",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 4,
       "pathCount": 5,
       "triangles": 18644,
@@ -1861,9 +2748,15 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_169_ribosome_translation.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Ribosome and nascent chain",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 3,
       "pathCount": 5,
       "triangles": 12988,
@@ -1877,9 +2770,15 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_174_ER_ribosomes.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Rough ER alternative",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 36,
       "pathCount": 36,
       "triangles": 18656,
@@ -1893,9 +2792,19 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_113_HLA_I_self_processing_PIRCHE.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1AKJ",
+          "title": "COMPLEX OF THE HUMAN MHC CLASS I GLYCOPROTEIN HLA-A2 AND THE T CELL CORECEPTOR CD8",
+          "url": "https://www.rcsb.org/structure/1AKJ"
+        }
+      },
       "title": "Self HLA-I source sequence control",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 41,
       "pathCount": 59,
       "triangles": 59948,
@@ -1909,9 +2818,15 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_118_self_cell_membrane_patch_PIRCHE.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Self-cell membrane patch",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 91,
       "pathCount": 133,
       "triangles": 117576,
@@ -1925,9 +2840,15 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_120_T_cell_membrane_patch_PIRCHE.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "T-cell membrane patch",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 76,
       "pathCount": 116,
       "triangles": 110416,
@@ -1941,9 +2862,20 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_47_TAP_transporter.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "5U1D",
+          "title": "Cryo-EM structure of the human TAP ATP-Binding Cassette Transporter",
+          "url": "https://www.rcsb.org/structure/5U1D",
+          "checkedAt": "2026-11-02T12:15:36.953437+00:00"
+        }
+      },
       "title": "TAP transporter",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 4,
       "pathCount": 4,
       "triangles": 20360,
@@ -1957,9 +2889,19 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_143_protein_processing_cartoon.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1IRU",
+          "title": "Crystal Structure of the mammalian 20S proteasome at 2.75 A resolution",
+          "url": "https://www.rcsb.org/structure/1IRU"
+        }
+      },
       "title": "Unfolded protein and proteasome",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 34,
       "pathCount": 54,
       "triangles": 42816,
@@ -1973,9 +2915,15 @@
     },
     {
       "file": "04_Organellen_en_antigeenverwerking/basic_45_vesicle_HLA.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "vesicle HLA",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 43,
       "pathCount": 59,
       "triangles": 76484,
@@ -1989,9 +2937,15 @@
     },
     {
       "file": "05_Organen_en_weefsels/basic_55_biopsy_section.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "biopsy section",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 36,
       "pathCount": 36,
       "triangles": 84996,
@@ -2005,9 +2959,15 @@
     },
     {
       "file": "05_Organen_en_weefsels/basic_188_bronchial_ciliated_epithelium.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Ciliated bronchial epithelium",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 12,
       "pathCount": 55,
       "triangles": 63568,
@@ -2021,25 +2981,37 @@
     },
     {
       "file": "05_Organen_en_weefsels/basic_12_epithelial_cell.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "epithelial cell",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 26,
       "pathCount": 52,
-      "triangles": 65196,
+      "triangles": 75118,
       "warnings": [],
       "sourceTitle": "Lung epithelial cell",
       "size": [
         7.07435841999891,
         6.029704600913723,
-        1.2567729244021826
+        3.275589742241552
       ]
     },
     {
       "file": "05_Organen_en_weefsels/basic_187_epithelial_monolayer.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Epithelial monolayer",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 12,
       "pathCount": 13,
       "triangles": 61888,
@@ -2053,9 +3025,15 @@
     },
     {
       "file": "05_Organen_en_weefsels/basic_69_heart_anterior.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "heart anterior",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 7,
       "pathCount": 10,
       "triangles": 33292,
@@ -2069,9 +3047,15 @@
     },
     {
       "file": "05_Organen_en_weefsels/basic_195_heart_blue_alternative.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Heart anterior blue alternative",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 7,
       "pathCount": 10,
       "triangles": 33292,
@@ -2085,9 +3069,15 @@
     },
     {
       "file": "05_Organen_en_weefsels/basic_70_heart_cutaway.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "heart cutaway",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 11,
       "pathCount": 12,
       "triangles": 39060,
@@ -2101,9 +3091,15 @@
     },
     {
       "file": "05_Organen_en_weefsels/basic_75_heart_TCMR.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "heart TCMR",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 155,
       "pathCount": 236,
       "triangles": 184600,
@@ -2117,9 +3113,15 @@
     },
     {
       "file": "05_Organen_en_weefsels/basic_140_kidney_immune_context_cartoon.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Kidney and cytotoxic cell",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 34,
       "pathCount": 48,
       "triangles": 68996,
@@ -2133,9 +3135,15 @@
     },
     {
       "file": "05_Organen_en_weefsels/basic_193_kidney_blue_cutaway_detail.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Kidney cutaway with vessels",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 6,
       "pathCount": 11,
       "triangles": 25828,
@@ -2149,9 +3157,15 @@
     },
     {
       "file": "05_Organen_en_weefsels/basic_141_kidney_blue_cartoon.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Kidney in blue cartoon style",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 2,
       "pathCount": 5,
       "triangles": 18924,
@@ -2165,9 +3179,15 @@
     },
     {
       "file": "05_Organen_en_weefsels/basic_49_kidney_user.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "kidney user",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 2,
       "pathCount": 5,
       "triangles": 18924,
@@ -2181,9 +3201,15 @@
     },
     {
       "file": "05_Organen_en_weefsels/basic_50_lungs_user.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "lungs user",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 2,
       "pathCount": 13,
       "triangles": 7580,
@@ -2197,9 +3223,15 @@
     },
     {
       "file": "05_Organen_en_weefsels/basic_196_lungs_blue_alternative.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Lungs with branching airways",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 2,
       "pathCount": 45,
       "triangles": 12700,
@@ -2213,9 +3245,15 @@
     },
     {
       "file": "05_Organen_en_weefsels/basic_201_lymph_node_cutaway.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Lymph node cutaway",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 4,
       "pathCount": 6,
       "triangles": 16340,
@@ -2229,9 +3267,15 @@
     },
     {
       "file": "05_Organen_en_weefsels/basic_194_paired_kidneys_blue.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Paired kidneys",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 12,
       "pathCount": 22,
       "triangles": 51656,
@@ -2245,9 +3289,15 @@
     },
     {
       "file": "05_Organen_en_weefsels/basic_189_tubule_cross_section.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Renal tubule cross-section",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 12,
       "pathCount": 22,
       "triangles": 39872,
@@ -2261,9 +3311,15 @@
     },
     {
       "file": "05_Organen_en_weefsels/basic_200_skin_layer_section.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Skin section with basal layer",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 28,
       "pathCount": 30,
       "triangles": 144208,
@@ -2277,9 +3333,15 @@
     },
     {
       "file": "05_Organen_en_weefsels/basic_74_vascular_endothelium.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "vascular endothelium",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 69,
       "pathCount": 93,
       "triangles": 128688,
@@ -2293,9 +3355,15 @@
     },
     {
       "file": "05_Organen_en_weefsels/basic_190_endothelium_strip.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Vascular endothelium strip",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 10,
       "pathCount": 11,
       "triangles": 51580,
@@ -2309,9 +3377,15 @@
     },
     {
       "file": "06_Stamcel_GvHD_GvL/basic_202_bone_marrow_cell_cluster.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Bone marrow cellular compartment",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 36,
       "pathCount": 69,
       "triangles": 90968,
@@ -2325,9 +3399,15 @@
     },
     {
       "file": "06_Stamcel_GvHD_GvL/basic_78_bone_marrow_niche.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "bone marrow niche",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 27,
       "pathCount": 32,
       "triangles": 85480,
@@ -2341,9 +3421,15 @@
     },
     {
       "file": "06_Stamcel_GvHD_GvL/basic_77_CD34_HSPC.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "CD34 HSPC",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 9,
       "pathCount": 14,
       "triangles": 27200,
@@ -2357,41 +3443,59 @@
     },
     {
       "file": "06_Stamcel_GvHD_GvL/basic_83_donor_NK_cell.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "donor NK cell",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 76,
       "pathCount": 134,
-      "triangles": 131120,
+      "triangles": 135442,
       "warnings": [],
       "sourceTitle": "Donor cytotoxic NK cell",
       "size": [
         6.482868032937224,
         7.080667926116133,
-        1.4114324689189277
+        3.0969087255826446
       ]
     },
     {
       "file": "06_Stamcel_GvHD_GvL/basic_82_donor_T_cell.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "donor T cell",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 89,
       "pathCount": 134,
-      "triangles": 153860,
+      "triangles": 161332,
       "warnings": [],
       "sourceTitle": "Donor cytotoxic T cell",
       "size": [
         6.717370092543872,
         7.076192121157694,
-        1.4074339924773815
+        3.0393075827269014
       ]
     },
     {
       "file": "06_Stamcel_GvHD_GvL/basic_206_GVHD_skin_context.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "GvHD skin context",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 117,
       "pathCount": 164,
       "triangles": 236370,
@@ -2405,9 +3509,15 @@
     },
     {
       "file": "06_Stamcel_GvHD_GvL/basic_89_GVHD_T_cell_tissue.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "GVHD T cell tissue",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 133,
       "pathCount": 192,
       "triangles": 165968,
@@ -2421,9 +3531,15 @@
     },
     {
       "file": "06_Stamcel_GvHD_GvL/basic_91_GVL_NK_cell.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "GVL NK cell",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 122,
       "pathCount": 189,
       "triangles": 132168,
@@ -2437,9 +3553,15 @@
     },
     {
       "file": "06_Stamcel_GvHD_GvL/basic_90_GVL_T_cell.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "GVL T cell",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 162,
       "pathCount": 229,
       "triangles": 182948,
@@ -2453,9 +3575,15 @@
     },
     {
       "file": "06_Stamcel_GvHD_GvL/basic_203_HSCT_cell_bag.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Hematopoietic cell product bag",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 7,
       "pathCount": 8,
       "triangles": 34480,
@@ -2469,9 +3597,15 @@
     },
     {
       "file": "06_Stamcel_GvHD_GvL/basic_81_HSC_graft_depleted.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "HSC graft depleted",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 21,
       "pathCount": 34,
       "triangles": 49792,
@@ -2485,9 +3619,15 @@
     },
     {
       "file": "06_Stamcel_GvHD_GvL/basic_80_HSC_graft_replete.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "HSC graft replete",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 100,
       "pathCount": 157,
       "triangles": 151828,
@@ -2501,25 +3641,37 @@
     },
     {
       "file": "06_Stamcel_GvHD_GvL/basic_205_leukemic_target_alternative.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "Leukemic target-cell alternative",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 7,
       "pathCount": 17,
-      "triangles": 27616,
+      "triangles": 40431,
       "warnings": [],
       "sourceTitle": "Leukemic target-cell alternative",
       "size": [
         7.125445095997936,
         6.9763044681189195,
-        0.869922768394902
+        3.877935949361549
       ]
     },
     {
       "file": "07_CMV_en_virussen/basic_38_CMV_capsid.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "CMV capsid",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 1,
       "pathCount": 2,
       "triangles": 1552,
@@ -2533,9 +3685,15 @@
     },
     {
       "file": "07_CMV_en_virussen/basic_39_CMV_glycoprotein_spike.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "CMV glycoprotein spike",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 1,
       "pathCount": 1,
       "triangles": 6848,
@@ -2549,25 +3707,37 @@
     },
     {
       "file": "07_CMV_en_virussen/basic_10_CMV_infected_target.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "CMV infected target",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 216,
       "pathCount": 271,
-      "triangles": 266346,
+      "triangles": 273476,
       "warnings": [],
       "sourceTitle": "CMV-infected target cell",
       "size": [
         7.048544680629318,
         6.738083886917312,
-        1.4117239227476404
+        3.10454242325572
       ]
     },
     {
       "file": "07_CMV_en_virussen/basic_37_CMV_user.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "CMV user",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 84,
       "pathCount": 86,
       "triangles": 186074,
@@ -2581,9 +3751,15 @@
     },
     {
       "file": "07_CMV_en_virussen/basic_33_UL40_protein_leader.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "UL40 protein leader",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 19,
       "pathCount": 28,
       "triangles": 41988,
@@ -2597,9 +3773,15 @@
     },
     {
       "file": "08_Genetica_en_matching/basic_60_DNA_chromosomes.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "DNA chromosomes",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 2,
       "pathCount": 19,
       "triangles": 28056,
@@ -2613,9 +3795,15 @@
     },
     {
       "file": "08_Genetica_en_matching/basic_177_DNA_helix_cartoon.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "DNA double helix",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 0,
       "pathCount": 58,
       "triangles": 16400,
@@ -2629,9 +3817,15 @@
     },
     {
       "file": "08_Genetica_en_matching/basic_186_HLA_genotype_pair.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Donor and recipient HLA blocks",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 10,
       "pathCount": 10,
       "triangles": 69760,
@@ -2645,9 +3839,15 @@
     },
     {
       "file": "08_Genetica_en_matching/basic_184_chromosome_X.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "X chromosome",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 1,
       "pathCount": 1,
       "triangles": 7488,
@@ -2661,9 +3861,15 @@
     },
     {
       "file": "08_Genetica_en_matching/basic_185_chromosome_Y.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Y chromosome",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 1,
       "pathCount": 1,
       "triangles": 5812,
@@ -2677,9 +3883,19 @@
     },
     {
       "file": "09_Antistoffen_en_complement/basic_215_antibody_antigen_symbol.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1IGT",
+          "title": "STRUCTURE OF IMMUNOGLOBULIN",
+          "url": "https://www.rcsb.org/structure/1IGT"
+        }
+      },
       "title": "Antibody and antigen symbol",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 14,
       "pathCount": 32,
       "triangles": 96120,
@@ -2693,9 +3909,19 @@
     },
     {
       "file": "09_Antistoffen_en_complement/basic_173_secretory_vesicle_IgG.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1IGT",
+          "title": "STRUCTURE OF IMMUNOGLOBULIN",
+          "url": "https://www.rcsb.org/structure/1IGT"
+        }
+      },
       "title": "Antibody secretory vesicle",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 25,
       "pathCount": 61,
       "triangles": 122276,
@@ -2709,9 +3935,20 @@
     },
     {
       "file": "09_Antistoffen_en_complement/basic_108_BCR_PIRCHE.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "7XQ8",
+          "title": "Structure of human B-cell antigen receptor of the IgM isotype",
+          "url": "https://www.rcsb.org/structure/7XQ8",
+          "checkedAt": "2026-11-02T12:11:15.213742+00:00"
+        }
+      },
       "title": "BCR membrane immunoglobulin",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 18,
       "pathCount": 41,
       "triangles": 108200,
@@ -2725,9 +3962,20 @@
     },
     {
       "file": "09_Antistoffen_en_complement/basic_134_MAC_membrane_cartoon.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "6H03",
+          "title": "OPEN CONFORMATION OF THE MEMBRANE ATTACK COMPLEX",
+          "url": "https://www.rcsb.org/structure/6H03",
+          "checkedAt": "2026-11-02T12:15:40.414701+00:00"
+        }
+      },
       "title": "Complement membrane pore",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 61,
       "pathCount": 96,
       "triangles": 100664,
@@ -2741,9 +3989,15 @@
     },
     {
       "file": "09_Antistoffen_en_complement/basic_76_heart_AMR.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "heart AMR",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 170,
       "pathCount": 272,
       "triangles": 256848,
@@ -2757,9 +4011,19 @@
     },
     {
       "file": "09_Antistoffen_en_complement/basic_109_IgG_PIRCHE.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "1IGT",
+          "title": "STRUCTURE OF IMMUNOGLOBULIN",
+          "url": "https://www.rcsb.org/structure/1IGT"
+        }
+      },
       "title": "IgG antibody",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 12,
       "pathCount": 30,
       "triangles": 89712,
@@ -2773,9 +4037,20 @@
     },
     {
       "file": "09_Antistoffen_en_complement/basic_142_BCR_CD79_complete_cartoon.svg",
+      "classification": {
+        "type": "molecule",
+        "variant": "rounded-vector-volume",
+        "reference": {
+          "id": "7XQ8",
+          "title": "Structure of human B-cell antigen receptor of the IgM isotype",
+          "url": "https://www.rcsb.org/structure/7XQ8",
+          "checkedAt": "2026-11-02T12:11:15.213742+00:00"
+        }
+      },
       "title": "IgG-type BCR with CD79A/B",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 83,
       "pathCount": 138,
       "triangles": 138904,
@@ -2789,25 +4064,37 @@
     },
     {
       "file": "09_Antistoffen_en_complement/basic_133_plasma_cell_IgG_cartoon.svg",
+      "classification": {
+        "type": "cell",
+        "variant": "hemisphere-cutaway",
+        "reference": null
+      },
       "title": "Plasma cell and secreted IgG",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": "hemisphere-cutaway",
       "shapeCount": 41,
       "pathCount": 111,
-      "triangles": 111868,
+      "triangles": 124179,
       "warnings": [],
       "sourceTitle": "Plasma cell and secreted IgG",
       "size": [
         7.064037284255021,
         4.772758891414706,
-        1.7563375298179373
+        2.1906735241479436
       ]
     },
     {
       "file": "10_Laboratorium_en_context/basic_11_injured_target.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Apoptotic graft target cell",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 80,
       "pathCount": 124,
       "triangles": 156296,
@@ -2821,9 +4108,15 @@
     },
     {
       "file": "10_Laboratorium_en_context/basic_67_arrow_hypothesis.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "arrow hypothesis",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 1,
       "pathCount": 2,
       "triangles": 296,
@@ -2837,9 +4130,15 @@
     },
     {
       "file": "10_Laboratorium_en_context/basic_66_arrow_observed.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "arrow observed",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 1,
       "pathCount": 2,
       "triangles": 296,
@@ -2853,9 +4152,15 @@
     },
     {
       "file": "10_Laboratorium_en_context/basic_54_blood_tube.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "blood tube",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 4,
       "pathCount": 4,
       "triangles": 22856,
@@ -2869,9 +4174,15 @@
     },
     {
       "file": "10_Laboratorium_en_context/basic_217_cell_suspension_tube.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Cell suspension tube",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 6,
       "pathCount": 7,
       "triangles": 26968,
@@ -2885,9 +4196,15 @@
     },
     {
       "file": "10_Laboratorium_en_context/basic_59_clinician.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "clinician",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 5,
       "pathCount": 7,
       "triangles": 18620,
@@ -2901,9 +4218,15 @@
     },
     {
       "file": "10_Laboratorium_en_context/basic_223_allogeneic_donor_recipient.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Donor–recipient context",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 19,
       "pathCount": 18,
       "triangles": 49272,
@@ -2917,9 +4240,15 @@
     },
     {
       "file": "10_Laboratorium_en_context/basic_56_early_event_clock.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "early event clock",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 3,
       "pathCount": 16,
       "triangles": 14200,
@@ -2933,9 +4262,15 @@
     },
     {
       "file": "10_Laboratorium_en_context/basic_139_early_event_clock_cartoon.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Early-event clock",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 3,
       "pathCount": 16,
       "triangles": 14200,
@@ -2949,9 +4284,15 @@
     },
     {
       "file": "10_Laboratorium_en_context/basic_09_graft_target.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "graft target",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 132,
       "pathCount": 185,
       "triangles": 173280,
@@ -2965,9 +4306,15 @@
     },
     {
       "file": "10_Laboratorium_en_context/basic_79_leukemic_blast.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "leukemic blast",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 31,
       "pathCount": 39,
       "triangles": 50544,
@@ -2981,9 +4328,15 @@
     },
     {
       "file": "10_Laboratorium_en_context/basic_225_pig_xenograft_context.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Pig xenograft context symbol",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 4,
       "pathCount": 5,
       "triangles": 11760,
@@ -2997,9 +4350,15 @@
     },
     {
       "file": "10_Laboratorium_en_context/basic_57_sequencing_instrument.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "sequencing instrument",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 18,
       "pathCount": 19,
       "triangles": 42196,
@@ -3013,9 +4372,15 @@
     },
     {
       "file": "10_Laboratorium_en_context/basic_216_serum_tube.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "Serum specimen tube",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 3,
       "pathCount": 4,
       "triangles": 17228,
@@ -3029,9 +4394,15 @@
     },
     {
       "file": "10_Laboratorium_en_context/basic_58_transplant_centre.svg",
+      "classification": {
+        "type": "element",
+        "variant": "rounded-vector-volume",
+        "reference": null
+      },
       "title": "transplant centre",
       "status": "ok",
       "conversion": "rounded-vector-volume-v1",
+      "cellGeometry": null,
       "shapeCount": 15,
       "pathCount": 17,
       "triangles": 104760,

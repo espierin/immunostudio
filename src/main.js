@@ -1,6 +1,14 @@
 import { splitBezier } from "./model.js";
 import { decorateUI } from "./ui-icons.js";
 import { installI18n } from "./i18n.js";
+import {
+  animationOptions,
+  framePlan,
+  addTimelineKey,
+  createCameraAction,
+} from "./animation.js";
+import { animationPanelHTML } from "./animation-panel.js";
+import { moleculeInfo } from "./molecule-catalog.js";
 import { sheetToVolume } from "./basis-variants.js";
 import { Drawing2D, newSheet } from "./drawing2d.js";
 import "./drawing2d.css";
@@ -9,11 +17,13 @@ import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import { Vector2 } from "three";
 import "./style.css";
 import "./umcu-ui.css";
+import "./drawing-panel.css";
 import { StudioScene } from "./scene.js";
 import {
   clone,
   uid,
   presets,
+  presetOrder,
   catalog,
   newProject,
   removeLegacyStarter,
@@ -64,6 +74,7 @@ let basisRepresentation = "volume";
 let ownModels = [];
 let structurePreview = null;
 let exportCancelled = false;
+let inspectorTab = "drawing";
 let project = newProject(),
   selected = null,
   mode = "select",
@@ -132,8 +143,8 @@ document.querySelector("#app").innerHTML = `
 <header><a class="brand" href="#"><img class="brandmark" src="./immunostudio-icon.svg" alt="" width="44" height="44"><div>ImmunoStudio<small>SCIENTIFIC ILLUSTRATION STUDIO</small></div></a><div class="project-title"><input id="project-name" aria-label="Projectnaam"><span id="save-state">Lokaal project</span></div><label class="labels-toggle"><input id="all-labels" type="checkbox" checked> Labels</label><div class="editor-mode-switch"><button data-editor-mode="2d">2D</button><button data-editor-mode="3d" class="active">3D</button></div><label class="language-switch"><span class="visually-hidden">Interface-taal</span><select id="interface-language" aria-label="Interface-taal" title="Interface-taal"><option value="nl">Nederlands</option><option value="en">English</option></select></label><div class="header-actions"><button data-action="new" title="Nieuw project">Nieuw</button><button data-action="open">Openen</button><button data-action="save">↓ Project</button><button class="primary" data-action="export">Exporteren ↗</button></div></header>
 <nav class="toolbar"><div class="toolgroup"><button data-action="undo" title="Ongedaan maken (Ctrl+Z)">↶</button><button data-action="redo" title="Opnieuw (Ctrl+Shift+Z)">↷</button></div><div class="toolgroup modes"><button data-mode="select">↖ Selecteren</button><button data-mode="curve">⌁ Membraan</button><button data-mode="move">✥ Verplaatsen</button><button data-mode="rotate">⟳ Draaien</button><button data-mode="hinge">⤷ Conformatie</button></div><div class="toolgroup"><button data-action="label">T Label</button><button data-action="arrow">↗ Pijl</button></div><span class="toolbar-note">3D werkplaats <span class="dot"></span> lokaal op dit apparaat</span><button data-action="help">? Handleiding</button></nav>
 <main><aside class="library"><div class="panel-head"><h2>Bibliotheek</h2><button data-action="import" title="Eigen SVG, GLB, PDB of mmCIF importeren">＋</button></div><div class="tabs"><button data-tab="models">3D-modellen</button><button data-tab="basis">Basis set</button><button data-tab="pdb">PDB</button></div><div class="search-wrap"><span>⌕</span><input id="search" placeholder="Zoek een molecuul…" aria-label="Bibliotheek doorzoeken"></div><select id="category" aria-label="Categorie"><option value="">Alle categorieën</option></select><select id="basis-representation" aria-label="Basisweergave" hidden><option value="volume">3D · afgerond volume</option><option value="relief">3D · reliëf</option><option value="flat">Originele 2D-vector</option></select><div id="library-info" class="library-info"></div><div id="library-items"></div><div id="pagination"></div><div class="library-footer"><span class="dot"></span> Jouw vormen. Eén werkplaats.<small>Basis set 2026 · native SVG + 3D</small></div></aside>
-<section class="workspace"><div class="sheet-toolbar"><button data-action="undo">↶</button><button data-action="redo">↷</button><span class="tool-divider"></span><button data-sheet-tool="select">↖ Selecteren</button><button data-sheet-tool="move">✥ Verplaatsen</button><button data-sheet-tool="rotate">⟳ Draaien</button><button data-sheet-tool="pan">✥ Pan</button><button data-sheet-tool="text">T Tekst</button><button data-sheet-tool="arrow">↗ Pijl</button><button data-sheet-tool="line">╱ Lijn</button><button data-sheet-tool="rect">▭ Kader</button><button data-sheet-tool="ellipse">◯ Ellips</button><button data-sheet-tool="membrane">⌁ Membraan</button><button data-sheet-tool="freehand">⌁ Tekenen</button><button data-action="create-all-3d-variants" title="Maak 3D-varianten van alle vectorbouwstenen op dit blad">⬡ Alles naar 3D</button><button data-sheet-action="fit">Pas blad</button><button data-sheet-action="zoom-out">−</button><button data-sheet-action="zoom-in">＋</button><button data-action="properties">⚙</button></div><div class="view-toolbar"><span id="scene-title">MEMBRAANSCÈNE</span><div><button data-action="focus">◎ Focus selectie</button><button data-action="reset-camera">⌂ Standaardzicht</button><button class="inspector-toggle" data-action="properties">⚙ Eigenschappen</button><button id="cut-toggle" data-action="cut">◐ Doorsnede aan</button></div></div><div id="viewport"><div id="drawing2d" hidden></div><div class="scene-badge">ORTHOGRAFISCH <span>·</span> ECHTE 3D</div><div class="compartment top">EXTRACELLULAIR</div><div class="compartment bottom">CYTOPLASMA</div><div class="scene-hint" id="scene-hint">Slepen: kijkhoek · rechtermuisknop: pan · scrollen: zoom</div><div class="axis"><b>Y</b><span>└── X</span><small>Z ↙</small></div></div><section class="timeline"><div class="timeline-head"><div><button id="play" data-action="play" aria-label="Animatie afspelen">▶</button><span id="time-readout">0.00 / 8.00 s</span></div><div><button data-action="keyframe">◇ Sleutelbeeld</button><label>Duur <input id="duration" type="number" min="1" max="30" step="1"> s</label><button data-action="delete-key">Verwijder key</button></div></div><div class="timeline-track"><span>SCÈNE & CAMERA</span><div class="ruler"><div id="keyframes"></div><input id="scrubber" type="range" min="0" max="8" step="0.01" value="0" aria-label="Animatietijd"></div></div></section></section>
-<aside class="inspector"><div class="panel-head"><h2>Eigenschappen</h2><span id="selection-type">MODEL</span></div><div id="properties"></div><details open><summary>Membraan</summary><div class="details-body"><label>Dikte <span>nm</span><input data-project="thickness" type="range" min=".6" max="3" step=".1"></label><label>Diepte <span>nm</span><input data-project="depth" type="range" min="4" max="24" step="1"></label><label>Vervaging achterzijde<input data-project="fade" type="range" min="0" max=".85" step=".05"></label><button data-mode="curve" class="wide">⌁ Béziercurve bewerken</button><button data-action="add-curve" class="wide">＋ Curvepunt toevoegen</button><div id="curve-fields"></div></div></details><details><summary>Camera & focus</summary><div class="details-body"><label>Projectie<select id="projection"><option value="orthographic">Orthografisch</option><option value="perspective">Perspectief</option></select></label><label>Focusgedrag<select id="camera-mode"><option value="follow">Follow-me · verplaats mee</option><option value="look">Kijk naar focus</option><option value="free">Vrije camera</option></select></label><label>Zoom<input id="camera-zoom" type="number" min=".3" max="8" step=".1" value="1"></label><div class="view-buttons">${["Voor", "Achter", "Links", "Rechts", "Boven", "Onder"].map((v) => `<button data-view="${v}">${v}</button>`).join("")}</div><button class="wide" data-action="focus">◎ Gebruik selectie als focuspunt</button></div></details><details open><summary>Stylesheet</summary><div class="details-body"><select id="style-preset" aria-label="Stylesheet"><option value="basis">Basis set 2026</option><option value="light">Illustrated Light</option><option value="dark">Dark Presentation</option><option value="custom">Eigen stylesheet</option></select><div class="swatches" id="swatches"></div><div class="row"><button data-action="style-import">Importeren</button><button data-action="style-export">↓ JSON</button></div></div></details><details open><summary>Scène <span id="object-count"></span></summary><div id="scene-tree"></div></details></aside></main>
+<section class="workspace"><div class="sheet-toolbar"><button data-action="undo">↶</button><button data-action="redo">↷</button><span class="tool-divider"></span><button data-sheet-tool="select">↖ Selecteren</button><button data-sheet-tool="move">✥ Verplaatsen</button><button data-sheet-tool="rotate">⟳ Draaien</button><button data-sheet-tool="pan">✥ Pan</button><button data-sheet-tool="text">T Tekst</button><button data-sheet-tool="arrow">↗ Pijl</button><button data-sheet-tool="line">╱ Lijn</button><button data-sheet-tool="rect">▭ Kader</button><button data-sheet-tool="ellipse">◯ Ellips</button><button data-sheet-tool="membrane">⌁ Membraan</button><button data-sheet-tool="freehand">⌁ Tekenen</button><button data-sheet-action="fit">Pas blad</button><button data-sheet-action="zoom-out">−</button><button data-sheet-action="zoom-in">＋</button><button data-action="properties">⚙</button></div><div class="view-toolbar"><span id="scene-title">MEMBRAANSCÈNE</span><div><button data-action="focus">◎ Focus selectie</button><button data-action="reset-camera">⌂ Standaardzicht</button><button class="inspector-toggle" data-action="properties">⚙ Eigenschappen</button><button id="cut-toggle" data-action="cut">◐ Doorsnede aan</button></div></div><div id="viewport"><div id="drawing2d" hidden></div><div class="scene-badge">ORTHOGRAFISCH <span>·</span> ECHTE 3D</div><div class="compartment top">EXTRACELLULAIR</div><div class="compartment bottom">CYTOPLASMA</div><div class="scene-hint" id="scene-hint">Slepen: kijkhoek · rechtermuisknop: pan · scrollen: zoom</div><div class="axis"><b>Y</b><span>└── X</span><small>Z ↙</small></div></div><section class="timeline"><div class="timeline-head"><div><button id="play" data-action="play" aria-label="Animatie afspelen">▶</button><span id="time-readout">0.00 / 8.00 s</span></div><div><button data-action="keyframe">◇ Sleutelbeeld</button><label>Duur <input id="duration" type="number" min="1" max="30" step="1"> s</label><button data-action="delete-key">Verwijder key</button></div></div><div class="timeline-track"><span>SCÈNE & CAMERA</span><div class="ruler"><div id="keyframes"></div><input id="scrubber" type="range" min="0" max="8" step="0.01" value="0" aria-label="Animatietijd"></div></div></section></section>
+<aside class="inspector"><div class="inspector-tabs" role="tablist" aria-label="Werkpanelen"><button role="tab" data-inspector-tab="properties">Eigenschappen</button><button role="tab" data-inspector-tab="drawing">Tekenen</button></div><section id="drawing-tools" role="tabpanel"></section><section id="inspector-properties" role="tabpanel"><div class="three-source-controls"><button data-action="create-all-3d-variants">3D uit 2D-tekening</button><button data-action="add-vesicle">Vesikel toevoegen</button></div><div class="panel-head"><h2>Eigenschappen</h2><span id="selection-type">MODEL</span></div><div id="properties"></div><details open><summary>Membraan</summary><div class="details-body"><label class="check"><input type="checkbox" data-project-boolean="membraneEnabled"> Membraan tonen</label><label>Dikte <span>nm</span><input data-project="thickness" type="range" min=".6" max="3" step=".1"></label><label>Diepte <span>nm</span><input data-project="depth" type="range" min="4" max="24" step="1"></label><label>Vervaging achterzijde<input data-project="fade" type="range" min="0" max=".85" step=".05"></label><button data-mode="curve" class="wide">⌁ Béziercurve bewerken</button><button data-action="add-curve" class="wide">＋ Curvepunt toevoegen</button><div id="curve-fields"></div></div></details><details><summary>Camera & focus</summary><div class="details-body"><label>Projectie<select id="projection"><option value="orthographic">Orthografisch</option><option value="perspective">Perspectief</option></select></label><label>Focusgedrag<select id="camera-mode"><option value="follow">Follow-me · verplaats mee</option><option value="look">Kijk naar focus</option><option value="free">Vrije camera</option></select></label><label>Zoom<input id="camera-zoom" type="number" min=".3" max="8" step=".1" value="1"></label><div class="view-buttons">${["Voor", "Achter", "Links", "Rechts", "Boven", "Onder"].map((v) => `<button data-view="${v}">${v}</button>`).join("")}</div><button class="wide" data-action="focus">◎ Gebruik selectie als focuspunt</button></div></details><details class="three-properties"><summary>Animatie en render</summary><div id="animation-settings" class="details-body"></div></details><details open><summary>Stylesheet</summary><div class="details-body"><select id="style-preset" aria-label="Stylesheet"><option value="basis">Basis set 2026</option><option value="light">Illustrated Light</option><option value="dark">Dark Presentation</option><option value="custom">Eigen stylesheet</option></select><div class="swatches" id="swatches"></div><div class="row"><button data-action="style-import">Importeren</button><button data-action="style-export">↓ JSON</button></div></div></details><details open><summary>Scène <span id="object-count"></span></summary><div id="scene-tree"></div></details></section></aside></main>
 <footer><span id="status">Gereed</span><span id="scene-meta"></span><span>ImmunoStudio · v0.1</span></footer><div id="toast" role="status"></div><div id="export-progress" hidden><span>Export voorbereiden…</span><progress max="1" value="0"></progress><button data-action="cancel-export">Annuleren</button></div><dialog id="modal"><div id="modal-content"></div></dialog><input id="file-input" type="file" hidden><input id="project-input" type="file" accept=".immuno,.json,.zip" hidden><input id="style-input" type="file" accept=".json" hidden>`;
 const view = new StudioScene(
   $("#viewport"),
@@ -155,6 +166,7 @@ const view = new StudioScene(
   },
   (c) => {
     project.camera = c;
+    autoKey("camera");
     autosave();
   },
   (data, phase) => {
@@ -191,6 +203,7 @@ const view = new StudioScene(
         item.rotationX = xyz[0];
         item.rotationY = xyz[1];
       }
+      autoKey("selected");
       changed();
     }
   },
@@ -206,7 +219,7 @@ const drawing2D = new Drawing2D($("#drawing2d"), {
   },
   onStatus: (message) => ($("#status").textContent = message),
 });
-for (const el of [...document.querySelectorAll(".inspector>details")].slice(
+for (const el of [...document.querySelectorAll(".inspector details")].slice(
   0,
   2,
 ))
@@ -422,7 +435,8 @@ function renderInspector() {
   $("#all-labels").checked = project.labelsVisible !== false;
   applyUITheme(project.style);
   $("#style-preset").innerHTML =
-    Object.entries(presets)
+    presetOrder
+      .map((key) => [key, presets[key]])
       .map(([key, s]) => `<option value="${key}">${esc(s.name)}</option>`)
       .join("") + '<option value="custom">Eigen stylesheet</option>';
   const i = project.items.find((x) => x.id === selected);
@@ -525,7 +539,26 @@ function renderInspector() {
       drawing2D.doc.height +
       " px";
   }
+  renderDrawingPanel();
+  $("#animation-settings").innerHTML = animationPanelHTML(project, time);
   decorateUI();
+}
+function renderDrawingPanel() {
+  const is2D = project.editorMode === "2d";
+  const tab = is2D ? inspectorTab : "properties";
+  $("#drawing-tools").hidden = tab !== "drawing";
+  $("#inspector-properties").hidden = tab === "drawing";
+  $("#drawing-tools").innerHTML = is2D ? drawing2D.toolsHTML() : "";
+  for (const b of document.querySelectorAll("[data-inspector-tab]")) {
+    b.classList.toggle("active", b.dataset.inspectorTab === tab);
+    b.setAttribute("aria-selected", String(b.dataset.inspectorTab === tab));
+    b.disabled = !is2D && b.dataset.inspectorTab === "drawing";
+  }
+  const enabled = $('[data-project-boolean="membraneEnabled"]');
+  if (enabled) enabled.checked = project.membraneEnabled !== false;
+  $("#cut-toggle").disabled = project.membraneEnabled === false;
+  for (const n of document.querySelectorAll(".compartment"))
+    n.hidden = project.membraneEnabled === false;
 }
 function renderTimeline() {
   $("#scrubber").max = project.duration;
@@ -570,6 +603,17 @@ function stop() {
   playing = false;
   $("#play").textContent = "▶";
 }
+function autoKey(scope) {
+  if (
+    project.editorMode !== "3d" ||
+    !project.animation?.autoKey ||
+    playing ||
+    recording
+  )
+    return;
+  addTimelineKey(project, time, snapshot(project), scope, selected);
+  renderTimeline();
+}
 async function action(name) {
   const i = project.items.find((x) => x.id === selected);
   switch (name) {
@@ -579,7 +623,7 @@ async function action(name) {
         name === "create-all-3d-variants"
           ? drawing2D.doc.items
           : drawing2D.selectedItems()
-      ).filter((o) => o.kind === "svg");
+      ).filter((o) => ["svg", "membrane"].includes(o.kind));
       if (!sources.length)
         throw Error("Selecteer eerst een vectorbouwsteen in 2D.");
       const missing = sources.filter(
@@ -589,7 +633,7 @@ async function action(name) {
         throw Error("Maximaal 200 objecten per 3D-scène.");
       checkpoint();
       for (const source of missing)
-        project.items.push(sheetToVolume(source, drawing2D.doc));
+        project.items.push(sheetToVolume(source, drawing2D.doc, project.style));
       selected = project.items.find(
         (v) => v.sourceSheetId === sources[0].id,
       )?.id;
@@ -604,6 +648,9 @@ async function action(name) {
       );
       break;
     }
+    case "add-vesicle":
+      add("vesicle", { name: "Vesikel", radiusX: 3, radiusY: 3, radiusZ: 3 });
+      break;
     case "close":
       $("#modal").close();
       break;
@@ -827,29 +874,57 @@ async function action(name) {
         break;
       }
       playing = true;
+      const playback = framePlan(project);
+      if (time < playback.frames[0].time || time >= playback.frames.at(-1).time)
+        time = playback.frames[0].time;
       playStart = performance.now() - time * 1000;
-      if (time >= project.duration) {
-        time = 0;
-        playStart = performance.now();
-      }
       tick();
       break;
     case "keyframe":
       checkpoint();
       project.camera = view.getCamera();
       const state = snapshot(project);
-      project.keys = project.keys.filter((k) => Math.abs(k.time - time) > 0.03);
-      project.keys.push({ time, state });
-      project.keys.sort((a, b) => a.time - b.time);
+      addTimelineKey(
+        project,
+        time,
+        state,
+        animationOptions(project).keyScope,
+        selected,
+      );
+      renderInspector();
       renderTimeline();
       autosave();
       toast(`Sleutelbeeld op ${time.toFixed(2)} s`);
       break;
+    case "turn-object": {
+      if (!i) throw Error("Select an object to animate.");
+      checkpoint();
+      const options = animationOptions(project),
+        start = (options.startFrame - 1) / options.fps,
+        end = (options.endFrame - 1) / options.fps;
+      const a = snapshot(project),
+        b = clone(a);
+      b.items.find((item) => item.id === selected).rotation += Math.PI * 2;
+      addTimelineKey(project, start, a, "selected", selected);
+      addTimelineKey(project, end, b, "selected", selected);
+      renderInspector();
+      renderTimeline();
+      autosave();
+      break;
+    }
     case "delete-key":
       checkpoint();
       project.keys = project.keys.filter((k) => Math.abs(k.time - time) > 0.05);
       renderTimeline();
+      renderInspector();
       autosave();
+      break;
+    case "pdb-for-selection":
+      query = i?.name || "";
+      tab = "pdb";
+      $("#search").value = query;
+      renderLibrary();
+      await pdbSearch();
       break;
     case "pdb-search":
       await pdbSearch();
@@ -862,9 +937,32 @@ async function action(name) {
       break;
     case "export":
       showModal(
-        '<h2>Exporteer je illustratie</h2><p>Afbeeldingen gebruiken de huidige kijkhoek, stijl en tijd.</p><label>Formaat<select id="image-size"><option value="1920">1920 px breed</option><option value="3840">3840 px breed</option></select></label><label class="check"><input id="transparent" type="checkbox"> Transparante achtergrond</label><label class="check"><input id="outline-fonts" type="checkbox" checked> Letters als vectorcontouren in EMF/WMF</label><p class="muted">EMF/WMF: 2D blijft vector. Bij 3D wordt een afbeelding ingesloten. Lettercontouren bewaren de fontweergave; het zijn geen ingesloten, bewerkbare fonts.</p><div class="export-options"><button class="primary" data-action="png">↓ PNG afbeelding</button><button data-action="svg">↓ SVG-vector</button><button data-action="emf">↓ EMF · PowerPoint / Word</button><button data-action="wmf">↓ WMF · compatibel metabestand</button><button data-action="mp4">↓ MP4 · H.264 (lokaal)</button><button data-action="avi">↓ AVI · Motion JPEG (lokaal)</button><button data-action="gif">↓ Geanimeerde GIF (lokaal)</button><button data-action="video">● WebM animatie</button><button data-action="frames">↓ PNG-framereeks (ZIP)</button></div><label>Animatie vanaf (s)<input id="export-from" type="number" min="0" max="30" step=".1" value="0"></label><label>Tot (s)<input id="export-to" type="number" min=".1" max="30" step=".1" value="${project.duration}"></label><p class="muted">MP4/AVI: 30 fps. GIF: 12 fps, 800 px breed, maximaal 15 s, oneindige herhaling. De lokale encoder houdt alle verwerking op dit apparaat.</p><p class="muted">In 2D exporteert SVG het volledige tekenblad. In 3D exporteert SVG de geselecteerde vectorbouwsteen; PNG rendert de huidige kijkhoek.</p>',
+        '<h2>Exporteer je illustratie</h2><p>Afbeeldingen gebruiken de huidige kijkhoek, stijl en tijd.</p><label>Formaat<select id="image-size"><option value="1920">1920 px breed</option><option value="3840">3840 px breed</option></select></label><label class="check"><input id="transparent" type="checkbox"> Transparante achtergrond</label><label class="check"><input id="outline-fonts" type="checkbox" checked> Letters als vectorcontouren in EMF/WMF</label><p class="muted">EMF/WMF: 2D blijft vector. Bij 3D wordt een afbeelding ingesloten. Lettercontouren bewaren de fontweergave; het zijn geen ingesloten, bewerkbare fonts.</p><div class="export-options"><button class="primary" data-action="png">↓ PNG afbeelding</button><button data-action="svg">↓ SVG-vector</button><button data-action="emf">↓ EMF · PowerPoint / Word</button><button data-action="wmf">↓ WMF · compatibel metabestand</button><button data-action="mp4">↓ MP4 · H.264 (lokaal)</button><button data-action="avi">↓ AVI · Motion JPEG (lokaal)</button><button data-action="gif">↓ Geanimeerde GIF (lokaal)</button><button data-action="video">● WebM animatie</button><button data-action="frames">↓ PNG-framereeks (ZIP)</button></div><label>Animatie vanaf (s)<input id="export-from" type="number" min="0" max="30" step=".1" value="0"></label><label>Tot (s)<input id="export-to" type="number" min=".1" max="30" step=".1" value="${project.duration}"></label><p class="muted">MP4/AVI gebruiken de renderinstellingen. GIF: 12 fps, 800 px breed, maximaal 15 s. Een framestap groter dan 1 slaat frames over. WebM neemt in realtime op; PNG en lokale video renderen ieder gekozen frame.</p><p class="muted">In 2D exporteert SVG het volledige tekenblad. In 3D exporteert SVG de geselecteerde vectorbouwsteen; PNG rendert de huidige kijkhoek.</p>',
       );
       $("#export-to").value = project.duration;
+      $("#export-from").closest("label").hidden = true;
+      $("#export-to").closest("label").hidden = true;
+      if (project.editorMode === "3d") {
+        const o = animationOptions(project),
+          div = document.createElement("div");
+        div.className = "render-options";
+        div.innerHTML = `<strong>Renderinstellingen</strong><div class="drawing-grid">${[
+          ["Startframe", "startFrame"],
+          ["Eindframe", "endFrame"],
+          ["Framestap", "frameStep"],
+          ["Framerate", "fps"],
+          ["Renderbreedte", "width"],
+          ["Renderhoogte", "height"],
+        ]
+          .map(
+            ([label, key]) =>
+              `<label>${label}<input type="number" data-animation="${key}" value="${o[key]}" min="1"></label>`,
+          )
+          .join("")}</div>`;
+        $("#modal .export-options").before(div);
+        $("#export-from").closest("label").hidden = true;
+        $("#export-to").closest("label").hidden = true;
+      }
       if (import.meta.env.MODE === "pages") {
         const note =
           "EMF/WMF en MP4/AVI/GIF zijn beschikbaar in de lokale desktopversie. Online kun je PNG, SVG en projectbestanden exporteren; in 3D ook WebM en PNG-frames.";
@@ -927,10 +1025,11 @@ async function action(name) {
       break;
     case "help":
       showModal(
-        `<h2>Je immunologische werkplaats</h2><ol><li>Voeg een 3D-model of bestaande SVG toe vanuit de bibliotheek.</li><li>Bewerk het membraan met de vier Bézierpunten. Verankerde eiwitten volgen de vorm.</li><li>Selecteer een molecuul en kies <b>Focus selectie</b>. Draai met de muis rond het anker.</li><li>Pas de representatie, kleur en positie rechts aan. Stylesheets veranderen de hele scène.</li><li>Kies <b>Conformatie</b>, klik op een IgG-arm en kies een scharnierhoek.</li><li>Leg op 0 seconden een sleutelbeeld vast. Schuif de tijd, wijzig de scène en leg het volgende vast.</li><li>Download je project en exporteer PNG of een animatie.</li></ol><p><b>Lokale opslag:</b> automatisch op dit apparaat. Download een .immuno-bestand voor overdracht en backup.</p><p><b>Modellen:</b> ingebouwde vormen zijn schematisch. PDB/mmCIF toont echte atoomcoördinaten of de ruggengraat. De Basis set bevat originele vlakke SVG’s. Geïmporteerde GLB’s behouden hun eigen geometrie.</p><p><b>Sneltoetsen:</b> Ctrl+Z ongedaan · Ctrl+Shift+Z opnieuw · Delete verwijdert selectie · Escape sluit dialoog.</p>`,
+        `<h2>ImmunoStudio</h2><p>2D: gebruik Tekenen voor selecteren, uitlijnen en punten bewerken. Kies Punten bewerken en klik op een deel van een SVG-bouwsteen. Blauwe punten zijn ankers; oranje punten zijn Bézier-handvatten.</p><p>Teken een lijn of ellips en kies Omzetten naar membraan. Een gesloten vorm wordt een vesikel. In 3D maakt 3D uit 2D-tekening een gekoppelde ruimtelijke variant.</p><p>3D: open Animatie en render. Kies het object of de camera als keyframe-doel. Leg een beginpose vast, verplaats de tijd, wijzig de pose en voeg een keyframe toe. Tussenframes worden automatisch berekend. Automatische keyframes leggen volgende transformaties vast.</p><p>Camera-acties maken een orbit, dolly, zoom of pan over het renderbereik. Stel framerate, start- en eindframe, framestap en afmetingen in voor export.</p><p>Schematische volumes behouden de basisfiguur. PDB-referenties kunnen fragmenten of complexen zijn; controleer de ketens vóór import. Projecten worden lokaal opgeslagen. Download een .immuno-bestand voor overdracht en backup.</p><p>Ctrl+Z undo · Ctrl+Shift+Z redo · Ctrl+A select all · Ctrl+D duplicate · Delete · Escape</p>`,
       );
       break;
     case "add-curve":
+      project.membraneEnabled = true;
       view.onAddCurve(0.5);
       setMode("curve");
       break;
@@ -942,14 +1041,42 @@ async function action(name) {
 document.addEventListener("click", async (e) => {
   const b = e.target.closest("button");
   if (!b) return;
+  if (b.dataset.cameraAction) {
+    checkpoint();
+    createCameraAction(project, snapshot(project), b.dataset.cameraAction);
+    renderInspector();
+    renderTimeline();
+    autosave();
+    return;
+  }
+  if (b.dataset.keyDelete !== undefined) {
+    checkpoint();
+    project.keys.splice(+b.dataset.keyDelete, 1);
+    renderInspector();
+    renderTimeline();
+    autosave();
+    return;
+  }
+  if (b.dataset.inspectorTab) {
+    inspectorTab = b.dataset.inspectorTab;
+    renderDrawingPanel();
+    decorateUI();
+    return;
+  }
   try {
     if (b.dataset.editorMode) {
       setEditorMode(b.dataset.editorMode);
       return;
     }
     if (b.dataset.action) await action(b.dataset.action);
-    else if (b.dataset.mode) setMode(b.dataset.mode);
-    else if (b.dataset.tab) {
+    else if (b.dataset.mode) {
+      if (b.dataset.mode === "curve" && !project.membraneEnabled) {
+        checkpoint();
+        project.membraneEnabled = true;
+        changed();
+      }
+      setMode(b.dataset.mode);
+    } else if (b.dataset.tab) {
       tab = b.dataset.tab;
       category = "";
       query = "";
@@ -1020,6 +1147,82 @@ $("#category").addEventListener("change", (e) => {
 });
 document.addEventListener("change", (e) => {
   const el = e.target;
+  if (el.dataset.animation) {
+    checkpoint();
+    const key = el.dataset.animation,
+      value =
+        el.type === "checkbox"
+          ? el.checked
+          : el.type === "number" || key === "fps"
+            ? +el.value
+            : el.value;
+    const previous = project.animation,
+      previousDuration = project.duration;
+    project.animation = { ...animationOptions(project), [key]: value };
+    if (typeof value === "number" && (!Number.isFinite(value) || value <= 0)) {
+      toast("Enter a positive number.");
+      project.animation = previous;
+      renderInspector();
+      return;
+    }
+    if (key === "fps")
+      project.animation.endFrame = Math.round(project.duration * value);
+    if (key === "endFrame")
+      project.duration = Math.max(
+        project.duration,
+        (value - 1) / project.animation.fps,
+      );
+    try {
+      framePlan(project);
+    } catch (error) {
+      project.animation = previous;
+      project.duration = previousDuration;
+      toast(error.message);
+      renderInspector();
+      return;
+    }
+    for (const field of document.querySelectorAll("#modal [data-animation]")) {
+      if (field !== el)
+        field.value = project.animation[field.dataset.animation];
+    }
+    renderInspector();
+    renderTimeline();
+    autosave();
+    return;
+  }
+  if (
+    el.dataset.keyTime !== undefined ||
+    el.dataset.keyInterpolation !== undefined
+  ) {
+    checkpoint();
+    const key =
+      project.keys[+(el.dataset.keyTime ?? el.dataset.keyInterpolation)];
+    if (
+      !key ||
+      (el.dataset.keyTime !== undefined && !Number.isFinite(+el.value))
+    )
+      return;
+    if (el.dataset.keyTime !== undefined)
+      key.time = Math.max(
+        0,
+        Math.min(
+          project.duration,
+          (+el.value - 1) / animationOptions(project).fps,
+        ),
+      );
+    else key.interpolation = el.value;
+    project.keys.sort((a, b) => a.time - b.time);
+    renderInspector();
+    renderTimeline();
+    autosave();
+    return;
+  }
+  if (el.dataset.projectBoolean) {
+    checkpoint();
+    project[el.dataset.projectBoolean] = el.checked;
+    changed();
+    return;
+  }
   try {
     if (el.dataset.item) {
       const i = project.items.find((x) => x.id === selected);
@@ -1045,6 +1248,22 @@ document.addEventListener("change", (e) => {
         i[key] = val;
         if (key === "depth" || key === "z") i.level = null;
       }
+      if (
+        [
+          "x",
+          "y",
+          "z",
+          "s",
+          "depth",
+          "rotation",
+          "rotationX",
+          "rotationY",
+          "scale",
+          "hinge",
+          "level",
+        ].includes(key)
+      )
+        autoKey("selected");
       changed();
     } else if (el.dataset.project) {
       const key = el.dataset.project;
@@ -1084,6 +1303,10 @@ $("#style-preset").addEventListener("change", (e) => {
 $("#duration").addEventListener("change", (e) => {
   checkpoint();
   project.duration = Math.max(1, Math.min(30, +e.target.value || 8));
+  if (project.animation)
+    project.animation.endFrame = Math.round(
+      project.duration * project.animation.fps,
+    );
   project.keys = project.keys.filter((k) => k.time <= project.duration);
   time = Math.min(time, project.duration);
   changed(false);
@@ -1121,11 +1344,20 @@ function scrub() {
 }
 function tick() {
   if (!playing) return;
-  time = Math.min(project.duration, (performance.now() - playStart) / 1000);
+  const options = animationOptions(project),
+    start = (options.startFrame - 1) / options.fps,
+    end = (options.endFrame - 1) / options.fps;
+  time = Math.min(end, (performance.now() - playStart) / 1000);
   const p = evaluate(project, time);
   view.applyAnimation(p);
   renderTimeline();
-  if (time >= project.duration) {
+  if (time >= end && options.loop && end > start) {
+    playStart = performance.now() - start * 1000;
+    time = start;
+    requestAnimationFrame(tick);
+    return;
+  }
+  if (time >= end) {
     stop();
     scrub();
     return;
@@ -1376,22 +1608,28 @@ async function imageBlob(width, transparent = false, aspect = 16 / 9) {
 }
 async function exportFrames() {
   if (recording) return;
+  const plan = framePlan(project);
   stop();
   recording = true;
+  exportCancelled = false;
+  setExportLock(true);
+  $("#export-progress").hidden = false;
   const original = clone(project),
-    width = +$("#image-size").value;
+    width = plan.width;
   $("#modal").close();
   const files = {};
   try {
-    const count = Math.ceil(project.duration * 24) + 1;
+    const count = plan.frames.length;
     for (let f = 0; f < count; f++) {
-      const p = evaluate(original, Math.min(original.duration, f / 24));
+      if (exportCancelled) throw Error("Export geannuleerd");
+      const p = evaluate(original, plan.frames[f].time);
       view.applyAnimation(p);
-      const blob = await imageBlob(width, false);
-      files[`frame-${String(f).padStart(5, "0")}.png`] = new Uint8Array(
-        await blob.arrayBuffer(),
-      );
+      const blob = await imageBlob(width, false, plan.width / plan.height);
+      files[`frame-${String(plan.frames[f].frame).padStart(5, "0")}.png`] =
+        new Uint8Array(await blob.arrayBuffer());
       if (f % 12 === 0) toast(`Frames exporteren: ${f + 1}/${count}`);
+      $("#export-progress span").textContent = `Frames: ${f + 1} / ${count}`;
+      $("#export-progress progress").value = (f + 1) / count;
     }
     download(
       new Blob([zipSync(files, { level: 0 })], { type: "application/zip" }),
@@ -1400,6 +1638,8 @@ async function exportFrames() {
     toast("PNG-framereeks geëxporteerd");
   } finally {
     recording = false;
+    setExportLock(false);
+    $("#export-progress").hidden = true;
     project = original;
     view.build(project);
     view.setCamera(project.camera);
@@ -1407,6 +1647,7 @@ async function exportFrames() {
 }
 async function exportVideo() {
   if (recording) return;
+  const plan = framePlan(project);
   if (!window.MediaRecorder || !view.renderer.domElement.captureStream)
     throw Error(
       "Deze browser ondersteunt geen video-export. Kies PNG-framereeks.",
@@ -1419,11 +1660,24 @@ async function exportVideo() {
   if (!mime) throw Error("WebM niet beschikbaar. Gebruik PNG-framereeks.");
   stop();
   recording = true;
-  const original = clone(project);
+  const original = clone(project),
+    rangeStart = plan.frames[0].time,
+    rangeEnd = plan.frames.at(-1).time;
   $("#modal").close();
   view.outline && (view.outline.visible = false);
   view.gizmo.getHelper().visible = false;
-  const stream = view.renderer.domElement.captureStream(24),
+  const ratio = view.renderer.getPixelRatio();
+  view.renderer.setPixelRatio(1);
+  view.renderer.setSize(plan.width, plan.height, false);
+  if (view.camera.isOrthographicCamera) {
+    const half = (view.camera.top - view.camera.bottom) / 2;
+    view.camera.left = (-half * plan.width) / plan.height;
+    view.camera.right = (half * plan.width) / plan.height;
+  } else view.camera.aspect = plan.width / plan.height;
+  view.camera.updateProjectionMatrix();
+  const stream = view.renderer.domElement.captureStream(
+      animationOptions(project).fps,
+    ),
     chunks = [];
   const recorder = new MediaRecorder(stream, {
     mimeType: mime,
@@ -1439,8 +1693,8 @@ async function exportVideo() {
     await new Promise((resolve) => {
       const step = () => {
         const t = Math.min(
-            original.duration,
-            (performance.now() - start) / 1000,
+            rangeEnd,
+            rangeStart + ((performance.now() - start) / 1000) * plan.frameStep,
           ),
           p = evaluate(original, t);
         view.applyAnimation(p);
@@ -1448,7 +1702,7 @@ async function exportVideo() {
         view.gizmo.getHelper().visible = false;
         view.setCamera(p.camera);
         toast(`Animatie opnemen: ${t.toFixed(1)} / ${original.duration} s`);
-        if (t < original.duration) requestAnimationFrame(step);
+        if (t < rangeEnd) requestAnimationFrame(step);
         else resolve();
       };
       step();
@@ -1459,6 +1713,8 @@ async function exportVideo() {
     toast("WebM geëxporteerd");
   } finally {
     stream.getTracks().forEach((t) => t.stop());
+    view.renderer.setPixelRatio(ratio);
+    view.size();
     recording = false;
     project = original;
     view.build(project);
@@ -1488,21 +1744,20 @@ async function exportNative(format) {
     throw Error(
       "Lokale encoder niet actief. Start ImmunoStudio met Start-ImmunoStudio.cmd; PNG-framereeks blijft beschikbaar.",
     );
-  const start = +$("#export-from").value,
-    end = Math.min(project.duration, +$("#export-to").value);
-  if (
-    !Number.isFinite(start) ||
-    !Number.isFinite(end) ||
-    start < 0 ||
-    end <= start
-  )
-    throw Error("Kies een geldig tijdsbereik.");
+  const plan = framePlan(project),
+    start = plan.frames[0].time,
+    end = plan.frames.at(-1).time;
   if (format === "gif" && end - start > 15)
-    throw Error("GIF ondersteunt maximaal 15 seconden.");
-  const width =
-      format === "gif" ? 800 : Math.min(1920, +$("#image-size").value),
-    fps = format === "gif" ? 12 : 30,
-    count = Math.ceil((end - start) * fps),
+    throw Error("GIF supports a maximum of 15 seconds.");
+  const width = format === "gif" ? 800 : plan.width,
+    fps = format === "gif" ? 12 : plan.fps;
+  const outputFrames =
+    format === "gif"
+      ? Array.from({ length: Math.ceil((end - start) * fps) + 1 }, (_, i) => ({
+          time: Math.min(end, start + i / fps),
+        }))
+      : plan.frames;
+  const count = outputFrames.length,
     original = clone(project);
   const api = async (path, data) => {
     const res = await fetch("./api/export/" + path, {
@@ -1528,9 +1783,9 @@ async function exportNative(format) {
     job = await api("start", { format, fps, count, loop: 0 });
     for (let f = 0; f < count; f++) {
       if (exportCancelled) throw Error("Export geannuleerd");
-      const p = evaluate(original, start + f / fps);
+      const p = evaluate(original, outputFrames[f].time);
       view.applyAnimation(p);
-      const blob = await imageBlob(width, false);
+      const blob = await imageBlob(width, false, plan.width / plan.height);
       await api(job.id + "/frame", blob);
       $("#export-progress span").textContent =
         "Frames renderen: " + (f + 1) + " / " + count;
@@ -1664,11 +1919,18 @@ document.addEventListener("change", (e) => {
 });
 
 function basisControls(i) {
+  const molecule = moleculeInfo(i),
+    reference = molecule.reference;
+  const pdbControls =
+    molecule.type === "molecule"
+      ? `<div class="hinge-box"><strong>Experimentele structuur</strong><p class="muted">PDB-referenties kunnen fragmenten of complexen zijn. Controleer soort, allel, peptide en ketens.</p>${reference ? `<p data-no-translate>${esc(reference.title)}</p><button data-pdb="${reference.id}">PDB ${reference.id}</button><a href="${reference.url}" target="_blank" rel="noopener">RCSB PDB ↗</a>` : '<p class="muted">Schematisch 3D-volume. Geen eenduidige PDB-koppeling vastgesteld.</p><button data-action="pdb-for-selection">Zoek bij RCSB PDB</button>'}</div>`
+      : "";
   if (i.kind === "svg")
     return '<button class="wide" data-action="make-3d">⬡ Bouw 3D-volume</button>';
-  if (!["svg3d", "glb", "structure"].includes(i.kind)) return "";
+  if (!["svg3d", "glb", "structure", "vesicle"].includes(i.kind)) return "";
   const info = view.groups.get(i.id)?.userData.volumeInfo;
   return (
+    pdbControls +
     '<div class="hinge-box"><strong>Ruimtelijk model</strong>' +
     ["X", "Y"]
       .map(
@@ -1696,7 +1958,7 @@ function basisControls(i) {
         (info?.warnings?.length
           ? '<p class="muted">' + info.warnings.map(esc).join("<br>") + "</p>"
           : "") +
-        '<button data-action="make-2d">Originele 2D-vector</button>'
+        ""
       : "") +
     '<button class="wide" data-action="glb-export">↓ 3D-model · GLB</button></div>'
   );

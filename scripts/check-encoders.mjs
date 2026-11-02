@@ -71,7 +71,7 @@ try {
   };
   await mkdir(".local/validation", { recursive: true });
   for (const format of ["mp4", "avi", "gif"]) {
-    const fps = format === "gif" ? 12 : 30,
+    const fps = format === "gif" ? 12 : format === "mp4" ? 25 : 30,
       count = fps * 6,
       job = await post("start", { format, fps, count });
     for (let i = 0; i < count; i++) await post(job.id + "/frame", png(i));

@@ -140,10 +140,10 @@ const server = http.createServer(async (req, res) => {
         const config = JSON.parse(await body(req));
         if (
           !["mp4", "avi", "gif"].includes(config.format) ||
-          ![12, 24, 30].includes(config.fps) ||
+          ![12, 24, 25, 30, 50, 60].includes(config.fps) ||
           !Number.isInteger(config.count) ||
           config.count < 1 ||
-          config.count > 901
+          config.count > 1801
         )
           throw Error("Ongeldige exportinstellingen");
         const job = {

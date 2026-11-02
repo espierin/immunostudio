@@ -3,6 +3,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import * as T from "three";
 import { buildBasisVolume } from "../src/basis3d.js";
 import { isHemisphereCell } from "../src/cell-look.js";
+import { moleculeInfo } from "../src/molecule-catalog.js";
 const dom = new JSDOM();
 globalThis.DOMParser = dom.window.DOMParser;
 globalThis.XMLSerializer = dom.window.XMLSerializer;
@@ -31,6 +32,7 @@ for (const asset of catalog) {
     });
     report.push({
       file: asset.file,
+      classification: moleculeInfo(asset),
       title: asset.title,
       status: "ok",
       ...model.userData,

@@ -30,7 +30,7 @@ export function membraneMarkup(item, style) {
   const upper = Array.from({ length: 121 }, (_, i) => offset(i / 120, -1)),
     lower = Array.from({ length: 121 }, (_, i) => offset(1 - i / 120, 1));
   let svg = `<path d="M${[...upper, ...lower].map((p) => p.join(" ")).join("L")}Z" fill="${style.core || "#D9EAF6"}" stroke="none"/>`;
-  for (let n = 0; n <= count; n++) {
+  for (let n = 0; n < count + (item.closed ? 0 : 1); n++) {
     const t = arcT(table, n / count),
       p = bezier(points, t),
       v = tangent(points, t),

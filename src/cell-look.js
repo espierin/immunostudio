@@ -6,6 +6,12 @@ export function isCellElement(item) {
 export function isHemisphereCell(item) {
   const text = `${item.name || ""} ${item.sourceFile || ""}`;
   if (
+    /\b[TB][ -]cell[ -]receptor|\bTCR\b|\bBCR\b|coreceptor|cell adhesion/i.test(
+      text,
+    )
+  )
+    return false;
+  if (
     /membrane[ _-]*(patch|cell)|cell[ _-]*membrane|patch|suspension|product[ _-]*bag|cell[ _-]*cluster|context|surface|CD3-associated/i.test(
       text,
     )

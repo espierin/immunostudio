@@ -25,6 +25,7 @@ const commands = {
   "zoom-out": "zoom-out",
 };
 const tools = {
+  nodes: "tool-node-editor",
   select: "tool-pointer",
   move: "transform-move-horizontal",
   rotate: "transform-rotate",
