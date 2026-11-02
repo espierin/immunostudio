@@ -1,3 +1,4 @@
+import { CommandPalette } from "./command-palette.js";
 import { starterProject } from "./starter-projects.js";
 import { OpeningPage, hasArtwork } from "./opening-page.js";
 import "./opening-page.css";
@@ -1774,6 +1775,60 @@ document.addEventListener("click", (e) => {
   const kind = e.target.closest("[data-start-confirm]")?.dataset.startConfirm;
   if (kind) loadStarter(kind);
 });
+const commands = new CommandPalette(() => [
+  { label: "Startpagina", run: () => openingPage.show() },
+  { label: "Project openen", keywords: "open file", run: () => action("open") },
+  {
+    label: "Project downloaden",
+    keywords: "save backup",
+    shortcut: "Ctrl+S",
+    run: () => action("save"),
+  },
+  {
+    label: "Exporteren",
+    keywords: "png svg emf word powerpoint",
+    run: () => action("export"),
+  },
+  { label: "Handleiding", keywords: "help manual", run: () => action("help") },
+  ...(project.editorMode === "2d"
+    ? [
+        ...[
+          ["select", "Selecteren"],
+          ["move", "Verplaatsen"],
+          ["nodes", "Punten bewerken"],
+          ["sculpt", "Sculpten"],
+          ["membrane", "Membraan"],
+          ["text", "Tekst"],
+        ].map(([tool, label]) => ({
+          label,
+          run: () => drawing2D.setTool(tool),
+        })),
+        ...[
+          ["floating-tools", "Sculpting en modifiers"],
+          ["fit", "Pas blad"],
+          ["duplicate", "Dupliceren"],
+          ["mirror-x", "Horizontaal spiegelen"],
+          ["to-membrane", "Omzetten naar membraan"],
+          ["to-editable-curve", "Bézierlijn bewerken"],
+          ["contour-smooth", "Gladmaken"],
+          ["contour-simplify", "Vereenvoudigen"],
+        ].map(([cmd, label]) => ({
+          label,
+          keywords: cmd,
+          disabled:
+            !["fit", "floating-tools"].includes(cmd) &&
+            !drawing2D.selectedItems().some((i) => !i.locked),
+          run: () => drawing2D.command(cmd),
+        })),
+      ]
+    : []),
+]);
+const commandButton = document.createElement("button");
+commandButton.textContent = "⌕";
+commandButton.title = "Opdrachten zoeken (Ctrl+K / F3)";
+commandButton.setAttribute("aria-label", "Opdrachten zoeken");
+commandButton.addEventListener("click", () => commands.show());
+document.querySelector(".sheet-toolbar").append(commandButton);
 openingPage = new OpeningPage({
   resume: () => drawing2D.svg.focus(),
   open: () => action("open"),

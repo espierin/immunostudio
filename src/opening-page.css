@@ -226,3 +226,57 @@ html[data-ui] .opening-page .opening-primary {
     }
   }
 }
+.command-palette {
+  width: min(580px, 92vw);
+  padding: 20px;
+  border: 1px solid #c8dbe6;
+  border-radius: 16px;
+  color: #002b49;
+  box-shadow: 0 24px 80px #002b4933;
+}
+.command-palette::backdrop {
+  background: #002b4970;
+  backdrop-filter: blur(3px);
+}
+.command-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.command-heading h2 {
+  font-size: 20px;
+  margin: 0 0 15px;
+}
+.command-palette > input {
+  width: 100%;
+  font-size: 16px;
+  padding: 13px;
+}
+.command-results {
+  max-height: 340px;
+  overflow: auto;
+  margin-top: 12px;
+}
+.command-results button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  border: 0;
+  text-align: left;
+  padding: 12px;
+  background: white;
+}
+.command-results .command-current {
+  background: #e7f3fa;
+  box-shadow: inset 3px 0 #0077b6;
+}
+.command-results kbd {
+  color: #6b8292;
+  font-size: 11px;
+}
+.command-palette > p {
+  font-size: 11px;
+  color: #647c8d;
+  margin-bottom: 0;
+}
