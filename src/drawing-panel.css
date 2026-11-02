@@ -8,6 +8,17 @@
   padding: 10px;
   gap: 6px;
 }
+.manual-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-top: 10px;
+  font-size: 11px;
+}
+.manual-links a {
+  color: #0077b6;
+  text-underline-offset: 3px;
+}
 .workspace {
   min-height: 0;
   height: 100%;
