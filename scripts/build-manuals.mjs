@@ -185,10 +185,94 @@ const manuals = {
 };
 
 const css = `:root{font:16px/1.65 system-ui,sans-serif;color:#002b49;background:#edf3f7}*{box-sizing:border-box}body{margin:0}header{background:#002b49;color:white;padding:38px max(24px,calc((100% - 1100px)/2))}header p{color:#cde2ef}h1{font-size:2.2rem;line-height:1.2;margin:12px 0}a{color:#0077b6;text-underline-offset:3px}header a{color:#fff}nav.actions{display:flex;gap:20px;flex-wrap:wrap;align-items:center}button{background:#0077b6;color:white;border:0;border-radius:5px;padding:10px 16px;font:inherit;cursor:pointer}.layout{max-width:1150px;margin:auto;display:grid;grid-template-columns:240px minmax(0,1fr);gap:35px;padding:30px 24px}aside{position:sticky;top:20px;align-self:start;max-height:90vh;overflow:auto;font-size:.88rem}aside a{display:block;padding:6px 0}article{background:white;border:1px solid #d8e3ea;padding:16px 36px 45px;min-width:0}section{scroll-margin-top:20px;border-bottom:1px solid #d8e3ea;padding:12px 0 28px}h2{font-size:1.5rem;line-height:1.3;margin-top:28px}h3{font-size:1.12rem}li{margin:8px 0}table{border-collapse:collapse;width:100%;font-size:.92rem;margin:20px 0}th,td{border:1px solid #d8e3ea;padding:10px;text-align:left;vertical-align:top}th{background:#e8f3fa}dt{font-weight:700;margin-top:20px}dd{margin:4px 0 14px}code{background:#edf3f7;padding:2px 4px;overflow-wrap:anywhere}footer{padding:24px;text-align:center;font-size:.85rem}@media(max-width:800px){.layout{display:block;padding:15px}aside{position:static;max-height:none;margin-bottom:20px}article{padding:10px 20px}h1{font-size:1.8rem}}@media print{html{font-size:10pt;background:white}header{background:white;color:#002b49;padding:0}header p{color:#002b49}.actions,aside,footer{display:none!important}.layout{display:block;padding:0;max-width:none}article{border:0;padding:0}section{break-before:auto}h2,h3{break-after:avoid}tr{break-inside:avoid}a{color:inherit}body{margin:12mm}table{font-size:9pt}}`;
+// Keep the original screenshots intact; SVG viewBoxes provide responsive detail crops.
+const illustrations = [
+  {
+    section: "start",
+    file: "workspace",
+    crop: [0, 0, 1280, 720],
+    en: "The 2D workspace: library on the left, drawing page in the centre, and Drawing / Properties on the right.",
+    nl: "De 2D-werkruimte: links de bibliotheek, midden het tekenblad en rechts Tekenen / Eigenschappen.",
+  },
+  {
+    section: "nodes",
+    file: "nodes",
+    crop: [700, 300, 570, 380],
+    en: "Detail: choose Edit nodes, click a vector part, then move its blue anchors or orange handles. Add node splits a segment.",
+    nl: "Detail: kies Punten bewerken, klik op een vectoronderdeel en verplaats blauwe ankers of oranje handvatten. Punt toevoegen splitst een segment.",
+  },
+  {
+    section: "membrane",
+    file: "membrane",
+    crop: [400, 250, 870, 425],
+    en: "An ellipse converted to a bilayer loop. Select the membrane to expose anchors and curvature handles; Convert to membrane is in Drawing.",
+    nl: "Een ellips omgezet naar een lipidendubbellaag. Selecteer het membraan voor ankers en krommingsgrepen. Omzetten naar membraan staat in Tekenen.",
+  },
+  {
+    section: "three",
+    file: "cells-cutaway",
+    shared: true,
+    crop: [430, 200, 410, 330],
+    en: "Nine cell types viewed from the cutaway side. Original nuclei and organelles remain visible; cell bodies follow their source contours.",
+    nl: "Negen celtypen vanaf de doorsnedezijde. Oorspronkelijke kernen en organellen blijven zichtbaar; de cellichamen volgen hun broncontour.",
+  },
+  {
+    section: "three",
+    file: "cells-rear",
+    shared: true,
+    crop: [430, 200, 410, 330],
+    en: "Rear view of the same cells: dendritic processes, flat discs and elongated bodies replace a universal half-ball. The source labels remain English.",
+    nl: "Achteraanzicht van dezelfde cellen: dendritische uitlopers, platte schijven en langgerekte vormen vervangen de universele halve bol. De bronlabels blijven Engels.",
+  },
+  {
+    section: "animate",
+    file: "render",
+    crop: [995, 275, 275, 390],
+    narrow: true,
+    en: "Detail of Animation & render: choose the frame rate, start/end frame, frame step, output dimensions and interpolation before rendering.",
+    nl: "Detail van Animatie en render: kies framerate, start-/eindframe, framestap, uitvoerafmetingen en interpolatie vóór het renderen.",
+  },
+  {
+    section: "camera",
+    file: "camera",
+    crop: [280, 175, 990, 515],
+    en: "A 3D vesicle with an Orbit 360° camera action. The generated keyframes appear on the timeline and in the key list; the target selector separates object and camera keys.",
+    nl: "Een 3D-vesikel met camera-actie Orbit 360°. De gemaakte keys staan op de tijdlijn en in de keyframelijst. De doelkeuze scheidt object- en camerakeys.",
+  },
+  {
+    section: "export",
+    file: "export",
+    crop: [385, 55, 510, 612],
+    en: "The upper part of Export: still-image size, transparency, text outlines and video render settings. This screenshot shows the local version.",
+    nl: "Het bovenste deel van Exporteren: afbeeldingsformaat, transparantie, lettercontouren en videorenderinstellingen. Dit beeld toont de lokale versie.",
+  },
+  {
+    section: "export",
+    file: "formats",
+    crop: [385, 55, 510, 612],
+    en: "Scroll within Export to choose a format. EMF/WMF and MP4/AVI/GIF are available locally; their buttons are disabled on the online site.",
+    nl: "Scroll binnen Exporteren om een formaat te kiezen. EMF/WMF en MP4/AVI/GIF werken lokaal; online zijn die knoppen uitgeschakeld.",
+  },
+];
+const shotCSS = `figure{margin:26px 0;border:1px solid #c8dae6;border-radius:7px;overflow:hidden;background:#f5f9fc;break-inside:avoid}figure.narrow{max-width:360px;margin-left:auto;margin-right:auto}figure a{display:block}figure svg{display:block;width:100%;height:auto}figcaption{padding:12px 15px;font-size:.9rem;line-height:1.5;border-top:1px solid #d8e3ea}.shot-note{font-size:.88rem}.shot-note a{color:white}@media print{figure{break-inside:avoid;max-height:none}figure.narrow{max-width:65mm}figcaption{font-size:9pt}.shot-note{display:none}}`;
+function sectionFigures(lang, section) {
+  return illustrations
+    .map((shot, index) => ({ shot, index }))
+    .filter(({ shot }) => shot.section === section)
+    .map(({ shot, index }) => {
+      const file = `images/${shot.shared ? "" : lang + "-"}${shot.file}.png`,
+        caption = shot[lang],
+        label = lang === "nl" ? "Afbeelding" : "Figure",
+        full =
+          lang === "nl" ? "Open volledig screenshot" : "Open full screenshot";
+      return `<figure class="${shot.narrow ? "narrow" : ""}" id="figure-${index + 1}"><a href="${file}" target="_blank" rel="noopener" aria-label="${full}: ${caption}"><svg viewBox="${shot.crop.join(" ")}" width="${shot.crop[2]}" height="${shot.crop[3]}" role="img" aria-labelledby="shot-title-${index + 1}"><title id="shot-title-${index + 1}">${caption}</title><image href="${file}" x="0" y="0" width="1280" height="720"/></svg></a><figcaption><b>${label} ${index + 1}.</b> ${caption}</figcaption></figure>`;
+    })
+    .join("");
+}
 await mkdir("public/manual", { recursive: true });
 for (const [lang, m] of Object.entries(manuals)) {
   const other = lang === "en" ? "nl" : "en";
-  const html = `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${m.title}</title><link rel="icon" href="../immunostudio-icon.svg"><style>${css}</style></head><body><header><div>IMMUNOSTUDIO · USER DOCUMENTATION</div><h1>${m.title}</h1><p>${m.subtitle}</p><nav class="actions"><a href="../">${m.back}</a><a href="${other}.html" lang="${other}">${m.other}</a><button onclick="window.print()">${m.print}</button></nav></header><div class="layout"><aside aria-label="${m.contents}"><b>${m.contents}</b>${m.sections.map(([id, title]) => `<a href="#${id}">${title}</a>`).join("")}</aside><article>${m.sections.map(([id, title, body]) => `<section id="${id}"><h2>${title}</h2>${body}</section>`).join("")}</article></div><footer>ImmunoStudio · 2 November 2026 · <a href="${other}.html">${m.other}</a></footer></body></html>`;
+  const html = `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${m.title}</title><link rel="icon" href="../immunostudio-icon.svg"><style>${css}${shotCSS}</style></head><body><header><div>IMMUNOSTUDIO · USER DOCUMENTATION</div><h1>${m.title}</h1><p>${m.subtitle}</p><p class="shot-note">${lang === "nl" ? "Screenshots uit versie 0.2. Klik op een afbeelding om het volledige screenshot op ware grootte te openen. Detailbeelden zijn uitsneden van ongewijzigde screenshots." : "Screenshots from version 0.2. Click an image to open the full screenshot at its original size. Detail views are crops of unmodified screenshots."}</p><nav class="actions"><a href="../">${m.back}</a><a href="${other}.html" lang="${other}">${m.other}</a><button onclick="window.print()">${m.print}</button></nav></header><div class="layout"><aside aria-label="${m.contents}"><b>${m.contents}</b>${m.sections.map(([id, title]) => `<a href="#${id}">${title}</a>`).join("")}</aside><article>${m.sections.map(([id, title, body]) => `<section id="${id}"><h2>${title}</h2>${body}${sectionFigures(lang, id)}</section>`).join("")}</article></div><footer>ImmunoStudio · 2 November 2026 · <a href="${other}.html">${m.other}</a></footer></body></html>`;
   await writeFile(`public/manual/${lang}.html`, html);
 }
 console.log("Generated English and Dutch manuals, 16 sections each.");

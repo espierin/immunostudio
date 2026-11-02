@@ -2,7 +2,7 @@
 
 Online: **https://espierin.github.io/immunostudio/**
 
-Detailed user manuals: [English](public/manual/en.html) · [Nederlands](public/manual/nl.html). Both have a table of contents, practical tutorials, export reference and print/PDF layout. Online: [English](https://espierin.github.io/immunostudio/manual/en.html) · [Nederlands](https://espierin.github.io/immunostudio/manual/nl.html). Regenerate after editing: `node scripts/build-manuals.mjs`.
+Detailed user manuals: [English](public/manual/en.html) · [Nederlands](public/manual/nl.html). Both have a table of contents, practical tutorials, nine captioned screenshots/detail views, export reference and print/PDF layout. Click any illustration to open the original screenshot. Online: [English](https://espierin.github.io/immunostudio/manual/en.html) · [Nederlands](https://espierin.github.io/immunostudio/manual/nl.html). Regenerate after editing: `node scripts/build-manuals.mjs`.
 
 Een lokale en online 2D-/3D-werkplaats voor immunologische illustraties, met een Nederlands/Engelse interface en UMC Utrecht-opmaak. Projecten en eigen modellen worden op het apparaat in de browser bewaard. Gebruik een `.immuno`-download om projecten tussen de online en lokale versie over te zetten.
 
