@@ -1817,6 +1817,53 @@ document.addEventListener("click", (e) => {
   const kind = e.target.closest("[data-start-confirm]")?.dataset.startConfirm;
   if (kind) loadStarter(kind);
 });
+const layoutKey = "immunostudio-focus" + (qaMode ? "-qa" : "");
+function setFocusLayout(enabled) {
+  document.documentElement.classList.toggle("workspace-focus", enabled);
+  document
+    .querySelectorAll("[data-workspace-focus]")
+    .forEach((b) => b.setAttribute("aria-pressed", String(enabled)));
+  try {
+    localStorage.setItem(layoutKey, String(enabled));
+  } catch {}
+}
+function resetWorkspaceLayout() {
+  setFocusLayout(false);
+  Object.assign(drawing2D.floating.state, {
+    x: Math.max(0, innerWidth - 310),
+    y: 170,
+    wide: false,
+    minimized: true,
+    hidden: false,
+    collapsed: [],
+  });
+  drawing2D.floating.place();
+  drawing2D.floating.save();
+}
+for (const toolbar of document.querySelectorAll(".sheet-toolbar,.toolbar")) {
+  const button = document.createElement("button");
+  button.dataset.workspaceFocus = "";
+  button.textContent = "Focusmodus";
+  button.title = "Zijpanelen verbergen of tonen (F9)";
+  button.addEventListener("click", () =>
+    setFocusLayout(
+      !document.documentElement.classList.contains("workspace-focus"),
+    ),
+  );
+  toolbar.append(button);
+}
+try {
+  setFocusLayout(localStorage.getItem(layoutKey) === "true");
+} catch {}
+document.addEventListener("keydown", (e) => {
+  if (document.documentElement.dataset.home === "true") return;
+  if (e.key === "F9") {
+    e.preventDefault();
+    setFocusLayout(
+      !document.documentElement.classList.contains("workspace-focus"),
+    );
+  }
+});
 const commands = new CommandPalette(() => [
   { label: "Startpagina", run: () => openingPage.show() },
   { label: "Project openen", keywords: "open file", run: () => action("open") },

@@ -313,3 +313,65 @@ html[data-ui] .opening-page .opening-primary {
 .favorite-toggle[aria-pressed="true"] {
   color: #0077b6;
 }
+html.workspace-focus main {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+html.workspace-focus main > .library,
+html.workspace-focus main > .inspector {
+  display: none !important;
+}
+html.workspace-focus main > .workspace {
+  grid-column: 1 !important;
+}
+button[data-workspace-focus][aria-pressed="true"] {
+  background: #e7f3fa;
+  border-color: #0077b6;
+  color: #0077b6;
+}
+@media (max-width: 1050px) {
+  .sheet-toolbar {
+    gap: 3px;
+    padding: 5px;
+  }
+  .sheet-toolbar button {
+    font-size: 10px;
+    padding: 6px;
+  }
+  .project-title {
+    padding-left: 12px;
+  }
+  .header-actions button {
+    padding: 6px 8px;
+  }
+  .language-switch select {
+    max-width: 90px !important;
+  }
+}
+@media (max-width: 760px) {
+  .opening-current button {
+    font-size: 11px;
+  }
+  .opening-top .opening-brand {
+    font-size: 19px;
+  }
+  .opening-actions {
+    flex-wrap: wrap;
+  }
+  .opening-section-title {
+    align-items: start;
+    gap: 15px;
+  }
+  .opening-page h1 {
+    font-size: 46px;
+  }
+  .opening-art {
+    max-width: 480px;
+    margin: auto;
+  }
+  .opening-top {
+    gap: 12px;
+  }
+  .opening-top > div {
+    gap: 6px;
+  }
+}
