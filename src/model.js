@@ -418,6 +418,48 @@ export function validateProject(p) {
       sheetIds.add(i.id);
       if (i.kind === "svg" && typeof i.svg !== "string")
         throw Error("SVG ontbreekt in 2D-object.");
+      if (i.anchor2d) {
+        const a = i.anchor2d;
+        if (
+          typeof a.targetId !== "string" ||
+          a.targetId === i.id ||
+          !p.sheet.items.some((t) => t.id === a.targetId) ||
+          p.sheet.items.find((t) => t.id === a.targetId)?.anchor2d ||
+          ![
+            a.u,
+            a.offset,
+            a.pivotX,
+            a.pivotY,
+            a.side,
+            a.pathIndex,
+            a.angle,
+          ].every(Number.isFinite) ||
+          a.u < 0 ||
+          a.u > 1 ||
+          a.pivotX < 0 ||
+          a.pivotX > 1 ||
+          a.pivotY < 0 ||
+          a.pivotY > 1 ||
+          Math.abs(a.offset) > 300 ||
+          ![1, -1].includes(a.side) ||
+          !Number.isInteger(a.pathIndex) ||
+          a.pathIndex < 0
+        )
+          throw Error("Invalid 2D membrane anchor.");
+      }
+      if (
+        i.contourEdit &&
+        (!Array.isArray(i.contourEdit.points) ||
+          i.contourEdit.points.length < 2 ||
+          i.contourEdit.points.length > 256 ||
+          i.contourEdit.points.some(
+            (v) =>
+              !Array.isArray(v) ||
+              v.length !== 2 ||
+              v.some((n) => !Number.isFinite(n) || Math.abs(n) > 1e7),
+          ))
+      )
+        throw Error("Invalid sculpted contour.");
       if (
         i.kind === "membrane" &&
         (!Array.isArray(i.curve) ||

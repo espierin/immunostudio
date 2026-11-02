@@ -1,4 +1,44 @@
 export const explanations = {
+  "anchor-mark-embedded": [
+    "Markeer een aparte SVG-receptorgroep bij de gekozen celrand zodat deze mee beweegt.",
+    "Mark a separate SVG receptor group near the chosen cell boundary so it follows deformation.",
+  ],
+  sculpt: [
+    "Sleep bij de contour om de rand lokaal te vervormen. Radius en sterkte staan in het zwevende menu.",
+    "Drag near the contour to deform it locally. Radius and strength are in the floating menu.",
+  ],
+  "contour-smooth": [
+    "Maak de gekozen contour vloeiender; gekoppelde moleculen volgen mee.",
+    "Smooth the chosen contour; attached molecules follow.",
+  ],
+  "contour-simplify": [
+    "Verminder contourpunten met de ingestelde tolerantie.",
+    "Reduce contour points using the selected tolerance.",
+  ],
+  "contour-inset": [
+    "Verplaats de contour naar binnen met de ingestelde afstand.",
+    "Offset the contour inward by the selected distance.",
+  ],
+  "contour-outset": [
+    "Verplaats de contour naar buiten met de ingestelde afstand.",
+    "Offset the contour outward by the selected distance.",
+  ],
+  "contour-reset": [
+    "Herstel de contour van vóór de eerste sculptbewerking of modifier.",
+    "Restore the contour before the first sculpt stroke or modifier.",
+  ],
+  "anchor-target": [
+    "Gebruik de geselecteerde celrand of het membraan als doel voor losse moleculen.",
+    "Use the selected cell edge or membrane as the target for separate molecules.",
+  ],
+  "anchor-attach": [
+    "Koppel de selectie aan het gekozen membraandoel. De moleculen blijven haaks op de rand staan.",
+    "Attach the selection to the membrane target. Molecules stay perpendicular to the contour.",
+  ],
+  "anchor-detach": [
+    "Verwijder het membraananker met behoud van de huidige positie.",
+    "Remove the membrane anchor while retaining the current pose.",
+  ],
   nodes: [
     "Klik een vectoronderdeel om zijn ankerpunten en Bézier-handvatten te bewerken.",
     "Click a vector part to edit its anchor points and Bézier handles.",

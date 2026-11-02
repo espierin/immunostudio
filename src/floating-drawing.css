@@ -1,0 +1,110 @@
+.floating-drawing {
+  position: fixed;
+  z-index: 70;
+  width: 300px;
+  max-width: calc(100vw - 12px);
+  color: #002b49;
+  background: #fff;
+  border: 1px solid #8ab4ce;
+  border-radius: 9px;
+  box-shadow: 0 8px 32px #002b4933;
+  font-size: 12px;
+  overflow: hidden;
+}
+[data-editor="3d"] .floating-drawing {
+  display: none !important;
+}
+.floating-drawing.wide {
+  width: 460px;
+}
+.floating-drawing.minimized {
+  width: 270px;
+}
+.floating-grip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #002b49;
+  color: white;
+  padding: 7px 8px;
+  cursor: move;
+  touch-action: none;
+  user-select: none;
+}
+.floating-drawing .floating-grip strong {
+  flex: 1;
+  font-size: 12px;
+  color: white;
+}
+.floating-grip button {
+  padding: 3px 7px;
+  color: white;
+  background: #ffffff18;
+  border-color: #ffffff44;
+  font-size: 14px;
+}
+.floating-content {
+  padding: 12px;
+  max-height: min(620px, calc(100vh - var(--floating-top, 170px) - 55px));
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.minimized .floating-content {
+  display: none;
+}
+.floating-content details {
+  border-top: 1px solid #d8e3ea;
+  margin-top: 12px;
+  padding-top: 8px;
+}
+.floating-content summary {
+  font-weight: 650;
+  cursor: pointer;
+  padding: 4px 0 8px;
+}
+.floating-content label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 8px 0;
+  font-size: 11px;
+}
+.floating-content input,
+.floating-content select {
+  max-width: 150px;
+  min-width: 0;
+  padding: 5px;
+  border: 1px solid #c9dce8;
+  border-radius: 4px;
+  font: inherit;
+}
+.floating-content input[type="number"] {
+  width: 90px;
+}
+.floating-selection {
+  font-weight: 600;
+  max-height: 40px;
+  overflow: auto;
+}
+.floating-target {
+  color: #0077b6;
+}
+.floating-content .drawing-grid button {
+  font-size: 11px;
+  padding: 6px;
+  min-height: 32px;
+}
+.floating-content .muted {
+  font-size: 10px;
+  line-height: 1.5;
+}
+.sculpt-guide {
+  pointer-events: none;
+}
+.sheet-canvas[data-tool="sculpt"] {
+  cursor: crosshair;
+}
+.sheet-canvas[data-tool="sculpt"] .sheet-selection {
+  display: none;
+}

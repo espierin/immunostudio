@@ -184,9 +184,47 @@ const manuals = {
   },
 };
 
+const sculptHelp = {
+  en: [
+    [
+      "sculpt",
+      "5a. Sculpt cells and tissues",
+      `<ol><li>Select a cell, tissue or membrane in 2D and open <b>Sculpt &amp; modifiers</b> from the toolbar or Drawing tab.</li><li>For a tissue with several cell outlines, first choose <b>Edit nodes</b> and click the particular cell boundary. Then choose <b>Sculpt</b>. Otherwise the largest filled contour is selected.</li><li>Choose Push and pull, Inflate, Deflate or Local smooth. Drag near the edge. Radius controls the affected area in drawing-page pixels; Strength controls the deformation. Shift reverses dragging and inflation.</li><li>Enable <b>Deform interior structures</b> to carry nearby internal vector structures along. Receptor groups remain rigid and turn with the membrane.</li></ol><p>Drag the dark title bar to reposition the floating menu. Use − to minimize, the diagonal-arrow button to expand or compact, and × to close. Reopen it from the toolbar. A focused title bar also moves with arrow keys (Shift for larger steps). Position and size are remembered.</p><p><b>Contour modifiers:</b> Smooth softens the selected outline; Simplify reduces its points using the tolerance; Inset and Outset move the boundary inward or outward by the distance. Horizontal and vertical flips mirror the whole object. Undo reverses individual edits; Restore contour returns to the geometry before the first sculpt stroke or contour modifier. Work on individual vector parts: compound paths containing multiple subpaths are not sculpted as one outline. These are focused contour operations, not the complete Inkscape live-path-effect system.</p>`,
+    ],
+    [
+      "anchors",
+      "5b. Attach molecules to a membrane",
+      `<ol><li>Select the cell boundary or drawn membrane and click <b>Use as membrane</b>. For a specific tissue outline, choose that part with Edit nodes first.</li><li>Select one or more separate molecule objects and click <b>Attach selection</b>. The molecule follows that contour and its axis remains perpendicular.</li><li>Adjust <b>Position along edge</b>, <b>Distance from edge</b> and <b>Anchor height in molecule</b> in the floating menu. The default attachment point is centred horizontally and 80% down the molecule. Change it to match the actual transmembrane domain.</li><li>Drag an attached molecule to move its anchor along the membrane. Use Other membrane side to reverse its orientation, or Detach to restore free movement and rotation.</li></ol><p>Recognizable grouped receptors already inside a cell illustration follow automatically when sculpting that boundary. For a custom grouped receptor, first establish the cell boundary with Use as membrane, then select a receptor part with Edit nodes and choose <b>Mark part as membrane molecule</b>. This requires a separate SVG group near the boundary; ungrouped artwork may need to be imported as a separate object and attached.</p><p>Project files and local autosave preserve contour edits and attachments. SVG/PNG exports preserve the resulting shapes and poses. These 2D edits do not regenerate the separate 3D model.</p>`,
+    ],
+  ],
+  nl: [
+    [
+      "sculpt",
+      "5a. Cellen en weefsels sculpten",
+      `<ol><li>Selecteer in 2D een cel, weefsel of membraan en open <b>Sculpting en modifiers</b> via de werkbalk of Tekenen.</li><li>Kies bij een weefsel eerst <b>Punten bewerken</b> en klik op de celrand die je wilt vervormen. Kies daarna <b>Sculpten</b>. Zonder die keuze wordt de grootste gevulde contour gekozen.</li><li>Kies Duwen en trekken, Opbollen, Induwen of Lokaal gladmaken. Sleep bij de rand. Radius bepaalt het bewerkte gebied in tekenbladpixels; Sterkte bepaalt de vervorming. Shift keert duwen en opbollen om.</li><li>Met <b>Binnenstructuren meevormen</b> bewegen nabije interne vectorstructuren mee. Receptorgroepen blijven star en draaien met het membraan mee.</li></ol><p>Sleep de donkere titelbalk om het zwevende menu te verplaatsen. Met − minimaliseer je het, met de diagonale pijl maak je het breder of smaller en met × sluit je het. Open het opnieuw via de werkbalk. Een geselecteerde titelbalk kun je ook met pijltjestoetsen verplaatsen (Shift voor grotere stappen). Plaats en breedte worden onthouden.</p><p><b>Contourmodifiers:</b> Gladmaken verzacht de gekozen contour; Vereenvoudigen vermindert het aantal punten met de ingestelde tolerantie. Krimpen en Vergroten verplaatsen de rand naar binnen of buiten met de ingestelde afstand. Horizontaal en verticaal spiegelen werken op het hele object. Ongedaan maken draait losse stappen terug; Contour herstellen keert terug naar de vorm vóór de eerste sculptbewerking of contourmodifier. Bewerk losse vectoronderdelen: samengestelde paden met meerdere deelpaden kunnen niet als één contour worden gesculpt. Dit zijn gerichte contourbewerkingen, geen volledige Inkscape-live-padeffecten.</p>`,
+    ],
+    [
+      "anchors",
+      "5b. Moleculen aan een membraan koppelen",
+      `<ol><li>Selecteer de celrand of het getekende membraan en kies <b>Gebruik als membraan</b>. Kies bij een weefsel eerst de specifieke rand met Punten bewerken.</li><li>Selecteer één of meer losse molecuulobjecten en kies <b>Koppel selectie</b>. Het molecuul volgt de contour en blijft er haaks op staan.</li><li>Stel <b>Positie langs rand</b>, <b>Afstand tot rand</b> en <b>Ankerhoogte in molecuul</b> in. Standaard ligt het anker horizontaal in het midden en op 80% van de molecuulhoogte. Pas dit aan het echte transmembraandomein aan.</li><li>Sleep een gekoppeld molecuul om het langs het membraan te verplaatsen. Andere membraanzijde keert de oriëntatie om; Losmaken van membraan maakt vrij verplaatsen en draaien weer mogelijk.</li></ol><p>Herkenbare receptorgroepen binnen een celillustratie bewegen automatisch mee bij het sculpten van die rand. Voor een eigen gegroepeerde receptor: leg eerst de celrand vast met Gebruik als membraan, kies daarna een receptoronderdeel met Punten bewerken en klik <b>Onderdeel als membraanmolecuul</b>. Hiervoor is een aparte SVG-groep bij de rand nodig. Importeer ongegroepeerde onderdelen eventueel als los object en koppel die.</p><p>Projectbestanden en automatisch lokaal opslaan bewaren contouren en koppelingen. SVG/PNG-export bewaart de resulterende vormen en posities. Deze 2D-bewerkingen genereren de aparte 3D-variant niet opnieuw.</p>`,
+    ],
+  ],
+};
+for (const lang of ["en", "nl"]) {
+  const index = manuals[lang].sections.findIndex((s) => s[0] === "nodes");
+  manuals[lang].sections.splice(index + 1, 0, ...sculptHelp[lang]);
+}
+
 const css = `:root{font:16px/1.65 system-ui,sans-serif;color:#002b49;background:#edf3f7}*{box-sizing:border-box}body{margin:0}header{background:#002b49;color:white;padding:38px max(24px,calc((100% - 1100px)/2))}header p{color:#cde2ef}h1{font-size:2.2rem;line-height:1.2;margin:12px 0}a{color:#0077b6;text-underline-offset:3px}header a{color:#fff}nav.actions{display:flex;gap:20px;flex-wrap:wrap;align-items:center}button{background:#0077b6;color:white;border:0;border-radius:5px;padding:10px 16px;font:inherit;cursor:pointer}.layout{max-width:1150px;margin:auto;display:grid;grid-template-columns:240px minmax(0,1fr);gap:35px;padding:30px 24px}aside{position:sticky;top:20px;align-self:start;max-height:90vh;overflow:auto;font-size:.88rem}aside a{display:block;padding:6px 0}article{background:white;border:1px solid #d8e3ea;padding:16px 36px 45px;min-width:0}section{scroll-margin-top:20px;border-bottom:1px solid #d8e3ea;padding:12px 0 28px}h2{font-size:1.5rem;line-height:1.3;margin-top:28px}h3{font-size:1.12rem}li{margin:8px 0}table{border-collapse:collapse;width:100%;font-size:.92rem;margin:20px 0}th,td{border:1px solid #d8e3ea;padding:10px;text-align:left;vertical-align:top}th{background:#e8f3fa}dt{font-weight:700;margin-top:20px}dd{margin:4px 0 14px}code{background:#edf3f7;padding:2px 4px;overflow-wrap:anywhere}footer{padding:24px;text-align:center;font-size:.85rem}@media(max-width:800px){.layout{display:block;padding:15px}aside{position:static;max-height:none;margin-bottom:20px}article{padding:10px 20px}h1{font-size:1.8rem}}@media print{html{font-size:10pt;background:white}header{background:white;color:#002b49;padding:0}header p{color:#002b49}.actions,aside,footer{display:none!important}.layout{display:block;padding:0;max-width:none}article{border:0;padding:0}section{break-before:auto}h2,h3{break-after:avoid}tr{break-inside:avoid}a{color:inherit}body{margin:12mm}table{font-size:9pt}}`;
 // Keep the original screenshots intact; SVG viewBoxes provide responsive detail crops.
 const illustrations = [
+  {
+    section: "sculpt",
+    file: "sculpt",
+    crop: [400, 170, 880, 550],
+    en: "An indented tissue cell and a bent bilayer with an attached molecule. The movable floating menu exposes brush settings and contour modifiers.",
+    nl: "Een ingeduwde weefselcel en een gebogen dubbellaag met gekoppeld molecuul. Het verplaatsbare zwevende menu toont penseelinstellingen en contourmodifiers.",
+  },
   {
     section: "start",
     file: "workspace",
@@ -254,6 +292,11 @@ const illustrations = [
     nl: "Scroll binnen Exporteren om een formaat te kiezen. EMF/WMF en MP4/AVI/GIF werken lokaal; online zijn die knoppen uitgeschakeld.",
   },
 ];
+illustrations.sort(
+  (a, b) =>
+    manuals.en.sections.findIndex((s) => s[0] === a.section) -
+    manuals.en.sections.findIndex((s) => s[0] === b.section),
+);
 const shotCSS = `figure{margin:26px 0;border:1px solid #c8dae6;border-radius:7px;overflow:hidden;background:#f5f9fc;break-inside:avoid}figure.narrow{max-width:360px;margin-left:auto;margin-right:auto}figure a{display:block}figure svg{display:block;width:100%;height:auto}figcaption{padding:12px 15px;font-size:.9rem;line-height:1.5;border-top:1px solid #d8e3ea}.shot-note{font-size:.88rem}.shot-note a{color:white}@media print{figure{break-inside:avoid;max-height:none}figure.narrow{max-width:65mm}figcaption{font-size:9pt}.shot-note{display:none}}`;
 function sectionFigures(lang, section) {
   return illustrations
@@ -275,4 +318,4 @@ for (const [lang, m] of Object.entries(manuals)) {
   const html = `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${m.title}</title><link rel="icon" href="../immunostudio-icon.svg"><style>${css}${shotCSS}</style></head><body><header><div>IMMUNOSTUDIO · USER DOCUMENTATION</div><h1>${m.title}</h1><p>${m.subtitle}</p><p class="shot-note">${lang === "nl" ? "Screenshots uit versie 0.2. Klik op een afbeelding om het volledige screenshot op ware grootte te openen. Detailbeelden zijn uitsneden van ongewijzigde screenshots." : "Screenshots from version 0.2. Click an image to open the full screenshot at its original size. Detail views are crops of unmodified screenshots."}</p><nav class="actions"><a href="../">${m.back}</a><a href="${other}.html" lang="${other}">${m.other}</a><button onclick="window.print()">${m.print}</button></nav></header><div class="layout"><aside aria-label="${m.contents}"><b>${m.contents}</b>${m.sections.map(([id, title]) => `<a href="#${id}">${title}</a>`).join("")}</aside><article>${m.sections.map(([id, title, body]) => `<section id="${id}"><h2>${title}</h2>${body}${sectionFigures(lang, id)}</section>`).join("")}</article></div><footer>ImmunoStudio · 2 November 2026 · <a href="${other}.html">${m.other}</a></footer></body></html>`;
   await writeFile(`public/manual/${lang}.html`, html);
 }
-console.log("Generated English and Dutch manuals, 16 sections each.");
+console.log("Generated English and Dutch manuals, 18 sections each.");

@@ -409,6 +409,89 @@ Object.assign(english, {
   "MP4/AVI gebruiken de renderinstellingen. GIF: 12 fps, 800 px breed, maximaal 15 s. Een framestap groter dan 1 slaat frames over. WebM neemt in realtime op; PNG en lokale video renderen ieder gekozen frame.":
     "MP4/AVI use the render settings. GIF: 12 fps, 800 px wide, up to 15 s. Frame steps above 1 skip frames. WebM records in real time; PNG and local video render every selected frame.",
 });
+Object.assign(english, {
+  "Sculpting en modifiers": "Sculpt & modifiers",
+  Sculpten: "Sculpt",
+  Sculptpenseel: "Sculpt brush",
+  Contourmodifiers: "Contour modifiers",
+  "Contour herstellen": "Restore contour",
+  Werking: "Mode",
+  "Duwen en trekken": "Push and pull",
+  Opbollen: "Inflate",
+  Induwen: "Deflate",
+  "Lokaal gladmaken": "Local smoothing",
+  "Radius (px)": "Radius (px)",
+  "Sterkte (%)": "Strength (%)",
+  "Afstand / tolerantie (px)": "Distance / tolerance (px)",
+  Gladmaken: "Smooth",
+  Vereenvoudigen: "Simplify",
+  Krimpen: "Inset",
+  Vergroten: "Outset",
+  "Horizontaal spiegelen": "Flip horizontally",
+  "Verticaal spiegelen": "Flip vertically",
+  Membraanankers: "Membrane anchors",
+  "Gebruik als membraan": "Use as membrane",
+  "Koppel selectie": "Attach selection",
+  "Losmaken van membraan": "Detach from membrane",
+  "Andere membraanzijde": "Other membrane side",
+  "Positie langs rand (%)": "Position along contour (%)",
+  "Afstand tot rand (px)": "Offset from contour (px)",
+  "Ankerhoogte in molecuul (%)": "Anchor height in molecule (%)",
+  "Minimaliseren of openen": "Minimize or open",
+  "Breder of smaller maken": "Expand or compact",
+  "Zwevend menu sluiten": "Close floating menu",
+  "Sleep deze balk om het menu te verplaatsen. Pijltjestoetsen verplaatsen het menu.":
+    "Drag this bar to move the menu. Arrow keys also move the menu.",
+  "Selecteer een cel of weefsel en sleep bij de rand. Kies eerst een onderdeel met Punten bewerken voor een specifieke contour. Shift keert duwen en opbollen om.":
+    "Select a cell or tissue and drag near its edge. Use Edit nodes first to choose a specific contour. Shift reverses dragging and inflation.",
+  "Contourmodifiers volgen de gekozen membraanrand. Spiegelen werkt op het hele object. Gebruik Ongedaan maken om een stap terug te gaan.":
+    "Contour modifiers act on the chosen membrane edge. Flipping affects the entire object. Use Undo to go back one step.",
+  "Kies eerst de cel of het membraan als doel, selecteer daarna de losse moleculen en koppel ze. Gekoppelde moleculen volgen de rand en blijven haaks staan. Ingebouwde herkenbare receptorgroepen bewegen automatisch mee bij sculpten.":
+    "First set the cell or membrane as the target, then select and attach the separate molecules. Attached molecules follow the contour and stay perpendicular. Recognizable embedded receptor groups follow sculpting automatically.",
+  "Selecteer een niet-vergrendelde cel, weefselcontour of membraan.":
+    "Select an unlocked cell, tissue contour or membrane.",
+  "Maak het molecuul eerst los om zijn eigen contour te bewerken.":
+    "Detach the molecule before editing its own contour.",
+  "De contour mag zichzelf niet kruisen. Gebruik een kleinere beweging.":
+    "The contour cannot cross itself. Use a smaller movement.",
+  "Deze modifier kruist de contour. Gebruik een kleinere afstand.":
+    "This modifier crosses the contour. Use a smaller distance.",
+  "Selecteer eerst een niet-vergrendeld object.":
+    "Select an unlocked object first.",
+  "Kies één losse cel, weefselcontour of membraan als doel.":
+    "Choose one unattached cell, tissue contour or membrane as the target.",
+  "Membraandoel gekozen. Selecteer nu de moleculen en koppel ze.":
+    "Membrane target set. Now select and attach the molecules.",
+  "Kies eerst Gebruik als membraan op de cel of het membraan.":
+    "Choose Use as membrane on the cell or membrane first.",
+  "Selecteer de losse moleculen die je wilt koppelen.":
+    "Select the separate molecules to attach.",
+  "Selecteer eerst een zichtbaar object.": "Select a visible object first.",
+  "Kies een vectorcontour met Punten bewerken.":
+    "Choose a vector contour with Edit nodes.",
+  "Kies één doorlopende contour, zonder samengestelde subpaden.":
+    "Choose one continuous contour without compound subpaths.",
+  "Kies een cel, weefsel, membraan, ellips, kader of pad.":
+    "Choose a cell, tissue, membrane, ellipse, rectangle or path.",
+});
+Object.assign(english, {
+  "Binnenstructuren meevormen": "Deform interior structures",
+  "2D: sleep bij de rand om te sculpten. Radius en sterkte staan in het zwevende menu.":
+    "2D: drag near the edge to sculpt. Radius and strength are in the floating menu.",
+});
+Object.assign(english, {
+  Membraananker: "Membrane anchor",
+  "Membraananker bewerken": "Edit membrane anchor",
+  "Positie en rotatie volgen de membraanrand. Bewerk het anker in het zwevende menu.":
+    "Position and rotation follow the membrane contour. Edit the anchor in the floating menu.",
+});
+Object.assign(english, {
+  "Onderdeel als membraanmolecuul": "Mark part as membrane molecule",
+  "Kies eerst met Punten bewerken een onderdeel van een gegroepeerd membraanmolecuul.":
+    "First use Edit nodes to choose a part of a grouped membrane molecule.",
+  "Kies een aparte molecuulgroep, buiten de celcontour.":
+    "Choose a separate molecule group outside the cell contour.",
+});
 const patterns = [
   [
     /^Huidig frame: (\d+)\. Camera-acties gebruiken het renderbereik\.$/,

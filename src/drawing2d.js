@@ -15,6 +15,24 @@ import { recolorSourceColor } from "./palettes.js";
 import { isCellElement, enhanceCellVector } from "./cell-look.js";
 import { membraneMarkup, membranePoints } from "./membrane2d.js";
 import { closestCurveT, splitBezier } from "./model.js";
+import {
+  sculptContour,
+  smoothContour,
+  offsetContour,
+  simplifyContour,
+  validContour,
+  nearestContour,
+  contourFrame,
+} from "./contour2d.js";
+import {
+  prepareContour,
+  embeddedAnchors,
+  writeContour,
+  syncSheetAnchors,
+  followEmbedded,
+  prepareInterior,
+} from "./sculpt2d.js";
+import { FloatingDrawingTools } from "./floating-drawing.js";
 const NS = "http://www.w3.org/2000/svg";
 const escape = (s) =>
   String(s ?? "").replace(
@@ -166,6 +184,13 @@ export class Drawing2D {
     this.doc = newSheet();
     this.selected = [];
     this.tool = "select";
+    this.sculptOptions = {
+      mode: "drag",
+      radius: 100,
+      strength: 0.7,
+      amount: 8,
+      interior: true,
+    };
     this.clipboard = [];
     this.cache = new Map();
     this.style = { label: "#064986", hla: "#FF5A36", head: "#A9C6E2" };
@@ -175,6 +200,7 @@ export class Drawing2D {
     this.svg.classList.add("sheet-canvas");
     host.append(this.svg);
     this.bind();
+    this.floating = new FloatingDrawingTools(this);
     this.resize = new ResizeObserver(() => this.render());
     this.resize.observe(host);
     this.render();
@@ -182,6 +208,10 @@ export class Drawing2D {
   setDocument(doc, style, labelsVisible = true) {
     this.labelsVisible = labelsVisible;
     this.doc = doc || newSheet();
+    if (!this.doc.items.some((i) => i.id === this.anchorTargetId))
+      this.anchorTargetId = this.doc.items.find(
+        (i) => i.anchor2d,
+      )?.anchor2d.targetId;
     this.style = style || this.style;
     if (!this.doc.customBackground)
       this.doc.background = this.style.ui ? this.style.background : "#FFFFFF";
@@ -210,6 +240,7 @@ export class Drawing2D {
   }
   setTool(tool) {
     this.tool = tool;
+    if (tool === "sculpt") this.floating?.show();
     this.svg.dataset.tool = tool;
     document
       .querySelectorAll("[data-sheet-tool]")
@@ -221,9 +252,11 @@ export class Drawing2D {
         ? "2D: sleep rond de selectie om te draaien; Shift voor stappen van 15°."
         : tool === "move"
           ? "2D: sleep een element om het te verplaatsen."
-          : tool === "select"
-            ? "2D: selecteren, slepen en hoekpunten schalen."
-            : "2D: " + tool + " tekenen.",
+          : tool === "sculpt"
+            ? "2D: sleep bij de rand om te sculpten. Radius en sterkte staan in het zwevende menu."
+            : tool === "select"
+              ? "2D: selecteren, slepen en hoekpunten schalen."
+              : "2D: " + tool + " tekenen.",
     );
     this.render();
   }
@@ -296,7 +329,7 @@ export class Drawing2D {
     for (const i of d.items) {
       if (!i.visible || (i.kind === "text" && this.labelsVisible === false))
         continue;
-      html += `<g data-entity="${i.id}" opacity="${i.opacity}" transform="translate(${i.x + i.w / 2} ${i.y + i.h / 2}) rotate(${i.rotation || 0}) translate(${-i.w / 2} ${-i.h / 2})"><rect width="${i.w}" height="${i.h}" fill="transparent" stroke="none"/>${this.itemMarkup(i)}</g>`;
+      html += `<g data-entity="${i.id}" opacity="${i.opacity}" transform="translate(${i.x + i.w / 2} ${i.y + i.h / 2}) rotate(${i.rotation || 0}) translate(${-i.w / 2} ${-i.h / 2})"><rect width="${i.w}" height="${i.h}" fill="transparent" stroke="none"/><g data-artwork transform="translate(${i.w / 2} ${i.h / 2}) scale(${i.mirrorX ? -1 : 1} ${i.mirrorY ? -1 : 1}) translate(${-i.w / 2} ${-i.h / 2})">${this.itemMarkup(i)}</g></g>`;
     }
     const selected = this.selectedItems();
     if (selected.length) {
@@ -331,14 +364,24 @@ export class Drawing2D {
           ["sw", i.x, i.y + i.h],
         ])
           html += `<rect data-sheet-handle="${handle}" x="${x - 5 * scale}" y="${y - 5 * scale}" width="${10 * scale}" height="${10 * scale}"/>`;
-        html += `<line x1="${cx}" y1="${i.y}" x2="${cx}" y2="${i.y - 30 * scale}"/><circle data-sheet-handle="rotate" cx="${cx}" cy="${i.y - 30 * scale}" r="${6 * scale}"/></g>`;
+        if (!i.anchor2d)
+          html += `<line x1="${cx}" y1="${i.y}" x2="${cx}" y2="${i.y - 30 * scale}"/><circle data-sheet-handle="rotate" cx="${cx}" cy="${i.y - 30 * scale}" r="${6 * scale}"/>`;
+        html += "</g>";
       }
       html += "</g>";
     }
     if (this.marquee)
       html += `<rect x="${this.marquee.x}" y="${this.marquee.y}" width="${this.marquee.w}" height="${this.marquee.h}" fill="#0077b610" stroke="#0077b6" stroke-dasharray="5 3"/>`;
     this.svg.innerHTML = html;
+    if (!this.syncingAnchors && syncSheetAnchors(this)) {
+      this.syncingAnchors = true;
+      this.render();
+      this.syncingAnchors = false;
+      return;
+    }
     this.renderVectorNodes();
+    this.renderSculptGuide();
+    this.floating?.update();
   }
   itemMarkup(i) {
     if (i.kind === "membrane") return membraneMarkup(i, this.style);
@@ -377,8 +420,8 @@ export class Drawing2D {
         /<svg\b([^>]*)>/,
         (tag, attrs) =>
           "<svg " +
-          attrs.replace(/\s(?:width|height|x|y)="[^"]*"/g, "") +
-          ' x="0" y="0" width="' +
+          attrs.replace(/\s(?:width|height|x|y|overflow)="[^"]*"/g, "") +
+          ' overflow="visible" x="0" y="0" width="' +
           i.w +
           '" height="' +
           i.h +
@@ -410,7 +453,7 @@ export class Drawing2D {
       );
     }
     if (i.kind === "path")
-      return `<path d="${escape(i.path || "")}" fill="none" stroke="${stroke}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round"/>`;
+      return `<path d="${escape(i.path || "")}" fill="${i.pathClosed ? fill : "none"}" stroke="${stroke}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round"/>`;
     return "";
   }
   bind() {
@@ -435,6 +478,64 @@ export class Drawing2D {
         };
         return;
       }
+      if (this.tool === "sculpt") {
+        const item =
+          this.selectedItems().length === 1
+            ? this.selectedItems()[0]
+            : this.doc.items.find((i) => i.id === hit);
+        if (!item || item.locked) {
+          this.onStatus(
+            "Selecteer een niet-vergrendelde cel, weefselcontour of membraan.",
+          );
+          return;
+        }
+        if (item.anchor2d) {
+          this.onStatus(
+            "Maak het molecuul eerst los om zijn eigen contour te bewerken.",
+          );
+          return;
+        }
+        try {
+          const session = prepareContour(
+            this,
+            item,
+            this.nodeEdit?.itemId === item.id ? this.nodeEdit.index : undefined,
+          );
+          if (item.kind === "svg" && session.points.length < 48) {
+            const old = session.points,
+              n = 96;
+            session.points = Array.from(
+              { length: n },
+              (_, i) =>
+                contourFrame(
+                  old,
+                  i / (session.closed ? n : n - 1),
+                  session.closed,
+                ).point,
+            );
+          }
+          this.beforeChange();
+          this.selected = [item.id];
+          this.nodeEdit = null;
+          const anchors = embeddedAnchors(session);
+          session.brushRadius = this.sculptOptions.radius;
+          interaction = {
+            type: "sculpt",
+            start: p,
+            session,
+            anchors,
+            interior: this.sculptOptions.interior
+              ? prepareInterior(session, anchors)
+              : [],
+          };
+          this.sculptCursor = p;
+          this.render();
+          this.onSelect(this.selected);
+        } catch (error) {
+          this.onStatus(error.message);
+        }
+        return;
+      }
       if (this.tool === "nodes" && curveHandle === undefined) {
         const point = e.target.closest("[data-vector-point]")?.dataset
           .vectorPoint;
@@ -448,6 +549,12 @@ export class Drawing2D {
           );
           this.beforeChange();
           this.nodeEdit.selectedPoint = +point;
+          let embedded = [];
+          try {
+            embedded = embeddedAnchors(
+              prepareContour(this, item, this.nodeEdit.index),
+            );
+          } catch {}
           interaction = {
             type: "vector-point",
             start: p,
@@ -455,6 +562,7 @@ export class Drawing2D {
             point: +point,
             commands: clone(this.nodeEdit.commands),
             inverse: source.getScreenCTM().inverse(),
+            embedded,
           };
           return;
         }
@@ -501,7 +609,9 @@ export class Drawing2D {
       }
       if (this.tool === "rotate") {
         if (hit && !this.selected.includes(hit)) this.selected = [hit];
-        const originals = clone(this.selectedItems().filter((i) => !i.locked));
+        const originals = clone(
+          this.selectedItems().filter((i) => !i.locked && !i.anchor2d),
+        );
         if (!originals.length) return;
         const bounds = sheetBounds(originals),
           center = { x: bounds.x + bounds.w / 2, y: bounds.y + bounds.h / 2 };
@@ -602,6 +712,10 @@ export class Drawing2D {
       }
     });
     this.svg.addEventListener("pointermove", (e) => {
+      if (this.tool === "sculpt") {
+        this.sculptCursor = this.point(e);
+        this.renderSculptGuide();
+      }
       if (!interaction) return;
       const p = this.point(e),
         x = interaction,
@@ -611,6 +725,27 @@ export class Drawing2D {
         this.doc.panX += dx;
         this.doc.panY += dy;
         this.render();
+        return;
+      }
+      if (x.type === "sculpt") {
+        const s = x.session,
+          points = sculptContour(s.points, [x.start.x, x.start.y], [dx, dy], {
+            ...this.sculptOptions,
+            closed: s.closed,
+            invert: e.shiftKey,
+          });
+        if (!validContour(points, s.closed)) {
+          this.onStatus(
+            "De contour mag zichzelf niet kruisen. Gebruik een kleinere beweging.",
+          );
+          return;
+        }
+        try {
+          writeContour(s, points, x.anchors, x.interior);
+          this.render();
+        } catch (error) {
+          this.onStatus(error.message);
+        }
         return;
       }
       if (x.type === "vector-point") {
@@ -630,12 +765,38 @@ export class Drawing2D {
         );
         this.nodeEdit.currentSVG = x.item.svg;
         this.render();
+        if (x.embedded?.length) {
+          try {
+            followEmbedded(
+              prepareContour(this, x.item, this.nodeEdit.index),
+              x.embedded,
+            );
+            this.nodeEdit.currentSVG = x.item.svg;
+            this.render();
+          } catch {}
+        }
         return;
       }
       if (x.type === "move") {
         for (const original of x.originals) {
           const item = this.doc.items.find((i) => i.id === original.id);
           if (item && !item.locked) {
+            if (item.anchor2d) {
+              if (this.selected.includes(item.anchor2d.targetId)) continue;
+              const target = this.doc.items.find(
+                (i) => i.id === item.anchor2d.targetId,
+              );
+              try {
+                const s = prepareContour(this, target, item.anchor2d.pathIndex),
+                  f = contourFrame(s.points, original.anchor2d.u, s.closed);
+                item.anchor2d.u = nearestContour(
+                  s.points,
+                  [f.point[0] + dx, f.point[1] + dy],
+                  s.closed,
+                ).u;
+              } catch {}
+              continue;
+            }
             item.x = this.snap(original.x + dx);
             item.y = this.snap(original.y + dy);
           }
@@ -806,6 +967,12 @@ export class Drawing2D {
       this.marquee = null;
       this.notify();
     });
+    this.svg.addEventListener("pointercancel", () => {
+      if (!interaction) return;
+      interaction = null;
+      this.marquee = null;
+      this.notify();
+    });
     this.svg.addEventListener("dblclick", (e) => {
       const id = e.target.closest("[data-entity]")?.dataset.entity,
         item = this.doc.items.find((i) => i.id === id);
@@ -938,6 +1105,43 @@ export class Drawing2D {
         const step = e.shiftKey ? 10 : 1;
         for (const i of this.selectedItems()) {
           if (i.locked) continue;
+          if (i.anchor2d) {
+            if (this.selected.includes(i.anchor2d.targetId)) continue;
+            try {
+              const target = this.doc.items.find(
+                  (t) => t.id === i.anchor2d.targetId,
+                ),
+                s = prepareContour(this, target, i.anchor2d.pathIndex),
+                f = contourFrame(s.points, i.anchor2d.u, s.closed),
+                dx =
+                  e.key === "ArrowLeft"
+                    ? -step
+                    : e.key === "ArrowRight"
+                      ? step
+                      : 0,
+                dy =
+                  e.key === "ArrowUp"
+                    ? -step
+                    : e.key === "ArrowDown"
+                      ? step
+                      : 0;
+              i.anchor2d.u = nearestContour(
+                s.points,
+                [f.point[0] + dx, f.point[1] + dy],
+                s.closed,
+              ).u;
+              i.anchor2d.offset = Math.max(
+                -300,
+                Math.min(
+                  300,
+                  (i.anchor2d.offset || 0) +
+                    (dx * f.normal[0] + dy * f.normal[1]) *
+                      (i.anchor2d.side || 1),
+                ),
+              );
+            } catch {}
+            continue;
+          }
           if (e.key === "ArrowLeft") i.x -= step;
           if (e.key === "ArrowRight") i.x += step;
           if (e.key === "ArrowUp") i.y -= step;
@@ -950,7 +1154,205 @@ export class Drawing2D {
       }
     });
   }
+  renderSculptGuide() {
+    if (this.tool !== "sculpt" || !this.sculptCursor) return;
+    let circle = this.svg.querySelector(".sculpt-guide");
+    if (!circle) {
+      circle = document.createElementNS(NS, "circle");
+      circle.setAttribute("class", "sculpt-guide");
+      circle.setAttribute("fill", "#F15B4A0a");
+      circle.setAttribute("stroke", "#F15B4A");
+      circle.setAttribute("stroke-width", "1.5");
+      circle.setAttribute("stroke-dasharray", "6 4");
+      circle.setAttribute("vector-effect", "non-scaling-stroke");
+      this.svg.append(circle);
+    }
+    circle.setAttribute("cx", this.sculptCursor.x);
+    circle.setAttribute("cy", this.sculptCursor.y);
+    circle.setAttribute("r", this.sculptOptions.radius);
+  }
+  sculptCommand(cmd) {
+    if (cmd === "floating-tools") {
+      this.floating.show();
+      return true;
+    }
+    if (
+      !cmd.startsWith("contour-") &&
+      !cmd.startsWith("anchor-") &&
+      !cmd.startsWith("mirror-")
+    )
+      return false;
+    try {
+      const items = this.selectedItems().filter((i) => !i.locked);
+      if (!items.length)
+        throw Error("Selecteer eerst een niet-vergrendeld object.");
+      if (cmd === "anchor-target") {
+        if (items.length !== 1 || items[0].anchor2d)
+          throw Error(
+            "Kies één losse cel, weefselcontour of membraan als doel.",
+          );
+        const s = prepareContour(
+          this,
+          items[0],
+          this.nodeEdit?.itemId === items[0].id
+            ? this.nodeEdit.index
+            : undefined,
+        );
+        this.beforeChange();
+        items[0].contourEdit = {
+          pathIndex: s.index,
+          points: s.points.map((p) => {
+            const v = new DOMPoint(...p).matrixTransform(s.fromSheet);
+            return [v.x, v.y];
+          }),
+          closed: s.closed,
+          signature: s.signature,
+        };
+        this.anchorTargetId = items[0].id;
+        this.notify();
+        this.onStatus(
+          "Membraandoel gekozen. Selecteer nu de moleculen en koppel ze.",
+        );
+        return true;
+      }
+      if (cmd === "anchor-mark-embedded") {
+        const item = items[0];
+        if (
+          items.length !== 1 ||
+          item.kind !== "svg" ||
+          this.nodeEdit?.itemId !== item.id
+        )
+          throw Error(
+            "Kies eerst met Punten bewerken een onderdeel van een gegroepeerd membraanmolecuul.",
+          );
+        const s = prepareContour(this, item, item.contourEdit?.pathIndex),
+          root = s.sourceSVG,
+          body = root.querySelector(`[data-node-path="${s.index}"]`),
+          part = root.querySelector(
+            `[data-node-path="${this.nodeEdit.index}"]`,
+          );
+        let group = part?.parentElement;
+        if (
+          !group ||
+          group.tagName.toLowerCase() !== "g" ||
+          group.contains(body)
+        )
+          throw Error("Kies een aparte molecuulgroep, buiten de celcontour.");
+        while (
+          group.parentElement?.tagName.toLowerCase() === "g" &&
+          !group.parentElement.contains(body)
+        )
+          group = group.parentElement;
+        const index = [...root.querySelectorAll("g")].indexOf(group);
+        this.beforeChange();
+        const doc = s.sourceDoc.cloneNode(true);
+        doc
+          .querySelectorAll("g")
+          [index].setAttribute("data-membrane-receptor", "true");
+        item.svg = new XMLSerializer().serializeToString(doc.documentElement);
+        this.nodeEdit = null;
+      } else if (cmd === "anchor-attach") {
+        const target = this.doc.items.find((i) => i.id === this.anchorTargetId);
+        if (!target || target.anchor2d)
+          throw Error(
+            "Kies eerst Gebruik als membraan op de cel of het membraan.",
+          );
+        const s = prepareContour(this, target, target.contourEdit?.pathIndex),
+          molecules = items.filter((i) => i.id !== target.id);
+        if (!molecules.length)
+          throw Error("Selecteer de losse moleculen die je wilt koppelen.");
+        this.beforeChange();
+        for (const i of molecules) {
+          const closest = nearestContour(
+            s.points,
+            [i.x + i.w / 2, i.y + i.h / 2],
+            s.closed,
+          );
+          i.anchor2d = {
+            targetId: target.id,
+            pathIndex: s.index,
+            u: closest.u,
+            side: 1,
+            offset: 0,
+            pivotX: 0.5,
+            pivotY: 0.8,
+            angle: 0,
+          };
+        }
+      } else if (cmd === "anchor-detach" || cmd === "anchor-flip") {
+        this.beforeChange();
+        for (const i of items) {
+          if (cmd === "anchor-detach") delete i.anchor2d;
+          else if (i.anchor2d) i.anchor2d.side = -(i.anchor2d.side || 1);
+        }
+      } else if (cmd.startsWith("mirror-")) {
+        this.beforeChange();
+        for (const i of items)
+          i[cmd === "mirror-x" ? "mirrorX" : "mirrorY"] =
+            !i[cmd === "mirror-x" ? "mirrorX" : "mirrorY"];
+      } else if (cmd === "contour-reset") {
+        this.beforeChange();
+        for (const i of items)
+          if (i.contourOriginal) {
+            Object.assign(i, clone(i.contourOriginal));
+            delete i.contourOriginal;
+            delete i.contourEdit;
+          }
+        this.nodeEdit = null;
+      } else {
+        const plans = items.map((item) => {
+          const s = prepareContour(
+              this,
+              item,
+              this.nodeEdit?.itemId === item.id
+                ? this.nodeEdit.index
+                : undefined,
+            ),
+            amount = this.sculptOptions.amount || 8;
+          const points =
+            cmd === "contour-smooth"
+              ? smoothContour(
+                  smoothContour(s.points, 0.4, s.closed),
+                  0.4,
+                  s.closed,
+                )
+              : cmd === "contour-simplify"
+                ? simplifyContour(s.points, amount, s.closed)
+                : offsetContour(
+                    s.points,
+                    (cmd === "contour-inset" ? -1 : 1) * amount,
+                    s.closed,
+                  );
+          if (!validContour(points, s.closed))
+            throw Error(
+              "Deze modifier kruist de contour. Gebruik een kleinere afstand.",
+            );
+          const anchors = embeddedAnchors(s);
+          if (cmd === "contour-simplify")
+            for (const a of anchors)
+              a.u = nearestContour(points, a.frame.point, s.closed).u;
+          return { s, points, anchors };
+        });
+        this.beforeChange();
+        for (const { s, points, anchors } of plans) {
+          if (cmd === "contour-simplify")
+            for (const i of this.doc.items)
+              if (i.anchor2d?.targetId === s.item.id) {
+                const old = contourFrame(s.points, i.anchor2d.u, s.closed);
+                i.anchor2d.u = nearestContour(points, old.point, s.closed).u;
+              }
+          writeContour(s, points, anchors);
+        }
+        this.nodeEdit = null;
+      }
+      this.notify();
+    } catch (error) {
+      this.onStatus(error.message);
+    }
+    return true;
+  }
   command(cmd) {
+    if (this.sculptCommand(cmd)) return;
     let items = this.selectedItems();
     if (cmd === "select-all") {
       this.select(this.doc.items.filter((i) => i.visible).map((i) => i.id));
@@ -1039,6 +1441,10 @@ export class Drawing2D {
         y: i.y + 25,
         groupId: null,
       }));
+      const copies = new Map(originals.map((i, n) => [i.id, added[n].id]));
+      for (const i of added)
+        if (i.anchor2d && copies.has(i.anchor2d.targetId))
+          i.anchor2d.targetId = copies.get(i.anchor2d.targetId);
       this.doc.items.push(...added);
       this.selected = added.map((i) => i.id);
     } else if (cmd === "group") {
@@ -1074,8 +1480,8 @@ export class Drawing2D {
     const items = this.selectedItems(),
       i = items[0];
     const number = (title, key, value) =>
-      `<label>${title}<input type="number" data-sheet-field="${key}" value="${Math.round(value * 100) / 100}" step="1"></label>`;
-    const html = `<div class="details-body"><strong ${i ? "data-no-translate" : ""}>${items.length > 1 ? items.length + " geselecteerde elementen" : i ? escape(i.name) : "2D tekenblad"}</strong>${i ? `<label>Naam<input data-sheet-field="name" value="${escape(i.name)}"></label><div class="coordinates">${number("X", "x", i.x)}${number("Y", "y", i.y)}</div><div class="coordinates">${number("Breedte", "w", i.w)}${number("Hoogte", "h", i.h)}</div>${number("Rotatie (°)", "rotation", i.rotation || 0)}<label>Dekking<input type="range" data-sheet-field="opacity" min="0" max="1" step=".05" value="${i.opacity}"></label>${i.kind === "membrane" ? `<div class="hinge-box"><strong>Lipidendubbellaag</strong>${number("Membraandikte", "bilayerThickness", i.bilayerThickness || 34)}<p class="muted">${(i.curve.length - 1) / 3 + 1} curvepunten. Sleep de punten en oranje handvatten. Dubbelklik op het membraan om een extra punt toe te voegen.</p><button data-sheet-action="add-curve-point">＋ Punt toevoegen</button></div>` : ""}${i.kind === "text" ? `<label>Tekst<textarea data-sheet-field="text">${escape(i.text)}</textarea></label>${number("Tekstgrootte", "fontSize", i.fontSize)}<label class="check"><input type="checkbox" data-sheet-field="bold" ${i.bold ? "checked" : ""}> Vet</label>` : ""}${i.kind !== "svg" ? `<div class="row"><label>Vulling <input type="color" data-sheet-field="fill" value="${i.fill || "#ffffff"}"></label><label>Contour <input type="color" data-sheet-field="stroke" value="${i.stroke || "#064986"}"></label></div>${number("Lijndikte", "strokeWidth", i.strokeWidth || 3)}` : '<p class="muted">Native vector. Verhoudingen blijven behouden bij slepen van de hoekpunten.</p>'}${i.kind === "svg" && isCellElement(i) ? `<label class="check"><input type="checkbox" data-sheet-field="volumeLook" ${i.volumeLook ? "checked" : ""}> Volumewerking</label>` : ""}<label class="check"><input type="checkbox" data-sheet-field="locked" ${i.locked ? "checked" : ""}> Vergrendeld</label><div class="row"><button data-sheet-action="duplicate">Dupliceren</button><button data-sheet-action="delete" class="danger">Verwijderen</button></div>` : '<p class="muted">Voeg een losse bouwsteen toe of teken een vorm. Shift-klik voor meervoudige selectie.</p>'}<div class="sheet-arrange"><strong>Ordenen</strong><div class="view-buttons">${[
+      `<label>${title}<input type="number" data-sheet-field="${key}" value="${Math.round(value * 100) / 100}" step="1" ${i?.anchor2d && ["x", "y", "rotation"].includes(key) ? "disabled" : ""}></label>`;
+    const html = `<div class="details-body"><strong ${i ? "data-no-translate" : ""}>${items.length > 1 ? items.length + " geselecteerde elementen" : i ? escape(i.name) : "2D tekenblad"}</strong>${i ? `${i.anchor2d ? '<div class="hinge-box"><strong>Membraananker</strong><p>Positie en rotatie volgen de membraanrand. Bewerk het anker in het zwevende menu.</p><button data-sheet-action="floating-tools">Membraananker bewerken</button></div>' : ""}<label>Naam<input data-sheet-field="name" value="${escape(i.name)}"></label><div class="coordinates">${number("X", "x", i.x)}${number("Y", "y", i.y)}</div><div class="coordinates">${number("Breedte", "w", i.w)}${number("Hoogte", "h", i.h)}</div>${number("Rotatie (°)", "rotation", i.rotation || 0)}<label>Dekking<input type="range" data-sheet-field="opacity" min="0" max="1" step=".05" value="${i.opacity}"></label>${i.kind === "membrane" ? `<div class="hinge-box"><strong>Lipidendubbellaag</strong>${number("Membraandikte", "bilayerThickness", i.bilayerThickness || 34)}<p class="muted">${(i.curve.length - 1) / 3 + 1} curvepunten. Sleep de punten en oranje handvatten. Dubbelklik op het membraan om een extra punt toe te voegen.</p><button data-sheet-action="add-curve-point">＋ Punt toevoegen</button></div>` : ""}${i.kind === "text" ? `<label>Tekst<textarea data-sheet-field="text">${escape(i.text)}</textarea></label>${number("Tekstgrootte", "fontSize", i.fontSize)}<label class="check"><input type="checkbox" data-sheet-field="bold" ${i.bold ? "checked" : ""}> Vet</label>` : ""}${i.kind !== "svg" ? `<div class="row"><label>Vulling <input type="color" data-sheet-field="fill" value="${i.fill || "#ffffff"}"></label><label>Contour <input type="color" data-sheet-field="stroke" value="${i.stroke || "#064986"}"></label></div>${number("Lijndikte", "strokeWidth", i.strokeWidth || 3)}` : '<p class="muted">Native vector. Verhoudingen blijven behouden bij slepen van de hoekpunten.</p>'}${i.kind === "svg" && isCellElement(i) ? `<label class="check"><input type="checkbox" data-sheet-field="volumeLook" ${i.volumeLook ? "checked" : ""}> Volumewerking</label>` : ""}<label class="check"><input type="checkbox" data-sheet-field="locked" ${i.locked ? "checked" : ""}> Vergrendeld</label><div class="row"><button data-sheet-action="duplicate">Dupliceren</button><button data-sheet-action="delete" class="danger">Verwijderen</button></div>` : '<p class="muted">Voeg een losse bouwsteen toe of teken een vorm. Shift-klik voor meervoudige selectie.</p>'}<div class="sheet-arrange"><strong>Ordenen</strong><div class="view-buttons">${[
       ["front", "Vooraan"],
       ["back", "Achteraan"],
       ["forward", "Vooruit"],
@@ -1111,7 +1517,7 @@ export class Drawing2D {
       `<button data-sheet-action="${cmd}">${label}</button>`;
     const html = this.propertiesHTML(true),
       tail = html.slice(html.indexOf('<div class="sheet-arrange">'));
-    return `<div class="details-body drawing-details"><h2>Tekenen</h2><p class="muted">${this.selected.length} geselecteerde elementen</p><strong>Selectie</strong><div class="drawing-grid">${[
+    return `<div class="details-body drawing-details"><h2>Tekenen</h2><button data-sheet-action="floating-tools" class="wide">Sculpting en modifiers</button><p class="muted">${this.selected.length} geselecteerde elementen</p><strong>Selectie</strong><div class="drawing-grid">${[
       ["select-all", "Alles selecteren"],
       ["select-none", "Niets selecteren"],
       ["invert-selection", "Selectie omkeren"],
@@ -1123,6 +1529,7 @@ export class Drawing2D {
       ["move", "Verplaatsen"],
       ["rotate", "Draaien"],
       ["nodes", "Punten bewerken"],
+      ["sculpt", "Sculpten"],
     ]
       .map(
         ([c, l]) =>
@@ -1193,7 +1600,7 @@ export class Drawing2D {
       .filter((i) => i.visible)
       .map(
         (i) =>
-          `<g id="object-${i.id}" transform="translate(${i.x + i.w / 2} ${i.y + i.h / 2}) rotate(${i.rotation || 0}) translate(${-i.w / 2} ${-i.h / 2})" opacity="${i.opacity}">${this.itemMarkup(i)}</g>`,
+          `<g id="object-${i.id}" transform="translate(${i.x + i.w / 2} ${i.y + i.h / 2}) rotate(${i.rotation || 0}) translate(${-i.w / 2} ${-i.h / 2})" opacity="${i.opacity}"><g transform="translate(${i.w / 2} ${i.h / 2}) scale(${i.mirrorX ? -1 : 1} ${i.mirrorY ? -1 : 1}) translate(${-i.w / 2} ${-i.h / 2})">${this.itemMarkup(i)}</g></g>`,
       )
       .join("")}</svg>`;
   }
