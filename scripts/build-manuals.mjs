@@ -3,7 +3,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 const manuals = {
   en: {
     title: "ImmunoStudio user manual",
-    subtitle: "Detailed English guide · version 2 November 2026",
+    subtitle: "Detailed English guide · version 0.2 · 2 November 2026",
     other: "Nederlandse handleiding",
     print: "Print / save as PDF",
     contents: "Contents",
@@ -93,7 +93,7 @@ const manuals = {
   },
   nl: {
     title: "ImmunoStudio gebruikershandleiding",
-    subtitle: "Uitgebreide Nederlandse handleiding · versie 2 november 2026",
+    subtitle: "Uitgebreide Nederlandse handleiding · versie 0.2 · 2 november 2026",
     other: "English manual",
     print: "Afdrukken / opslaan als PDF",
     contents: "Inhoud",

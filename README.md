@@ -1,4 +1,4 @@
-# ImmunoStudio
+# ImmunoStudio 0.2
 
 Online: **https://espierin.github.io/immunostudio/**
 
