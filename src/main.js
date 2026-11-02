@@ -1,3 +1,5 @@
+import { OpeningPage, hasArtwork } from "./opening-page.js";
+import "./opening-page.css";
 import { splitBezier } from "./model.js";
 import { decorateUI } from "./ui-icons.js";
 import { installI18n } from "./i18n.js";
@@ -71,6 +73,7 @@ const icons = {
   glb: "⬡",
   arrow: "↗",
 };
+let openingPage;
 let basisRepresentation = "volume";
 let ownModels = [];
 let structurePreview = null;
@@ -315,6 +318,7 @@ function autosave() {
   }, 500);
 }
 function refresh() {
+  openingPage?.update(project);
   time = Math.max(0, Math.min(project.duration, project.currentTime || 0));
   view.build(project);
   view.setCamera(project.camera);
@@ -1366,6 +1370,7 @@ function tick() {
   requestAnimationFrame(tick);
 }
 document.addEventListener("keydown", (e) => {
+  if (document.documentElement.dataset.home === "true") return;
   if (["INPUT", "SELECT", "TEXTAREA"].includes(e.target.tagName)) return;
   if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z") {
     e.preventDefault();
@@ -1399,6 +1404,7 @@ $("#project-input").addEventListener("change", async (e) => {
     stop();
     refresh();
     autosave();
+    openingPage?.hide();
     toast("Project geopend");
   } catch (err) {
     toast("Openen mislukt: " + err.message);
@@ -1733,6 +1739,18 @@ fetch("./library/index.json")
     if (tab === "basis") renderLibrary();
   })
   .catch(() => toast("Basisbibliotheek ontbreekt. Voer sync-library uit."));
+openingPage = new OpeningPage({
+  resume: () => drawing2D.svg.focus(),
+  open: () => action("open"),
+  create: () => {
+    if (hasArtwork(project)) action("new");
+    else action("new-confirm");
+  },
+});
+document.querySelector(".brand").addEventListener("click", (e) => {
+  e.preventDefault();
+  openingPage.show();
+});
 refresh();
 installI18n();
 
