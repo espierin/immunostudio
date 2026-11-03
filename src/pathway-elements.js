@@ -333,7 +333,9 @@ export function validatePathwayMetadata(m) {
     throw Error("Invalid pathway references.");
   if (
     !m.source ||
-    !["manual", "Reactome", "WikiPathways"].includes(m.source.database) ||
+    !["manual", "Reactome", "WikiPathways", "Pathway Commons", "KEGG"].includes(
+      m.source.database,
+    ) ||
     !["elementId", "pathwayId", "version"].every((k) =>
       bounded(m.source[k], 256),
     )
@@ -409,6 +411,32 @@ function wrapLabel(label) {
         s.slice(0, 25) +
         (s.length > 25 || (i === 2 && lines.length > 3) ? "…" : ""),
     );
+}
+export function importedPathwayLabel(m, layout) {
+  const w = Number(layout.w),
+    h = Number(layout.h),
+    font = Math.min(24, Math.max(4, Number(layout.fontSize) || 12));
+  if (![w, h, font].every(Number.isFinite))
+    throw Error("Invalid imported label layout");
+  const max = Math.max(4, Math.floor((w - 8) / (font * 0.55))),
+    lines = [];
+  for (const word of m.label.split(/\s+/)) {
+    if (!lines.length) lines.push("");
+    const i = lines.length - 1;
+    if ((lines[i] + " " + word).trim().length > max && lines[i])
+      lines.push(word);
+    else lines[i] = (lines[i] + " " + word).trim();
+  }
+  const visible = layout.top
+    ? lines.slice(0, 2)
+    : lines.slice(0, Math.max(1, Math.floor(h / (font * 1.15))));
+  if (lines.length > visible.length)
+    visible[visible.length - 1] = lines.slice(visible.length - 1).join(" ");
+  const actual = Math.min(
+    font,
+    (w - 6) / (Math.max(1, ...visible.map((s) => s.length)) * 0.55),
+  );
+  return `<text data-pathway-label="true" x="${w / 2}" y="${layout.top ? 16 : Math.max(actual, (h - (visible.length - 1) * actual * 1.15) / 2 + actual * 0.35)}" text-anchor="middle" font-family="Arial,sans-serif" font-size="${actual}" fill="#064986">${visible.map((s, i) => `<tspan x="${w / 2}" dy="${i ? actual * 1.15 : 0}">${E(s)}</tspan>`).join("")}</text>`;
 }
 function labelMarkup(m) {
   const d = pathwayDefinition(m.type),
@@ -641,7 +669,10 @@ export function updatePathwayItem(item, key, value) {
       )
       .replace(
         /<text\b[^>]*data-pathway-label="true"[^>]*>[\s\S]*?<\/text>/,
-        () => labelMarkup(m),
+        () =>
+          item.pathwayLabelLayout
+            ? importedPathwayLabel(m, item.pathwayLabelLayout)
+            : labelMarkup(m),
       )
       .replace(
         /<g\b[^>]*data-pathway-state="true"[^>]*?(?:\/>|>[\s\S]*?<\/g>)/,
@@ -673,5 +704,5 @@ export function pathwayProperties(item) {
   if (!m) return "";
   const field = (key, label, value) =>
     `<label>${label}<input ${key === "stoichiometry" ? 'type="number" min="1" max="99" step="1"' : `maxlength="${key === "state" ? 80 : 160}"`} data-pathway-field="${key}" value="${E(value)}" ${item.locked ? "disabled" : ""}></label>`;
-  return `<details open class="pathway-properties"><summary>Pathway-bouwsteen</summary><div class="details-body"><p data-no-translate>${E(pathwayDefinition(m.type).name)} · ${E(m.source.database)}</p><p class="muted">Naam wijzigt ook het label. Punten bewerken blijft beschikbaar.</p>${field("state", "Toestand / modificatie", m.state)}${field("compartment", "Celcompartiment", m.compartment)}${field("stoichiometry", "Stoichiometrie", m.stoichiometry)}<label>Database-ID’s (één per regel)<textarea data-pathway-field="identifiers" ${item.locked ? "disabled" : ""} placeholder="UniProt:P31749">${E(m.identifiers.map((x) => x.database + ":" + x.id).join("\n"))}</textarea></label>${["complex", "entity-set", "multimer"].includes(m.type) ? `<label>Componenten (metadata)<textarea data-pathway-field="members" ${item.locked ? "disabled" : ""}>${E(m.members.join("\n"))}</textarea></label>` : ""}<button data-sheet-action="pathway-reset" ${item.locked ? "disabled" : ""}>Standaardsymbool herstellen</button><p class="muted">Bewerkbare schema-elementen. Automatische pathway-import volgt later.</p></div></details>`;
+  return `<details open class="pathway-properties"><summary>Pathway-bouwsteen</summary><div class="details-body"><p data-no-translate>${E(pathwayDefinition(m.type).name)} · ${E(m.source.database)}</p><p class="muted">Naam wijzigt ook het label. Punten bewerken blijft beschikbaar.</p>${field("state", "Toestand / modificatie", m.state)}${field("compartment", "Celcompartiment", m.compartment)}${field("stoichiometry", "Stoichiometrie", m.stoichiometry)}<label>Database-ID’s (één per regel)<textarea data-pathway-field="identifiers" ${item.locked ? "disabled" : ""} placeholder="UniProt:P31749">${E(m.identifiers.map((x) => x.database + ":" + x.id).join("\n"))}</textarea></label>${["complex", "entity-set", "multimer"].includes(m.type) ? `<label>Componenten (metadata)<textarea data-pathway-field="members" ${item.locked ? "disabled" : ""}>${E(m.members.join("\n"))}</textarea></label>` : ""}<button data-sheet-action="pathway-reset" ${item.locked ? "disabled" : ""}>Standaardsymbool herstellen</button><p class="muted">Bewerkbare schema-elementen. Pathways invoegen kan via het menu Pathways.</p></div></details>`;
 }

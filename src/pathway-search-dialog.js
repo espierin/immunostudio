@@ -1,5 +1,6 @@
 import { pathwayTopics, topicSearch, keggSearchURL } from "./pathway-topics.js";
 import { searchPathways } from "./pathway-search.js";
+import { loadPathway, importPathwayFile } from "./pathway-import.js";
 import { translate } from "./i18n.js";
 import "./pathway-search.css";
 const node = (tag, text, cls) => {
@@ -9,7 +10,8 @@ const node = (tag, text, cls) => {
   return el;
 };
 export class PathwaySearchDialog {
-  constructor() {
+  constructor(onImport) {
+    this.onImport = onImport;
     this.dialog = document.createElement("dialog");
     this.dialog.className = "pathway-search-dialog";
     this.dialog.setAttribute("aria-labelledby", "pathway-search-title");
@@ -22,8 +24,9 @@ export class PathwaySearchDialog {
       <label>Organisme<select name="species" aria-label="Organisme"><option value="Homo sapiens">Homo sapiens</option><option value="Mus musculus">Mus musculus</option><option value="">Alle organismen</option></select></label>
       <div class="pathway-search-buttons"><button class="primary" type="submit">Zoeken</button><button type="button" data-pathway-cancel hidden>Annuleren</button></div></form>
       <div class="pathway-kegg"><a class="pathway-kegg-link" target="_blank" rel="noopener noreferrer">Zoek verder op de KEGG-website ↗</a><small>Externe ingang: KEGG-resultaten verschijnen op de KEGG-website. Voor moleculen is daar een aanvullende gen-/compoundzoekactie nodig.</small></div>
+      <div class="pathway-file-import"><button type="button" data-pathway-file>Pathwaybestand importeren…</button><small>GPML · KGML (KEGG) · Reactome-diagram-JSON</small><input type="file" accept=".gpml,.xml,.kgml,.json" hidden></div>
       <div class="pathway-search-status" role="status" aria-live="polite"></div><div class="pathway-search-results"></div><div class="pathway-search-more"></div>
-      <footer>Zoekresultaten openen bij de bron. Het automatisch opbouwen van een volledig pathway is nog niet beschikbaar.</footer>`;
+      <footer>Kies Op tekenblad plaatsen voor losse bewerkbare elementen. Bronindelingen worden overgenomen waar beschikbaar; anders wordt de indeling automatisch gemaakt.</footer>`;
     document.body.append(this.dialog);
     this.form = this.dialog.querySelector("form");
     const topicGroups = this.dialog.querySelector(".pathway-topic-groups");
@@ -56,6 +59,30 @@ export class PathwaySearchDialog {
     this.more = this.dialog.querySelector(".pathway-search-more");
     this.cancel = this.dialog.querySelector("[data-pathway-cancel]");
     this.submit = this.form.querySelector("[type=submit]");
+    const file = this.dialog.querySelector("input[type=file]");
+    this.dialog.querySelector("[data-pathway-file]").onclick = () =>
+      file.click();
+    file.onchange = async () => {
+      const selected = file.files[0];
+      if (!selected) return;
+      this.abort();
+      const generation = this.request;
+      try {
+        if (selected.size > 12000000)
+          throw Error(
+            "Dit pathway is te groot. Kies een specifieker deelpathway.",
+          );
+        const result = importPathwayFile(await selected.text(), selected.name);
+        if (generation !== this.request || !this.dialog.open) return;
+        await this.onImport(result);
+        this.dialog.close();
+      } catch (error) {
+        if (generation === this.request && this.dialog.open)
+          this.status.textContent = translate(error.message);
+      } finally {
+        file.value = "";
+      }
+    };
     this.form.addEventListener("submit", (event) => {
       event.preventDefault();
       this.search();
@@ -162,6 +189,37 @@ export class PathwaySearchDialog {
       }
     }
   }
+  async importRow(row) {
+    if (this.importing) return;
+    this.abort();
+    this.importing = true;
+    const request = this.request;
+    this.controller = new AbortController();
+    this.submit.disabled = true;
+    this.cancel.hidden = false;
+    this.status.textContent = translate(
+      "Pathway ophalen en omzetten naar bewerkbare elementen…",
+    );
+    try {
+      const result = await loadPathway(row, { signal: this.controller.signal });
+      if (request !== this.request || !this.dialog.open) return;
+      await this.onImport(result);
+      this.dialog.close();
+    } catch (error) {
+      if (request === this.request && this.dialog.open)
+        this.status.textContent = translate(
+          error.name === "AbortError"
+            ? "Pathway ophalen geannuleerd of tijdslimiet bereikt."
+            : error.message,
+        );
+    } finally {
+      this.importing = false;
+      if (request === this.request) {
+        this.submit.disabled = false;
+        this.cancel.hidden = true;
+      }
+    }
+  }
   appendResults() {
     const end = Math.min(this.shown + 20, this.rows.length);
     for (const row of this.rows.slice(this.shown, end)) {
@@ -175,6 +233,13 @@ export class PathwaySearchDialog {
       source.dataset.noTranslate = "";
       const heading = node("h3", row.name);
       heading.dataset.noTranslate = "";
+      if (this.onImport) {
+        const select = node("button", row.name, "pathway-result-select");
+        select.type = "button";
+        select.title = translate("Op tekenblad plaatsen");
+        select.onclick = () => this.importRow(row);
+        heading.replaceChildren(select);
+      }
       content.append(source, heading);
       if (row.providers?.length) {
         const providers = node("small", row.providers.join(" · "));
@@ -212,6 +277,12 @@ export class PathwaySearchDialog {
           copy.dataset.noTranslate = "";
         }
       };
+      if (this.onImport) {
+        const place = node("button", "Op tekenblad plaatsen", "primary");
+        place.type = "button";
+        place.onclick = () => this.importRow(row);
+        actions.append(place);
+      }
       actions.append(link, copy);
       article.append(content, actions);
       this.results.append(article);

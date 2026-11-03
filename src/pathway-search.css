@@ -244,3 +244,28 @@
     margin-top: 6px;
   }
 }
+
+.pathway-result-select {
+  background: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: #005b86 !important;
+  text-align: left;
+  padding: 0 !important;
+  font: inherit !important;
+  line-height: 1.4;
+  cursor: pointer;
+}
+.pathway-result-select:hover {
+  text-decoration: underline;
+}
+.pathway-file-import {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin: 12px 0;
+}
+.pathway-file-import small {
+  font-size: 11px;
+  color: #526f82;
+}

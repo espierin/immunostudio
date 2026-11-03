@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scope": "Original editable schematic glyphs; no live pathway import.",
+  "scope": "Original editable schematic glyphs; structured pathway import is available in ImmunoStudio.",
   "elements": [
     {
       "type": "protein",

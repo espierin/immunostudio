@@ -408,7 +408,7 @@ export function validateProject(p) {
     if (
       p.sheet.version !== 1 ||
       !Array.isArray(p.sheet.items) ||
-      p.sheet.items.length > 300 ||
+      p.sheet.items.length > 4000 ||
       ![p.sheet.width, p.sheet.height].every(
         (n) => Number.isFinite(n) && n >= 100 && n <= 10000,
       )

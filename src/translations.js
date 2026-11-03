@@ -619,8 +619,8 @@ Object.assign(english, {
   "Standaardsymbool herstellen": "Restore standard symbol",
   "Naam wijzigt ook het label. Punten bewerken blijft beschikbaar.":
     "Name also changes the label. Edit nodes remains available.",
-  "Bewerkbare schema-elementen. Automatische pathway-import volgt later.":
-    "Editable schematic elements. Automatic pathway import will follow later.",
+  "Bewerkbare schema-elementen. Pathways invoegen kan via het menu Pathways.":
+    "Editable schematic elements. Insert pathways through the Pathways menu.",
 });
 Object.assign(english, {
   "Eerste 50 pathways getoond. Verfijn de zoekterm voor een kleinere selectie.":
@@ -703,7 +703,41 @@ Object.assign(english, {
   "Beperkte selectie. Maximaal 50 pathways en 8 molecuultreffers per bron. Verfijn de zoekterm.":
     "Limited selection. Up to 50 pathways and 8 molecule matches per source. Refine your search.",
 });
+Object.assign(english, {
+  "Op tekenblad plaatsen": "Place on drawing page",
+  "Pathway ophalen en omzetten naar bewerkbare elementen…":
+    "Loading pathway and converting to editable elements…",
+  "Pathway ophalen geannuleerd of tijdslimiet bereikt.":
+    "Pathway loading cancelled or timed out.",
+  "Kies Op tekenblad plaatsen voor losse bewerkbare elementen. Bronindelingen worden overgenomen waar beschikbaar; anders wordt de indeling automatisch gemaakt.":
+    "Choose Place on drawing page for separate editable elements. Source layouts are retained where available; otherwise the layout is generated automatically.",
+  "Pathwaybestand importeren…": "Import pathway file…",
+  "Ongeldige pathwaycoördinaten.": "Invalid pathway coordinates.",
+  "Geen Reactome-diagram beschikbaar voor dit pathway.":
+    "No Reactome diagram is available for this pathway.",
+  "Dit pathway bevat geen importeerbare elementen.":
+    "This pathway contains no importable elements.",
+  "Dit pathway is te groot. Kies een specifieker deelpathway.":
+    "This pathway is too large. Choose a more specific subpathway.",
+  "Ongeldig GPML-bestand.": "Invalid GPML file.",
+  "Ongeldig KGML-bestand.": "Invalid KGML file.",
+  "Ongeldig pathwaybestand.": "Invalid pathway file.",
+  "Ongeldige Pathway Commons-data.": "Invalid Pathway Commons data.",
+  "Voor deze bron is geen bewerkbare pathway-import beschikbaar.":
+    "Editable pathway import is not available for this source.",
+  "Te veel elementen op het tekenblad. Gebruik een leeg project of een kleiner pathway.":
+    "Too many elements on the drawing page. Use an empty project or a smaller pathway.",
+  "Het pathway past niet naast je huidige tekening. Gebruik een leeg project.":
+    "The pathway does not fit alongside your current drawing. Use an empty project.",
+  "Gebruik een Reactome-diagram-JSON, GPML of KGML.":
+    "Use a Reactome diagram JSON, GPML or KGML file.",
+});
 const patterns = [
+  [/^(\d+) pathway-elementen ingevoegd$/, "$1 pathway elements inserted"],
+  [
+    /^Pathway ophalen mislukt \(HTTP (\d+)\)\.$/,
+    "Pathway retrieval failed (HTTP $1).",
+  ],
   [/^(\d+) pathway-elementen · 2D$/, "$1 pathway elements · 2D"],
   [
     /^Huidig frame: (\d+)\. Camera-acties gebruiken het renderbereik\.$/,

@@ -1934,7 +1934,13 @@ document.addEventListener("keydown", (e) => {
     );
   }
 });
-const pathwaySearch = new PathwaySearchDialog();
+const pathwaySearch = new PathwaySearchDialog((result) => {
+  setEditorMode("2d", false);
+  const count = drawing2D.insertPathway(result);
+  inspectorTab = "drawing";
+  renderInspector();
+  toast(`${count} pathway-elementen ingevoegd`);
+});
 const commands = new CommandPalette(() => [
   {
     label: "Immunologie en celbiologie",

@@ -15,7 +15,8 @@ await writeFile(
   JSON.stringify(
     {
       version: 1,
-      scope: "Original editable schematic glyphs; no live pathway import.",
+      scope:
+        "Original editable schematic glyphs; structured pathway import is available in ImmunoStudio.",
       elements: pathwayCatalog,
     },
     null,
@@ -37,6 +38,6 @@ const gallery = `<!doctype html><html lang="en"><meta charset="utf-8"><meta name
   )
   .join(
     "",
-  )}<p>Use the ImmunoStudio header menu Pathways → Search pathways to search Reactome and WikiPathways. Class adapters are prepared in the code; automatic full pathway import is not available yet. These diagrams are schematic and are not a claim of full SBGN or GPML conformance.</p></main></html>`;
+  )}<p>Use the ImmunoStudio header menu Pathways → Search pathways to search Reactome and WikiPathways. Select a result title or Place on drawing page to import editable elements. Source layouts are retained where available; Pathway Commons can also use an automatic BioPAX layout. These diagrams are schematic and are not a claim of full SBGN or GPML conformance.</p></main></html>`;
 await writeFile("public/pathway-elements/index.html", gallery);
 console.log(`Generated ${pathwayCatalog.length} pathway symbols and gallery.`);

@@ -311,6 +311,45 @@ export class Drawing2D {
     this.notify();
     return n;
   }
+  insertPathway(result) {
+    if (this.doc.items.length + result.items.length > 4000)
+      throw Error(
+        "Te veel elementen op het tekenblad. Gebruik een leeg project of een kleiner pathway.",
+      );
+    const existing = this.doc.items.length;
+    const offset = existing
+      ? Math.max(...this.doc.items.map((i) => i.y + i.h)) + 80
+      : 0;
+    const width = Math.max(this.doc.width, result.width),
+      height = Math.max(this.doc.height, result.height + offset);
+    if (width > 10000 || height > 10000)
+      throw Error(
+        "Het pathway past niet naast je huidige tekening. Gebruik een leeg project.",
+      );
+    this.beforeChange();
+    const batch = structuredClone(result.items).map((item) => ({
+      ...item,
+      id: uid(),
+      y: item.y + offset,
+    }));
+    this.doc.items.push(...batch);
+    (this.doc.pathwayImports ||= []).push({
+      name: result.source.name,
+      source: result.source.source,
+      pathwayId: result.source.id,
+      url: result.source.url || "",
+      layout: result.layout,
+      importedAt: new Date().toISOString(),
+    });
+    this.doc.width = Math.ceil(existing ? width : result.width);
+    this.doc.height = Math.ceil(existing ? height : result.height);
+    this.doc.zoom = 1;
+    this.doc.panX = 0;
+    this.doc.panY = 0;
+    this.selected = [];
+    this.notify();
+    return batch.length;
+  }
   addSVG(text, name, sourceFile) {
     const svg = sanitizedSVG(text, "source"),
       [w, h] = sourceSize(svg),
@@ -1468,7 +1507,10 @@ export class Drawing2D {
           const base = makePathwayItem("membrane", item.id);
           item.curve = base.curve;
           item.bilayerThickness = base.bilayerThickness;
-        } else item.svg = pathwaySVG(item.pathway);
+        } else {
+          item.svg = pathwaySVG(item.pathway);
+          delete item.pathwayLabelLayout;
+        }
         delete item.contourOriginal;
         delete item.contourEdit;
       }
