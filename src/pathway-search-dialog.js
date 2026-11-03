@@ -10,8 +10,9 @@ const node = (tag, text, cls) => {
   return el;
 };
 export class PathwaySearchDialog {
-  constructor(onImport) {
+  constructor(onImport, onPlaced) {
     this.onImport = onImport;
+    this.onPlaced = onPlaced;
     this.dialog = document.createElement("dialog");
     this.dialog.className = "pathway-search-dialog";
     this.dialog.setAttribute("aria-labelledby", "pathway-search-title");
@@ -75,6 +76,7 @@ export class PathwaySearchDialog {
         const result = importPathwayFile(await selected.text(), selected.name);
         if (generation !== this.request || !this.dialog.open) return;
         await this.onImport(result);
+        this.placed = true;
         this.dialog.close();
       } catch (error) {
         if (generation === this.request && this.dialog.open)
@@ -95,7 +97,10 @@ export class PathwaySearchDialog {
     };
     this.dialog.addEventListener("close", () => {
       this.abort();
-      if (this.previous?.isConnected) this.previous.focus();
+      if (this.placed) {
+        this.placed = false;
+        this.onPlaced?.();
+      } else if (this.previous?.isConnected) this.previous.focus();
     });
   }
   updateKegg() {
@@ -204,6 +209,7 @@ export class PathwaySearchDialog {
       const result = await loadPathway(row, { signal: this.controller.signal });
       if (request !== this.request || !this.dialog.open) return;
       await this.onImport(result);
+      this.placed = true;
       this.dialog.close();
     } catch (error) {
       if (request === this.request && this.dialog.open)

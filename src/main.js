@@ -1934,13 +1934,19 @@ document.addEventListener("keydown", (e) => {
     );
   }
 });
-const pathwaySearch = new PathwaySearchDialog((result) => {
-  setEditorMode("2d", false);
-  const count = drawing2D.insertPathway(result);
-  inspectorTab = "drawing";
-  renderInspector();
-  toast(`${count} pathway-elementen ingevoegd`);
-});
+const pathwaySearch = new PathwaySearchDialog(
+  (result) => {
+    setEditorMode("2d", false);
+    const count = drawing2D.insertPathway(result);
+    inspectorTab = "drawing";
+    renderInspector();
+    toast(`${count} pathway-elementen ingevoegd`);
+  },
+  () => {
+    openingPage?.hide();
+    drawing2D.svg.focus({ preventScroll: true });
+  },
+);
 const commands = new CommandPalette(() => [
   {
     label: "Immunologie en celbiologie",
