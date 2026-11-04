@@ -1,3 +1,4 @@
+import { biologicalFigures, biologicalArtwork } from "./biological-figures.js";
 const E = (v) =>
   String(v ?? "").replace(
     /[&<>"']/g,
@@ -264,6 +265,23 @@ const definitions = [
     "note annotation label text",
   ],
 ];
+definitions.push(
+  ...biologicalFigures.map((f) => [
+    `bio-${f.id}`,
+    f.label,
+    f.family === "cell"
+      ? "Cell types"
+      : f.family.includes("receptor") ||
+          ["mhc", "membrane-protein"].includes(f.family)
+        ? "Membrane molecules"
+        : f.family === "chemokine"
+          ? "Chemokines"
+          : "Cytokines and growth factors",
+    "entity",
+    f.label,
+    `${f.family} ${f.aliases.join(" ")}`,
+  ]),
+);
 export const pathwayCatalog = definitions.map(
   ([type, title, category, role, label, keywords]) => ({
     type,
@@ -442,15 +460,16 @@ function labelMarkup(m) {
   const d = pathwayDefinition(m.type),
     lines = wrapLabel(m.label),
     edge = d.role === "edge",
-    outside = [
-      "receptor",
-      "gene",
-      "dna",
-      "reaction",
-      "association",
-      "dissociation",
-      "degradation",
-    ].includes(m.type),
+    outside =
+      [
+        "receptor",
+        "gene",
+        "dna",
+        "reaction",
+        "association",
+        "dissociation",
+        "degradation",
+      ].includes(m.type) || m.type.startsWith("bio-"),
     y = outside
       ? 128
       : d.role === "compartment"
@@ -480,7 +499,9 @@ export function pathwaySVG(m) {
   const rect = (x, y, w, h, rx = 0, extra = "") =>
     `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}" ${extra}/>`;
   const path = (d, extra = "") => `<path d="${d}" ${extra}/>`;
-  if (role === "compartment") {
+  const biological = biologicalFigures.find((f) => `bio-${f.id}` === type);
+  if (biological) art = biologicalArtwork(biological);
+  else if (role === "compartment") {
     if (type === "membrane") {
       art = Array.from({ length: 13 }, (_, i) =>
         [43, 89]

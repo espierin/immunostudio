@@ -316,6 +316,2076 @@
       "label": "Note",
       "name": "Note",
       "keywords": "note annotation label text"
+    },
+    {
+      "type": "bio-helper-t-cell",
+      "title": "T-helper cell",
+      "category": "Cell types",
+      "role": "entity",
+      "label": "T-helper cell",
+      "name": "T-helper cell",
+      "keywords": "cell t helper t helper cell thelper cell helper t cell cd4 t cell th"
+    },
+    {
+      "type": "bio-cytotoxic-t-cell",
+      "title": "Cytotoxic T cell",
+      "category": "Cell types",
+      "role": "entity",
+      "label": "Cytotoxic T cell",
+      "name": "Cytotoxic T cell",
+      "keywords": "cell cytotoxic t cell cd8 t cell tc"
+    },
+    {
+      "type": "bio-t-cell",
+      "title": "T cell",
+      "category": "Cell types",
+      "role": "entity",
+      "label": "T cell",
+      "name": "T cell",
+      "keywords": "cell t cell t cells"
+    },
+    {
+      "type": "bio-b-cell",
+      "title": "B cell",
+      "category": "Cell types",
+      "role": "entity",
+      "label": "B cell",
+      "name": "B cell",
+      "keywords": "cell b cell b cells"
+    },
+    {
+      "type": "bio-nk-cell",
+      "title": "NK cell",
+      "category": "Cell types",
+      "role": "entity",
+      "label": "NK cell",
+      "name": "NK cell",
+      "keywords": "cell nk cell nk cells natural killer cell lymphocyte activated killer cells lak lak cell"
+    },
+    {
+      "type": "bio-macrophage",
+      "title": "Macrophage",
+      "category": "Cell types",
+      "role": "entity",
+      "label": "Macrophage",
+      "name": "Macrophage",
+      "keywords": "cell macrophage macrophages"
+    },
+    {
+      "type": "bio-monocyte",
+      "title": "Monocyte",
+      "category": "Cell types",
+      "role": "entity",
+      "label": "Monocyte",
+      "name": "Monocyte",
+      "keywords": "cell monocyte monocytes"
+    },
+    {
+      "type": "bio-dendritic-cell",
+      "title": "Dendritic cell",
+      "category": "Cell types",
+      "role": "entity",
+      "label": "Dendritic cell",
+      "name": "Dendritic cell",
+      "keywords": "cell dendritic cell dendritic cells"
+    },
+    {
+      "type": "bio-neutrophil",
+      "title": "Neutrophil",
+      "category": "Cell types",
+      "role": "entity",
+      "label": "Neutrophil",
+      "name": "Neutrophil",
+      "keywords": "cell neutrophil neutrophils"
+    },
+    {
+      "type": "bio-eosinophil",
+      "title": "Eosinophil",
+      "category": "Cell types",
+      "role": "entity",
+      "label": "Eosinophil",
+      "name": "Eosinophil",
+      "keywords": "cell eosinophil eosinophils eos"
+    },
+    {
+      "type": "bio-basophil",
+      "title": "Basophil",
+      "category": "Cell types",
+      "role": "entity",
+      "label": "Basophil",
+      "name": "Basophil",
+      "keywords": "cell basophil basophils"
+    },
+    {
+      "type": "bio-mast-cell",
+      "title": "Mast cell",
+      "category": "Cell types",
+      "role": "entity",
+      "label": "Mast cell",
+      "name": "Mast cell",
+      "keywords": "cell mast cell mast cells"
+    },
+    {
+      "type": "bio-plasma-cell",
+      "title": "Plasma cell",
+      "category": "Cell types",
+      "role": "entity",
+      "label": "Plasma cell",
+      "name": "Plasma cell",
+      "keywords": "cell plasma cell plasma cells"
+    },
+    {
+      "type": "bio-fibroblast",
+      "title": "Fibroblast",
+      "category": "Cell types",
+      "role": "entity",
+      "label": "Fibroblast",
+      "name": "Fibroblast",
+      "keywords": "cell fibroblast fibroblasts"
+    },
+    {
+      "type": "bio-endothelial-cell",
+      "title": "Endothelial cell",
+      "category": "Cell types",
+      "role": "entity",
+      "label": "Endothelial cell",
+      "name": "Endothelial cell",
+      "keywords": "cell endothelial cell endothelial cells endothelial endothelia cells"
+    },
+    {
+      "type": "bio-epithelial-cell",
+      "title": "Epithelial cell",
+      "category": "Cell types",
+      "role": "entity",
+      "label": "Epithelial cell",
+      "name": "Epithelial cell",
+      "keywords": "cell epithelial cell epithelial cells"
+    },
+    {
+      "type": "bio-stem-cell",
+      "title": "Hematopoietic stem cell",
+      "category": "Cell types",
+      "role": "entity",
+      "label": "Hematopoietic stem cell",
+      "name": "Hematopoietic stem cell",
+      "keywords": "cell hematopoietic stem cell haematopoietic stem cell hsc"
+    },
+    {
+      "type": "bio-il1a",
+      "title": "IL1A",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL1A",
+      "name": "IL1A",
+      "keywords": "cytokine IL1A"
+    },
+    {
+      "type": "bio-il1b",
+      "title": "IL1B",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL1B",
+      "name": "IL1B",
+      "keywords": "cytokine IL1B"
+    },
+    {
+      "type": "bio-il1rn",
+      "title": "IL1RN",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL1RN",
+      "name": "IL1RN",
+      "keywords": "cytokine IL1RN"
+    },
+    {
+      "type": "bio-il2",
+      "title": "IL2",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL2",
+      "name": "IL2",
+      "keywords": "cytokine IL2"
+    },
+    {
+      "type": "bio-il3",
+      "title": "IL3",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL3",
+      "name": "IL3",
+      "keywords": "cytokine IL3"
+    },
+    {
+      "type": "bio-il4",
+      "title": "IL4",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL4",
+      "name": "IL4",
+      "keywords": "cytokine IL4"
+    },
+    {
+      "type": "bio-il5",
+      "title": "IL5",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL5",
+      "name": "IL5",
+      "keywords": "cytokine IL5"
+    },
+    {
+      "type": "bio-il6",
+      "title": "IL6",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL6",
+      "name": "IL6",
+      "keywords": "cytokine IL6"
+    },
+    {
+      "type": "bio-il7",
+      "title": "IL7",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL7",
+      "name": "IL7",
+      "keywords": "cytokine IL7"
+    },
+    {
+      "type": "bio-il9",
+      "title": "IL9",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL9",
+      "name": "IL9",
+      "keywords": "cytokine IL9"
+    },
+    {
+      "type": "bio-il10",
+      "title": "IL10",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL10",
+      "name": "IL10",
+      "keywords": "cytokine IL10"
+    },
+    {
+      "type": "bio-il11",
+      "title": "IL11",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL11",
+      "name": "IL11",
+      "keywords": "cytokine IL11"
+    },
+    {
+      "type": "bio-il12a",
+      "title": "IL12A",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL12A",
+      "name": "IL12A",
+      "keywords": "cytokine IL12A"
+    },
+    {
+      "type": "bio-il12b",
+      "title": "IL12B",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL12B",
+      "name": "IL12B",
+      "keywords": "cytokine IL12B"
+    },
+    {
+      "type": "bio-il13",
+      "title": "IL13",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL13",
+      "name": "IL13",
+      "keywords": "cytokine IL13"
+    },
+    {
+      "type": "bio-il15",
+      "title": "IL15",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL15",
+      "name": "IL15",
+      "keywords": "cytokine IL15"
+    },
+    {
+      "type": "bio-il16",
+      "title": "IL16",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL16",
+      "name": "IL16",
+      "keywords": "cytokine IL16"
+    },
+    {
+      "type": "bio-il17a",
+      "title": "IL17A",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL17A",
+      "name": "IL17A",
+      "keywords": "cytokine IL17A"
+    },
+    {
+      "type": "bio-il17b",
+      "title": "IL17B",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL17B",
+      "name": "IL17B",
+      "keywords": "cytokine IL17B"
+    },
+    {
+      "type": "bio-il17c",
+      "title": "IL17C",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL17C",
+      "name": "IL17C",
+      "keywords": "cytokine IL17C"
+    },
+    {
+      "type": "bio-il17d",
+      "title": "IL17D",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL17D",
+      "name": "IL17D",
+      "keywords": "cytokine IL17D"
+    },
+    {
+      "type": "bio-il17f",
+      "title": "IL17F",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL17F",
+      "name": "IL17F",
+      "keywords": "cytokine IL17F"
+    },
+    {
+      "type": "bio-il18",
+      "title": "IL18",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL18",
+      "name": "IL18",
+      "keywords": "cytokine IL18"
+    },
+    {
+      "type": "bio-il19",
+      "title": "IL19",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL19",
+      "name": "IL19",
+      "keywords": "cytokine IL19"
+    },
+    {
+      "type": "bio-il20",
+      "title": "IL20",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL20",
+      "name": "IL20",
+      "keywords": "cytokine IL20"
+    },
+    {
+      "type": "bio-il21",
+      "title": "IL21",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL21",
+      "name": "IL21",
+      "keywords": "cytokine IL21"
+    },
+    {
+      "type": "bio-il22",
+      "title": "IL22",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL22",
+      "name": "IL22",
+      "keywords": "cytokine IL22"
+    },
+    {
+      "type": "bio-il23a",
+      "title": "IL23A",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL23A",
+      "name": "IL23A",
+      "keywords": "cytokine IL23A"
+    },
+    {
+      "type": "bio-il24",
+      "title": "IL24",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL24",
+      "name": "IL24",
+      "keywords": "cytokine IL24"
+    },
+    {
+      "type": "bio-il25",
+      "title": "IL25",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL25",
+      "name": "IL25",
+      "keywords": "cytokine IL25"
+    },
+    {
+      "type": "bio-il26",
+      "title": "IL26",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL26",
+      "name": "IL26",
+      "keywords": "cytokine IL26"
+    },
+    {
+      "type": "bio-il27",
+      "title": "IL27",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL27",
+      "name": "IL27",
+      "keywords": "cytokine IL27"
+    },
+    {
+      "type": "bio-il32",
+      "title": "IL32",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL32",
+      "name": "IL32",
+      "keywords": "cytokine IL32"
+    },
+    {
+      "type": "bio-il33",
+      "title": "IL33",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL33",
+      "name": "IL33",
+      "keywords": "cytokine IL33"
+    },
+    {
+      "type": "bio-il34",
+      "title": "IL34",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL34",
+      "name": "IL34",
+      "keywords": "cytokine IL34"
+    },
+    {
+      "type": "bio-il36a",
+      "title": "IL36A",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL36A",
+      "name": "IL36A",
+      "keywords": "cytokine IL36A"
+    },
+    {
+      "type": "bio-il36b",
+      "title": "IL36B",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL36B",
+      "name": "IL36B",
+      "keywords": "cytokine IL36B"
+    },
+    {
+      "type": "bio-il36g",
+      "title": "IL36G",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL36G",
+      "name": "IL36G",
+      "keywords": "cytokine IL36G"
+    },
+    {
+      "type": "bio-il36rn",
+      "title": "IL36RN",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL36RN",
+      "name": "IL36RN",
+      "keywords": "cytokine IL36RN"
+    },
+    {
+      "type": "bio-il37",
+      "title": "IL37",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IL37",
+      "name": "IL37",
+      "keywords": "cytokine IL37"
+    },
+    {
+      "type": "bio-ifna1",
+      "title": "IFNA1",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IFNA1",
+      "name": "IFNA1",
+      "keywords": "cytokine IFNA1"
+    },
+    {
+      "type": "bio-ifna2",
+      "title": "IFNA2",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IFNA2",
+      "name": "IFNA2",
+      "keywords": "cytokine IFNA2"
+    },
+    {
+      "type": "bio-ifnb1",
+      "title": "IFNB1",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IFNB1",
+      "name": "IFNB1",
+      "keywords": "cytokine IFNB1 IFN beta"
+    },
+    {
+      "type": "bio-ifng",
+      "title": "IFNG",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IFNG",
+      "name": "IFNG",
+      "keywords": "cytokine IFNG interferon gamma"
+    },
+    {
+      "type": "bio-ifnl1",
+      "title": "IFNL1",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IFNL1",
+      "name": "IFNL1",
+      "keywords": "cytokine IFNL1"
+    },
+    {
+      "type": "bio-ifnl2",
+      "title": "IFNL2",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IFNL2",
+      "name": "IFNL2",
+      "keywords": "cytokine IFNL2"
+    },
+    {
+      "type": "bio-ifnl3",
+      "title": "IFNL3",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IFNL3",
+      "name": "IFNL3",
+      "keywords": "cytokine IFNL3"
+    },
+    {
+      "type": "bio-ifnl4",
+      "title": "IFNL4",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IFNL4",
+      "name": "IFNL4",
+      "keywords": "cytokine IFNL4"
+    },
+    {
+      "type": "bio-tnf",
+      "title": "TNF",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "TNF",
+      "name": "TNF",
+      "keywords": "cytokine TNF TNF alpha"
+    },
+    {
+      "type": "bio-lta",
+      "title": "LTA",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "LTA",
+      "name": "LTA",
+      "keywords": "cytokine LTA"
+    },
+    {
+      "type": "bio-ltb",
+      "title": "LTB",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "LTB",
+      "name": "LTB",
+      "keywords": "cytokine LTB"
+    },
+    {
+      "type": "bio-tgfb1",
+      "title": "TGFB1",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "TGFB1",
+      "name": "TGFB1",
+      "keywords": "cytokine TGFB1"
+    },
+    {
+      "type": "bio-tgfb2",
+      "title": "TGFB2",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "TGFB2",
+      "name": "TGFB2",
+      "keywords": "cytokine TGFB2"
+    },
+    {
+      "type": "bio-tgfb3",
+      "title": "TGFB3",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "TGFB3",
+      "name": "TGFB3",
+      "keywords": "cytokine TGFB3"
+    },
+    {
+      "type": "bio-csf1",
+      "title": "CSF1",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "CSF1",
+      "name": "CSF1",
+      "keywords": "cytokine CSF1"
+    },
+    {
+      "type": "bio-csf2",
+      "title": "CSF2",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "CSF2",
+      "name": "CSF2",
+      "keywords": "cytokine CSF2 GM-CSF"
+    },
+    {
+      "type": "bio-csf3",
+      "title": "CSF3",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "CSF3",
+      "name": "CSF3",
+      "keywords": "cytokine CSF3 G-CSF"
+    },
+    {
+      "type": "bio-kitlg",
+      "title": "KITLG",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "KITLG",
+      "name": "KITLG",
+      "keywords": "cytokine KITLG"
+    },
+    {
+      "type": "bio-flt3lg",
+      "title": "FLT3LG",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "FLT3LG",
+      "name": "FLT3LG",
+      "keywords": "cytokine FLT3LG"
+    },
+    {
+      "type": "bio-tslp",
+      "title": "TSLP",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "TSLP",
+      "name": "TSLP",
+      "keywords": "cytokine TSLP"
+    },
+    {
+      "type": "bio-ebi3",
+      "title": "EBI3",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "EBI3",
+      "name": "EBI3",
+      "keywords": "cytokine EBI3"
+    },
+    {
+      "type": "bio-ccl1",
+      "title": "CCL1",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CCL1",
+      "name": "CCL1",
+      "keywords": "chemokine CCL1"
+    },
+    {
+      "type": "bio-ccl2",
+      "title": "CCL2",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CCL2",
+      "name": "CCL2",
+      "keywords": "chemokine CCL2"
+    },
+    {
+      "type": "bio-ccl3",
+      "title": "CCL3",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CCL3",
+      "name": "CCL3",
+      "keywords": "chemokine CCL3"
+    },
+    {
+      "type": "bio-ccl4",
+      "title": "CCL4",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CCL4",
+      "name": "CCL4",
+      "keywords": "chemokine CCL4"
+    },
+    {
+      "type": "bio-ccl5",
+      "title": "CCL5",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CCL5",
+      "name": "CCL5",
+      "keywords": "chemokine CCL5"
+    },
+    {
+      "type": "bio-ccl7",
+      "title": "CCL7",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CCL7",
+      "name": "CCL7",
+      "keywords": "chemokine CCL7"
+    },
+    {
+      "type": "bio-ccl8",
+      "title": "CCL8",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CCL8",
+      "name": "CCL8",
+      "keywords": "chemokine CCL8"
+    },
+    {
+      "type": "bio-ccl11",
+      "title": "CCL11",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CCL11",
+      "name": "CCL11",
+      "keywords": "chemokine CCL11"
+    },
+    {
+      "type": "bio-ccl13",
+      "title": "CCL13",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CCL13",
+      "name": "CCL13",
+      "keywords": "chemokine CCL13"
+    },
+    {
+      "type": "bio-ccl14",
+      "title": "CCL14",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CCL14",
+      "name": "CCL14",
+      "keywords": "chemokine CCL14"
+    },
+    {
+      "type": "bio-ccl15",
+      "title": "CCL15",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CCL15",
+      "name": "CCL15",
+      "keywords": "chemokine CCL15"
+    },
+    {
+      "type": "bio-ccl16",
+      "title": "CCL16",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CCL16",
+      "name": "CCL16",
+      "keywords": "chemokine CCL16"
+    },
+    {
+      "type": "bio-ccl17",
+      "title": "CCL17",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CCL17",
+      "name": "CCL17",
+      "keywords": "chemokine CCL17"
+    },
+    {
+      "type": "bio-ccl18",
+      "title": "CCL18",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CCL18",
+      "name": "CCL18",
+      "keywords": "chemokine CCL18"
+    },
+    {
+      "type": "bio-ccl19",
+      "title": "CCL19",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CCL19",
+      "name": "CCL19",
+      "keywords": "chemokine CCL19"
+    },
+    {
+      "type": "bio-ccl20",
+      "title": "CCL20",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CCL20",
+      "name": "CCL20",
+      "keywords": "chemokine CCL20"
+    },
+    {
+      "type": "bio-ccl21",
+      "title": "CCL21",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CCL21",
+      "name": "CCL21",
+      "keywords": "chemokine CCL21"
+    },
+    {
+      "type": "bio-ccl22",
+      "title": "CCL22",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CCL22",
+      "name": "CCL22",
+      "keywords": "chemokine CCL22"
+    },
+    {
+      "type": "bio-ccl23",
+      "title": "CCL23",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CCL23",
+      "name": "CCL23",
+      "keywords": "chemokine CCL23"
+    },
+    {
+      "type": "bio-ccl24",
+      "title": "CCL24",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CCL24",
+      "name": "CCL24",
+      "keywords": "chemokine CCL24"
+    },
+    {
+      "type": "bio-ccl25",
+      "title": "CCL25",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CCL25",
+      "name": "CCL25",
+      "keywords": "chemokine CCL25"
+    },
+    {
+      "type": "bio-ccl26",
+      "title": "CCL26",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CCL26",
+      "name": "CCL26",
+      "keywords": "chemokine CCL26"
+    },
+    {
+      "type": "bio-ccl27",
+      "title": "CCL27",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CCL27",
+      "name": "CCL27",
+      "keywords": "chemokine CCL27"
+    },
+    {
+      "type": "bio-ccl28",
+      "title": "CCL28",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CCL28",
+      "name": "CCL28",
+      "keywords": "chemokine CCL28"
+    },
+    {
+      "type": "bio-cxcl1",
+      "title": "CXCL1",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CXCL1",
+      "name": "CXCL1",
+      "keywords": "chemokine CXCL1"
+    },
+    {
+      "type": "bio-cxcl2",
+      "title": "CXCL2",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CXCL2",
+      "name": "CXCL2",
+      "keywords": "chemokine CXCL2"
+    },
+    {
+      "type": "bio-cxcl3",
+      "title": "CXCL3",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CXCL3",
+      "name": "CXCL3",
+      "keywords": "chemokine CXCL3"
+    },
+    {
+      "type": "bio-cxcl4",
+      "title": "CXCL4",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CXCL4",
+      "name": "CXCL4",
+      "keywords": "chemokine CXCL4"
+    },
+    {
+      "type": "bio-cxcl5",
+      "title": "CXCL5",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CXCL5",
+      "name": "CXCL5",
+      "keywords": "chemokine CXCL5"
+    },
+    {
+      "type": "bio-cxcl6",
+      "title": "CXCL6",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CXCL6",
+      "name": "CXCL6",
+      "keywords": "chemokine CXCL6"
+    },
+    {
+      "type": "bio-cxcl8",
+      "title": "CXCL8",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CXCL8",
+      "name": "CXCL8",
+      "keywords": "chemokine CXCL8 IL8 IL-8"
+    },
+    {
+      "type": "bio-cxcl9",
+      "title": "CXCL9",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CXCL9",
+      "name": "CXCL9",
+      "keywords": "chemokine CXCL9"
+    },
+    {
+      "type": "bio-cxcl10",
+      "title": "CXCL10",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CXCL10",
+      "name": "CXCL10",
+      "keywords": "chemokine CXCL10"
+    },
+    {
+      "type": "bio-cxcl11",
+      "title": "CXCL11",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CXCL11",
+      "name": "CXCL11",
+      "keywords": "chemokine CXCL11"
+    },
+    {
+      "type": "bio-cxcl12",
+      "title": "CXCL12",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CXCL12",
+      "name": "CXCL12",
+      "keywords": "chemokine CXCL12"
+    },
+    {
+      "type": "bio-cxcl13",
+      "title": "CXCL13",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CXCL13",
+      "name": "CXCL13",
+      "keywords": "chemokine CXCL13"
+    },
+    {
+      "type": "bio-cxcl14",
+      "title": "CXCL14",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CXCL14",
+      "name": "CXCL14",
+      "keywords": "chemokine CXCL14"
+    },
+    {
+      "type": "bio-cxcl16",
+      "title": "CXCL16",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CXCL16",
+      "name": "CXCL16",
+      "keywords": "chemokine CXCL16"
+    },
+    {
+      "type": "bio-cxcl17",
+      "title": "CXCL17",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CXCL17",
+      "name": "CXCL17",
+      "keywords": "chemokine CXCL17"
+    },
+    {
+      "type": "bio-cx3cl1",
+      "title": "CX3CL1",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "CX3CL1",
+      "name": "CX3CL1",
+      "keywords": "chemokine CX3CL1"
+    },
+    {
+      "type": "bio-xcl1",
+      "title": "XCL1",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "XCL1",
+      "name": "XCL1",
+      "keywords": "chemokine XCL1"
+    },
+    {
+      "type": "bio-xcl2",
+      "title": "XCL2",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "XCL2",
+      "name": "XCL2",
+      "keywords": "chemokine XCL2"
+    },
+    {
+      "type": "bio-pdgfa",
+      "title": "PDGFA",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "PDGFA",
+      "name": "PDGFA",
+      "keywords": "growth-factor PDGFA"
+    },
+    {
+      "type": "bio-pdgfb",
+      "title": "PDGFB",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "PDGFB",
+      "name": "PDGFB",
+      "keywords": "growth-factor PDGFB"
+    },
+    {
+      "type": "bio-pdgfc",
+      "title": "PDGFC",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "PDGFC",
+      "name": "PDGFC",
+      "keywords": "growth-factor PDGFC"
+    },
+    {
+      "type": "bio-pdgfd",
+      "title": "PDGFD",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "PDGFD",
+      "name": "PDGFD",
+      "keywords": "growth-factor PDGFD"
+    },
+    {
+      "type": "bio-vegfa",
+      "title": "VEGFA",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "VEGFA",
+      "name": "VEGFA",
+      "keywords": "growth-factor VEGFA"
+    },
+    {
+      "type": "bio-vegfb",
+      "title": "VEGFB",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "VEGFB",
+      "name": "VEGFB",
+      "keywords": "growth-factor VEGFB"
+    },
+    {
+      "type": "bio-vegfc",
+      "title": "VEGFC",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "VEGFC",
+      "name": "VEGFC",
+      "keywords": "growth-factor VEGFC"
+    },
+    {
+      "type": "bio-vegfd",
+      "title": "VEGFD",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "VEGFD",
+      "name": "VEGFD",
+      "keywords": "growth-factor VEGFD"
+    },
+    {
+      "type": "bio-fgf1",
+      "title": "FGF1",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "FGF1",
+      "name": "FGF1",
+      "keywords": "growth-factor FGF1"
+    },
+    {
+      "type": "bio-fgf2",
+      "title": "FGF2",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "FGF2",
+      "name": "FGF2",
+      "keywords": "growth-factor FGF2"
+    },
+    {
+      "type": "bio-fgf7",
+      "title": "FGF7",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "FGF7",
+      "name": "FGF7",
+      "keywords": "growth-factor FGF7"
+    },
+    {
+      "type": "bio-egf",
+      "title": "EGF",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "EGF",
+      "name": "EGF",
+      "keywords": "growth-factor EGF"
+    },
+    {
+      "type": "bio-hgf",
+      "title": "HGF",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "HGF",
+      "name": "HGF",
+      "keywords": "growth-factor HGF"
+    },
+    {
+      "type": "bio-igf1",
+      "title": "IGF1",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IGF1",
+      "name": "IGF1",
+      "keywords": "growth-factor IGF1"
+    },
+    {
+      "type": "bio-igf2",
+      "title": "IGF2",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "IGF2",
+      "name": "IGF2",
+      "keywords": "growth-factor IGF2"
+    },
+    {
+      "type": "bio-cd3d",
+      "title": "CD3D",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CD3D",
+      "name": "CD3D",
+      "keywords": "membrane-protein CD3D"
+    },
+    {
+      "type": "bio-cd3e",
+      "title": "CD3E",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CD3E",
+      "name": "CD3E",
+      "keywords": "membrane-protein CD3E"
+    },
+    {
+      "type": "bio-cd3g",
+      "title": "CD3G",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CD3G",
+      "name": "CD3G",
+      "keywords": "membrane-protein CD3G"
+    },
+    {
+      "type": "bio-cd4",
+      "title": "CD4",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CD4",
+      "name": "CD4",
+      "keywords": "membrane-protein CD4"
+    },
+    {
+      "type": "bio-cd8a",
+      "title": "CD8A",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CD8A",
+      "name": "CD8A",
+      "keywords": "membrane-protein CD8A"
+    },
+    {
+      "type": "bio-cd8b",
+      "title": "CD8B",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CD8B",
+      "name": "CD8B",
+      "keywords": "membrane-protein CD8B"
+    },
+    {
+      "type": "bio-cd19",
+      "title": "CD19",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CD19",
+      "name": "CD19",
+      "keywords": "membrane-protein CD19"
+    },
+    {
+      "type": "bio-cd20",
+      "title": "CD20",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CD20",
+      "name": "CD20",
+      "keywords": "membrane-protein CD20 MS4A1"
+    },
+    {
+      "type": "bio-cd28",
+      "title": "CD28",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CD28",
+      "name": "CD28",
+      "keywords": "membrane-protein CD28"
+    },
+    {
+      "type": "bio-cd40",
+      "title": "CD40",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CD40",
+      "name": "CD40",
+      "keywords": "membrane-protein CD40"
+    },
+    {
+      "type": "bio-cd40lg",
+      "title": "CD40LG",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CD40LG",
+      "name": "CD40LG",
+      "keywords": "membrane-protein CD40LG"
+    },
+    {
+      "type": "bio-cd80",
+      "title": "CD80",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CD80",
+      "name": "CD80",
+      "keywords": "membrane-protein CD80"
+    },
+    {
+      "type": "bio-cd86",
+      "title": "CD86",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CD86",
+      "name": "CD86",
+      "keywords": "membrane-protein CD86"
+    },
+    {
+      "type": "bio-icam1",
+      "title": "ICAM1",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "ICAM1",
+      "name": "ICAM1",
+      "keywords": "membrane-protein ICAM1"
+    },
+    {
+      "type": "bio-vcam1",
+      "title": "VCAM1",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "VCAM1",
+      "name": "VCAM1",
+      "keywords": "membrane-protein VCAM1"
+    },
+    {
+      "type": "bio-sele",
+      "title": "SELE",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "SELE",
+      "name": "SELE",
+      "keywords": "membrane-protein SELE"
+    },
+    {
+      "type": "bio-sell",
+      "title": "SELL",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "SELL",
+      "name": "SELL",
+      "keywords": "membrane-protein SELL"
+    },
+    {
+      "type": "bio-selp",
+      "title": "SELP",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "SELP",
+      "name": "SELP",
+      "keywords": "membrane-protein SELP"
+    },
+    {
+      "type": "bio-itgal",
+      "title": "ITGAL",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "ITGAL",
+      "name": "ITGAL",
+      "keywords": "membrane-protein ITGAL"
+    },
+    {
+      "type": "bio-itgb2",
+      "title": "ITGB2",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "ITGB2",
+      "name": "ITGB2",
+      "keywords": "membrane-protein ITGB2"
+    },
+    {
+      "type": "bio-pdcd1",
+      "title": "PDCD1",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "PDCD1",
+      "name": "PDCD1",
+      "keywords": "membrane-protein PDCD1 PD-1"
+    },
+    {
+      "type": "bio-cd274",
+      "title": "CD274",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CD274",
+      "name": "CD274",
+      "keywords": "membrane-protein CD274 PD-L1"
+    },
+    {
+      "type": "bio-ctla4",
+      "title": "CTLA4",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CTLA4",
+      "name": "CTLA4",
+      "keywords": "membrane-protein CTLA4"
+    },
+    {
+      "type": "bio-hla-a",
+      "title": "HLA-A",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "HLA-A",
+      "name": "HLA-A",
+      "keywords": "mhc HLA-A"
+    },
+    {
+      "type": "bio-hla-b",
+      "title": "HLA-B",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "HLA-B",
+      "name": "HLA-B",
+      "keywords": "mhc HLA-B"
+    },
+    {
+      "type": "bio-hla-c",
+      "title": "HLA-C",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "HLA-C",
+      "name": "HLA-C",
+      "keywords": "mhc HLA-C"
+    },
+    {
+      "type": "bio-hla-e",
+      "title": "HLA-E",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "HLA-E",
+      "name": "HLA-E",
+      "keywords": "mhc HLA-E"
+    },
+    {
+      "type": "bio-hla-dra",
+      "title": "HLA-DRA",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "HLA-DRA",
+      "name": "HLA-DRA",
+      "keywords": "mhc HLA-DRA"
+    },
+    {
+      "type": "bio-hla-drb1",
+      "title": "HLA-DRB1",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "HLA-DRB1",
+      "name": "HLA-DRB1",
+      "keywords": "mhc HLA-DRB1"
+    },
+    {
+      "type": "bio-hla-dpa1",
+      "title": "HLA-DPA1",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "HLA-DPA1",
+      "name": "HLA-DPA1",
+      "keywords": "mhc HLA-DPA1"
+    },
+    {
+      "type": "bio-hla-dpb1",
+      "title": "HLA-DPB1",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "HLA-DPB1",
+      "name": "HLA-DPB1",
+      "keywords": "mhc HLA-DPB1"
+    },
+    {
+      "type": "bio-hla-dqa1",
+      "title": "HLA-DQA1",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "HLA-DQA1",
+      "name": "HLA-DQA1",
+      "keywords": "mhc HLA-DQA1"
+    },
+    {
+      "type": "bio-hla-dqb1",
+      "title": "HLA-DQB1",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "HLA-DQB1",
+      "name": "HLA-DQB1",
+      "keywords": "mhc HLA-DQB1"
+    },
+    {
+      "type": "bio-b2m",
+      "title": "B2M",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "B2M",
+      "name": "B2M",
+      "keywords": "mhc B2M"
+    },
+    {
+      "type": "bio-tcr",
+      "title": "TCR",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "TCR",
+      "name": "TCR",
+      "keywords": "membrane-protein TCR"
+    },
+    {
+      "type": "bio-tra",
+      "title": "TRA",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "TRA",
+      "name": "TRA",
+      "keywords": "membrane-protein TRA"
+    },
+    {
+      "type": "bio-trb",
+      "title": "TRB",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "TRB",
+      "name": "TRB",
+      "keywords": "membrane-protein TRB"
+    },
+    {
+      "type": "bio-bcr",
+      "title": "BCR",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "BCR",
+      "name": "BCR",
+      "keywords": "membrane-protein BCR"
+    },
+    {
+      "type": "bio-il1r1",
+      "title": "IL1R1",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "IL1R1",
+      "name": "IL1R1",
+      "keywords": "membrane-protein IL1R1"
+    },
+    {
+      "type": "bio-il2ra",
+      "title": "IL2RA",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "IL2RA",
+      "name": "IL2RA",
+      "keywords": "membrane-protein IL2RA"
+    },
+    {
+      "type": "bio-il2rb",
+      "title": "IL2RB",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "IL2RB",
+      "name": "IL2RB",
+      "keywords": "membrane-protein IL2RB"
+    },
+    {
+      "type": "bio-il2rg",
+      "title": "IL2RG",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "IL2RG",
+      "name": "IL2RG",
+      "keywords": "membrane-protein IL2RG"
+    },
+    {
+      "type": "bio-il4r",
+      "title": "IL4R",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "IL4R",
+      "name": "IL4R",
+      "keywords": "membrane-protein IL4R"
+    },
+    {
+      "type": "bio-il6r",
+      "title": "IL6R",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "IL6R",
+      "name": "IL6R",
+      "keywords": "membrane-protein IL6R"
+    },
+    {
+      "type": "bio-il6st",
+      "title": "IL6ST",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "IL6ST",
+      "name": "IL6ST",
+      "keywords": "membrane-protein IL6ST"
+    },
+    {
+      "type": "bio-il7r",
+      "title": "IL7R",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "IL7R",
+      "name": "IL7R",
+      "keywords": "membrane-protein IL7R"
+    },
+    {
+      "type": "bio-il10ra",
+      "title": "IL10RA",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "IL10RA",
+      "name": "IL10RA",
+      "keywords": "membrane-protein IL10RA"
+    },
+    {
+      "type": "bio-il10rb",
+      "title": "IL10RB",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "IL10RB",
+      "name": "IL10RB",
+      "keywords": "membrane-protein IL10RB"
+    },
+    {
+      "type": "bio-il12rb1",
+      "title": "IL12RB1",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "IL12RB1",
+      "name": "IL12RB1",
+      "keywords": "membrane-protein IL12RB1"
+    },
+    {
+      "type": "bio-il12rb2",
+      "title": "IL12RB2",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "IL12RB2",
+      "name": "IL12RB2",
+      "keywords": "membrane-protein IL12RB2"
+    },
+    {
+      "type": "bio-il13ra1",
+      "title": "IL13RA1",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "IL13RA1",
+      "name": "IL13RA1",
+      "keywords": "membrane-protein IL13RA1"
+    },
+    {
+      "type": "bio-il15ra",
+      "title": "IL15RA",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "IL15RA",
+      "name": "IL15RA",
+      "keywords": "membrane-protein IL15RA"
+    },
+    {
+      "type": "bio-il17ra",
+      "title": "IL17RA",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "IL17RA",
+      "name": "IL17RA",
+      "keywords": "membrane-protein IL17RA"
+    },
+    {
+      "type": "bio-il18r1",
+      "title": "IL18R1",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "IL18R1",
+      "name": "IL18R1",
+      "keywords": "membrane-protein IL18R1"
+    },
+    {
+      "type": "bio-il21r",
+      "title": "IL21R",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "IL21R",
+      "name": "IL21R",
+      "keywords": "membrane-protein IL21R"
+    },
+    {
+      "type": "bio-ifnar1",
+      "title": "IFNAR1",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "IFNAR1",
+      "name": "IFNAR1",
+      "keywords": "membrane-protein IFNAR1"
+    },
+    {
+      "type": "bio-ifnar2",
+      "title": "IFNAR2",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "IFNAR2",
+      "name": "IFNAR2",
+      "keywords": "membrane-protein IFNAR2"
+    },
+    {
+      "type": "bio-ifngr1",
+      "title": "IFNGR1",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "IFNGR1",
+      "name": "IFNGR1",
+      "keywords": "membrane-protein IFNGR1"
+    },
+    {
+      "type": "bio-ifngr2",
+      "title": "IFNGR2",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "IFNGR2",
+      "name": "IFNGR2",
+      "keywords": "membrane-protein IFNGR2"
+    },
+    {
+      "type": "bio-tnfrsf1a",
+      "title": "TNFRSF1A",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "TNFRSF1A",
+      "name": "TNFRSF1A",
+      "keywords": "membrane-protein TNFRSF1A"
+    },
+    {
+      "type": "bio-tnfrsf1b",
+      "title": "TNFRSF1B",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "TNFRSF1B",
+      "name": "TNFRSF1B",
+      "keywords": "membrane-protein TNFRSF1B"
+    },
+    {
+      "type": "bio-tgfbr1",
+      "title": "TGFBR1",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "TGFBR1",
+      "name": "TGFBR1",
+      "keywords": "membrane-protein TGFBR1"
+    },
+    {
+      "type": "bio-tgfbr2",
+      "title": "TGFBR2",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "TGFBR2",
+      "name": "TGFBR2",
+      "keywords": "membrane-protein TGFBR2"
+    },
+    {
+      "type": "bio-csf1r",
+      "title": "CSF1R",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CSF1R",
+      "name": "CSF1R",
+      "keywords": "membrane-protein CSF1R"
+    },
+    {
+      "type": "bio-csf2ra",
+      "title": "CSF2RA",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CSF2RA",
+      "name": "CSF2RA",
+      "keywords": "membrane-protein CSF2RA"
+    },
+    {
+      "type": "bio-csf2rb",
+      "title": "CSF2RB",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CSF2RB",
+      "name": "CSF2RB",
+      "keywords": "membrane-protein CSF2RB"
+    },
+    {
+      "type": "bio-csf3r",
+      "title": "CSF3R",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CSF3R",
+      "name": "CSF3R",
+      "keywords": "membrane-protein CSF3R"
+    },
+    {
+      "type": "bio-ccr1",
+      "title": "CCR1",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CCR1",
+      "name": "CCR1",
+      "keywords": "chemokine-receptor CCR1"
+    },
+    {
+      "type": "bio-ccr2",
+      "title": "CCR2",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CCR2",
+      "name": "CCR2",
+      "keywords": "chemokine-receptor CCR2"
+    },
+    {
+      "type": "bio-ccr3",
+      "title": "CCR3",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CCR3",
+      "name": "CCR3",
+      "keywords": "chemokine-receptor CCR3"
+    },
+    {
+      "type": "bio-ccr4",
+      "title": "CCR4",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CCR4",
+      "name": "CCR4",
+      "keywords": "chemokine-receptor CCR4"
+    },
+    {
+      "type": "bio-ccr5",
+      "title": "CCR5",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CCR5",
+      "name": "CCR5",
+      "keywords": "chemokine-receptor CCR5"
+    },
+    {
+      "type": "bio-ccr6",
+      "title": "CCR6",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CCR6",
+      "name": "CCR6",
+      "keywords": "chemokine-receptor CCR6"
+    },
+    {
+      "type": "bio-ccr7",
+      "title": "CCR7",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CCR7",
+      "name": "CCR7",
+      "keywords": "chemokine-receptor CCR7"
+    },
+    {
+      "type": "bio-ccr8",
+      "title": "CCR8",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CCR8",
+      "name": "CCR8",
+      "keywords": "chemokine-receptor CCR8"
+    },
+    {
+      "type": "bio-ccr9",
+      "title": "CCR9",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CCR9",
+      "name": "CCR9",
+      "keywords": "chemokine-receptor CCR9"
+    },
+    {
+      "type": "bio-ccr10",
+      "title": "CCR10",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CCR10",
+      "name": "CCR10",
+      "keywords": "chemokine-receptor CCR10"
+    },
+    {
+      "type": "bio-cxcr1",
+      "title": "CXCR1",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CXCR1",
+      "name": "CXCR1",
+      "keywords": "chemokine-receptor CXCR1"
+    },
+    {
+      "type": "bio-cxcr2",
+      "title": "CXCR2",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CXCR2",
+      "name": "CXCR2",
+      "keywords": "chemokine-receptor CXCR2"
+    },
+    {
+      "type": "bio-cxcr3",
+      "title": "CXCR3",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CXCR3",
+      "name": "CXCR3",
+      "keywords": "chemokine-receptor CXCR3"
+    },
+    {
+      "type": "bio-cxcr4",
+      "title": "CXCR4",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CXCR4",
+      "name": "CXCR4",
+      "keywords": "chemokine-receptor CXCR4"
+    },
+    {
+      "type": "bio-cxcr5",
+      "title": "CXCR5",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CXCR5",
+      "name": "CXCR5",
+      "keywords": "chemokine-receptor CXCR5"
+    },
+    {
+      "type": "bio-cxcr6",
+      "title": "CXCR6",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CXCR6",
+      "name": "CXCR6",
+      "keywords": "chemokine-receptor CXCR6"
+    },
+    {
+      "type": "bio-cx3cr1",
+      "title": "CX3CR1",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "CX3CR1",
+      "name": "CX3CR1",
+      "keywords": "chemokine-receptor CX3CR1"
+    },
+    {
+      "type": "bio-xcr1",
+      "title": "XCR1",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "XCR1",
+      "name": "XCR1",
+      "keywords": "chemokine-receptor XCR1"
+    },
+    {
+      "type": "bio-tlr2",
+      "title": "TLR2",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "TLR2",
+      "name": "TLR2",
+      "keywords": "membrane-protein TLR2"
+    },
+    {
+      "type": "bio-tlr3",
+      "title": "TLR3",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "TLR3",
+      "name": "TLR3",
+      "keywords": "membrane-protein TLR3"
+    },
+    {
+      "type": "bio-tlr4",
+      "title": "TLR4",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "TLR4",
+      "name": "TLR4",
+      "keywords": "membrane-protein TLR4"
+    },
+    {
+      "type": "bio-tlr7",
+      "title": "TLR7",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "TLR7",
+      "name": "TLR7",
+      "keywords": "membrane-protein TLR7"
+    },
+    {
+      "type": "bio-tlr8",
+      "title": "TLR8",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "TLR8",
+      "name": "TLR8",
+      "keywords": "membrane-protein TLR8"
+    },
+    {
+      "type": "bio-tlr9",
+      "title": "TLR9",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "TLR9",
+      "name": "TLR9",
+      "keywords": "membrane-protein TLR9"
+    },
+    {
+      "type": "bio-antibody",
+      "title": "Antibody",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "Antibody",
+      "name": "Antibody",
+      "keywords": "antibody Antibody antibodies immunoglobulin IgG"
+    },
+    {
+      "type": "bio-cytokine",
+      "title": "Cytokine",
+      "category": "Cytokines and growth factors",
+      "role": "entity",
+      "label": "Cytokine",
+      "name": "Cytokine",
+      "keywords": "cytokine Cytokine"
+    },
+    {
+      "type": "bio-chemokine",
+      "title": "Chemokine",
+      "category": "Chemokines",
+      "role": "entity",
+      "label": "Chemokine",
+      "name": "Chemokine",
+      "keywords": "chemokine Chemokine"
+    },
+    {
+      "type": "bio-membrane-protein",
+      "title": "Membrane protein",
+      "category": "Membrane molecules",
+      "role": "entity",
+      "label": "Membrane protein",
+      "name": "Membrane protein",
+      "keywords": "membrane-protein Membrane protein"
     }
   ]
 }

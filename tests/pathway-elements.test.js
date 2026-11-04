@@ -19,9 +19,12 @@ Object.assign(globalThis, {
   DOMParser: dom.window.DOMParser,
   XMLSerializer: dom.window.XMLSerializer,
 });
-test("all 35 original symbols have valid editable vector geometry and portable semantic metadata", () => {
-  assert.equal(pathwayCatalog.length, 35);
-  assert.equal(new Set(pathwayCatalog.map((d) => d.type)).size, 35);
+test("all original and biological symbols have editable geometry and portable metadata", () => {
+  assert.ok(pathwayCatalog.length > 250);
+  assert.equal(
+    new Set(pathwayCatalog.map((d) => d.type)).size,
+    pathwayCatalog.length,
+  );
   for (const d of pathwayCatalog) {
     const m = newPathwayMetadata(d.type),
       svg = pathwaySVG(m),

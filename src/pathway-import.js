@@ -4,6 +4,10 @@ import {
   importedPathwayLabel,
 } from "./pathway-elements.js";
 import { commonsId } from "./pathway-search.js";
+import {
+  biologicalFigureFor,
+  biologicalArtwork,
+} from "./biological-figures.js";
 export const MAX_PATHWAY_ITEMS = 4000;
 const E = (s) =>
   String(s ?? "").replace(
@@ -40,8 +44,18 @@ function source(row, elementId) {
   };
 }
 function node(type, label, rect, row, key, options = {}) {
-  const w = Math.max(10, finite(rect.w)),
-    h = Math.max(10, finite(rect.h));
+  const figure = options.members?.length
+    ? null
+    : biologicalFigureFor(label, type);
+  if (figure) type = `bio-${figure.id}`;
+  const w = Math.max(
+      figure?.family === "cell" ? 76 : figure ? 38 : 10,
+      finite(rect.w),
+    ),
+    h = Math.max(
+      figure?.family === "cell" ? 76 : figure ? 30 : 10,
+      finite(rect.h),
+    );
   const item = makePathwayItem(type, `pathway-${++serial}`, {
     label: txt(label),
     source: source(row, key),
@@ -52,8 +66,8 @@ function node(type, label, rect, row, key, options = {}) {
     item.name =
       type === "compartment" ? "Group" : type === "complex" ? "Complex" : type;
   Object.assign(item, {
-    x: finite(rect.x),
-    y: finite(rect.y),
+    x: finite(rect.x) + (finite(rect.w) - w) / 2,
+    y: finite(rect.y) + (finite(rect.h) - h) / 2,
     w,
     h,
     pathwayLabelLayout: {
@@ -73,18 +87,31 @@ function node(type, label, rect, row, key, options = {}) {
         : type === "complex"
           ? "#d8e8f3"
           : "#edf5fb");
-  const shape = annotation
-    ? ""
-    : ["metabolite", "drug", "ion"].includes(type) || options.ellipse
-      ? `<ellipse cx="${w / 2}" cy="${h / 2}" rx="${w / 2 - 1}" ry="${h / 2 - 1}" fill="${fill}" stroke="#426884"/>`
-      : `<rect x="1" y="1" width="${w - 2}" height="${h - 2}" rx="${c ? 10 : 4}" fill="${fill}" fill-opacity="${c ? 0.35 : 1}" stroke="#426884" ${c ? 'stroke-dasharray="5 3"' : ""}/>`;
+  const shape = figure
+    ? `<svg width="${w}" height="${h * 0.8}" viewBox="0 0 240 112">${biologicalArtwork(figure)}</svg>`
+    : annotation
+      ? ""
+      : ["metabolite", "drug", "ion"].includes(type) || options.ellipse
+        ? `<ellipse cx="${w / 2}" cy="${h / 2}" rx="${w / 2 - 1}" ry="${h / 2 - 1}" fill="${fill}" stroke="#426884"/>`
+        : `<rect x="1" y="1" width="${w - 2}" height="${h - 2}" rx="${c ? 10 : 4}" fill="${fill}" fill-opacity="${c ? 0.35 : 1}" stroke="#426884" ${c ? 'stroke-dasharray="5 3"' : ""}/>`;
   item.svg = svg(
     item,
     shape +
       (options.hideLabel
         ? ""
-        : importedPathwayLabel(item.pathway, item.pathwayLabelLayout)),
+        : figure
+          ? `<g transform="translate(0 ${h * 0.78})">${importedPathwayLabel(item.pathway, { w, h: h * 0.22, fontSize: Math.min(12, h * 0.19) })}</g>`
+          : importedPathwayLabel(item.pathway, item.pathwayLabelLayout)),
   );
+  if (figure) {
+    item.pathwayLabelLayout = {
+      w,
+      h: h * 0.22,
+      fontSize: Math.min(12, h * 0.19),
+      offsetY: h * 0.78,
+    };
+    item.pathwayIllustration = { id: figure.id, family: figure.family };
+  }
   return item;
 }
 function svg(item, content) {
