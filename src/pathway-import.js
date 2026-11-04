@@ -2,12 +2,21 @@ import {
   makePathwayItem,
   pathwayTypeFor,
   importedPathwayLabel,
+  pathwayLabelLines,
 } from "./pathway-elements.js";
 import { commonsId } from "./pathway-search.js";
 import {
   biologicalFigureFor,
   biologicalArtwork,
+  biologicalOutlines,
 } from "./biological-figures.js";
+import {
+  layoutPathway,
+  makeConnection,
+  markerFor,
+  syncPathwayConnections,
+  remapPathwayLinks,
+} from "./pathway-layout.js";
 export const MAX_PATHWAY_ITEMS = 4000;
 const E = (s) =>
   String(s ?? "").replace(
@@ -44,16 +53,49 @@ function source(row, elementId) {
   };
 }
 function node(type, label, rect, row, key, options = {}) {
+  label = txt(label);
   const figure = options.members?.length
     ? null
     : biologicalFigureFor(label, type);
   if (figure) type = `bio-${figure.id}`;
+  const labelWidth = Math.min(
+    220,
+    Math.max(70, String(label || "").length * 7.4 + 20),
+  );
   const w = Math.max(
-      figure?.family === "cell" ? 76 : figure ? 38 : 10,
+      options.hideLabel
+        ? 10
+        : figure?.family === "cell"
+          ? Math.max(128, labelWidth)
+          : figure
+            ? Math.max(88, Math.min(136, labelWidth))
+            : type === "compartment"
+              ? 10
+              : labelWidth,
       finite(rect.w),
     ),
     h = Math.max(
-      figure?.family === "cell" ? 76 : figure ? 30 : 10,
+      options.hideLabel
+        ? 10
+        : figure?.family === "cell"
+          ? 138
+          : figure
+            ? 94
+            : type === "compartment"
+              ? 10
+              : 44,
+      type === "compartment" || options.hideLabel
+        ? 10
+        : (figure ? (figure.family === "cell" ? 106 : 62) : 12) +
+            Math.max(
+              32,
+              pathwayLabelLines(
+                label,
+                Math.max(4, Math.floor((w - 8) / (14 * 0.55))),
+              ).length *
+                16.1 +
+                8,
+            ),
       finite(rect.h),
     );
   const item = makePathwayItem(type, `pathway-${++serial}`, {
@@ -70,10 +112,16 @@ function node(type, label, rect, row, key, options = {}) {
     y: finite(rect.y) + (finite(rect.h) - h) / 2,
     w,
     h,
+    pathwaySourceBounds: {
+      x: finite(rect.x),
+      y: finite(rect.y),
+      w: finite(rect.w),
+      h: finite(rect.h),
+    },
     pathwayLabelLayout: {
       w,
       h,
-      fontSize: Math.min(12, h * 0.55),
+      fontSize: 14,
       top: item.pathway.role === "compartment",
     },
   });
@@ -87,8 +135,39 @@ function node(type, label, rect, row, key, options = {}) {
         : type === "complex"
           ? "#d8e8f3"
           : "#edf5fb");
+  const labelHeight = figure
+    ? Math.max(
+        32,
+        pathwayLabelLines(label, Math.max(4, Math.floor((w - 8) / (14 * 0.55))))
+          .length *
+          16.1 +
+          8,
+      )
+    : 0;
+  const artHeight = h - labelHeight;
+  let artViewBox =
+    figure?.family === "cell"
+      ? figure.asset
+        ? [50, 0, 140, 112]
+        : [0, 0, 240, 112]
+      : [45, 0, 150, 112];
+  if (figure) {
+    const outline = biologicalOutlines(figure).flat(),
+      pad =
+        figure.family.includes("receptor") ||
+        figure.family === "membrane-protein"
+          ? 12
+          : 4;
+    if (outline.length) {
+      const xs = outline.map((p) => p[0]),
+        ys = outline.map((p) => p[1]),
+        x = Math.min(...xs) - pad,
+        y = Math.min(...ys) - pad;
+      artViewBox = [x, y, Math.max(...xs) - x + pad, Math.max(...ys) - y + pad];
+    }
+  }
   const shape = figure
-    ? `<svg width="${w}" height="${h * 0.8}" viewBox="0 0 240 112">${biologicalArtwork(figure)}</svg>`
+    ? `<svg x="${(w - Math.min(w, artHeight * 1.25)) / 2}" width="${Math.min(w, artHeight * 1.25)}" height="${artHeight}" viewBox="${artViewBox.join(" ")}">${biologicalArtwork(figure)}</svg>`
     : annotation
       ? ""
       : ["metabolite", "drug", "ion"].includes(type) || options.ellipse
@@ -100,17 +179,47 @@ function node(type, label, rect, row, key, options = {}) {
       (options.hideLabel
         ? ""
         : figure
-          ? `<g transform="translate(0 ${h * 0.78})">${importedPathwayLabel(item.pathway, { w, h: h * 0.22, fontSize: Math.min(12, h * 0.19) })}</g>`
+          ? `<g transform="translate(0 ${artHeight})">${importedPathwayLabel(item.pathway, { w, h: labelHeight, fontSize: 14 })}</g>`
           : importedPathwayLabel(item.pathway, item.pathwayLabelLayout)),
   );
   if (figure) {
     item.pathwayLabelLayout = {
       w,
-      h: h * 0.22,
-      fontSize: Math.min(12, h * 0.19),
-      offsetY: h * 0.78,
+      h: labelHeight,
+      fontSize: 14,
+      offsetY: artHeight,
     };
     item.pathwayIllustration = { id: figure.id, family: figure.family };
+    const aw = Math.min(w, artHeight * 1.25) * 0.86;
+    item.pathwayGeometry = {
+      shape: figure.family === "cell" ? "ellipse" : "rect",
+      x: (w - aw) / 2 / w,
+      y: 0,
+      w: aw / w,
+      h: (artHeight / h) * 0.96,
+    };
+    const outerWidth = Math.min(w, artHeight * 1.25),
+      vb = artViewBox,
+      s = Math.min(outerWidth / vb[2], artHeight / vb[3]),
+      ox = (w - outerWidth) / 2 + (outerWidth - vb[2] * s) / 2,
+      oy = (artHeight - vb[3] * s) / 2;
+    item.pathwayGeometry.outlines = biologicalOutlines(figure).map((path) =>
+      path.map((p) => [
+        (ox + (p[0] - vb[0]) * s) / w,
+        (oy + (p[1] - vb[1]) * s) / h,
+      ]),
+    );
+    const points = item.pathwayGeometry.outlines.flat();
+    if (points.length) {
+      const xs = points.map((p) => p[0]),
+        ys = points.map((p) => p[1]);
+      Object.assign(item.pathwayGeometry, {
+        x: Math.min(...xs),
+        y: Math.min(...ys),
+        w: Math.max(...xs) - Math.min(...xs),
+        h: Math.max(...ys) - Math.min(...ys),
+      });
+    }
   }
   return item;
 }
@@ -186,12 +295,17 @@ function finish(items, row, layout, warnings = []) {
     throw Error("Dit pathway bevat geen importeerbare elementen.");
   if (items.length > MAX_PATHWAY_ITEMS)
     throw Error("Dit pathway is te groot. Kies een specifieker deelpathway.");
+  resolveConnectionReferences(items);
+  layoutPathway(items);
+  for (const item of items) item.pathwayLayoutVersion = 1;
+  syncPathwayConnections(items);
   const minX = Math.min(...items.map((i) => i.x)),
     minY = Math.min(...items.map((i) => i.y));
   for (const item of items) {
     item.x += 50 - minX;
     item.y += 80 - minY;
   }
+  remapPathwayLinks(items, new Map(), 50 - minX, 80 - minY);
   const width = Math.max(600, ...items.map((i) => i.x + i.w + 50)),
     height = Math.max(400, ...items.map((i) => i.y + i.h + 50));
   // Preserve source scale until the sheet's validated size limit is reached.
@@ -202,14 +316,72 @@ function finish(items, row, layout, warnings = []) {
     item.w *= scale;
     item.h *= scale;
   }
+  if (scale !== 1)
+    for (const i of items)
+      for (const l of i.pathwayConnection?.links || [])
+        for (const k of ["a", "b"]) {
+          l[k].x *= scale;
+          l[k].y *= scale;
+        }
+  syncPathwayConnections(items);
   return {
     items,
     width: Math.ceil(width * scale),
     height: Math.ceil(height * scale),
     source: { ...row },
-    layout,
+    layout: layout === "source" ? "readable-source" : layout,
     warnings,
   };
+}
+function resolveConnectionReferences(items) {
+  const known = new Set(items.map((i) => i.id));
+  const refs = new Map(
+    items
+      .filter((i) => i.pathway?.role !== "edge")
+      .map((i) => [i.pathwayGraphId || i.pathway?.source.elementId, i.id]),
+  );
+  const nodes = items.filter(
+    (i) => i.pathway?.role !== "edge" && !i.pathwayConnection,
+  );
+  const nearest = (p) =>
+    nodes
+      .map((n) => {
+        const b = n.pathwaySourceBounds || n,
+          dx = Math.max(b.x - p.x, 0, p.x - b.x - b.w),
+          dy = Math.max(b.y - p.y, 0, p.y - b.y - b.h);
+        return {
+          n,
+          d: Math.hypot(dx, dy),
+          c: Math.hypot(p.x - b.x - b.w / 2, p.y - b.y - b.h / 2),
+        };
+      })
+      .filter((o) => o.d < 20)
+      .sort((a, b) => a.d - b.d || a.c - b.c)[0]?.n.id || null;
+  for (const i of items)
+    if (i.pathwayConnectionRefs) {
+      for (const l of i.pathwayConnection.links) {
+        l.from = known.has(l.from) ? l.from : refs.get(l.from) || nearest(l.a);
+        l.to = known.has(l.to) ? l.to : refs.get(l.to) || nearest(l.b);
+      }
+      delete i.pathwayConnectionRefs;
+    }
+  for (const group of items.filter(
+    (i) => i.pathway?.role === "compartment" && !i.pathwayMemberIds,
+  )) {
+    const b = group.pathwaySourceBounds || group;
+    group.pathwayMemberIds = nodes
+      .filter((n) => n !== group && n.pathway?.role !== "compartment")
+      .filter((n) => {
+        const r = n.pathwaySourceBounds || n;
+        return (
+          r.x + r.w / 2 > b.x &&
+          r.x + r.w / 2 < b.x + b.w &&
+          r.y + r.h / 2 > b.y &&
+          r.y + r.h / 2 < b.y + b.h
+        );
+      })
+      .map((n) => n.id);
+  }
 }
 export function importReactomeDiagram(data, row) {
   if (!Array.isArray(data.nodes) || !Array.isArray(data.edges))
@@ -228,6 +400,17 @@ export function importReactomeDiagram(data, row) {
       node("compartment", n.displayName, rect(n), row, n.reactomeId || n.id),
     );
   const nodes = data.nodes || [];
+  const reactomeNodes = new Map();
+  for (const n of nodes) {
+    const item = node(
+      pathwayTypeFor("Reactome", n.renderableClass),
+      n.displayName,
+      rect(n),
+      row,
+      n.reactomeId || n.id,
+    );
+    reactomeNodes.set(String(n.id), item);
+  }
   for (const e of [...data.edges, ...(data.links || [])]) {
     const connectors = nodes.flatMap((n) =>
       (n.connectors || []).filter((c) => c.edgeId === e.id),
@@ -255,35 +438,114 @@ export function importReactomeDiagram(data, row) {
       "",
       shapePoints,
     );
-    const paths = segments
-      .map(
-        (s) =>
-          `<path d="M ${finite(s.from.x)} ${finite(s.from.y)} L ${finite(s.to.x)} ${finite(s.to.y)}"/>`,
-      )
-      .join("");
-    item.svg = svg(
-      item,
-      `<g transform="translate(${-item.x} ${-item.y})" fill="none" stroke="#426884" stroke-width="1.5">${paths}${shapes.map(sourceShape).join("")}</g>`,
+    const p = e.position ||
+      e.reactionShape?.centre || {
+        x: (points[0].x + points.at(-1).x) / 2,
+        y: (points[0].y + points.at(-1).y) / 2,
+      };
+    const hub = makePathwayItem("reaction", `pathway-${++serial}`, {
+      label: txt(e.displayName || "Reaction"),
+      source: source(row, e.reactomeId || e.id),
+    });
+    Object.assign(hub, {
+      x: finite(p.x) - 8,
+      y: finite(p.y) - 8,
+      w: 16,
+      h: 16,
+      name: `Reaction: ${e.displayName || "Reaction"}`,
+      pathwayReaction: true,
+    });
+    hub.pathwaySourceBounds = { x: hub.x, y: hub.y, w: 16, h: 16 };
+    hub.svg = svg(
+      hub,
+      `<${e.reactionType === "binding" ? 'circle cx="8" cy="8" r="5"' : 'rect x="3" y="3" width="10" height="10"'} fill="white" stroke="#426884" stroke-width="1.8"/>`,
     );
-    items.push(item);
+    const participants = new Map();
+    for (const [key, kind] of [
+      ["inputs", "INPUT"],
+      ["outputs", "OUTPUT"],
+      ["catalysts", "CATALYST"],
+      ["inhibitors", "INHIBITOR"],
+      ["activators", "ACTIVATOR"],
+    ])
+      for (const n of e[key] || []) participants.set(String(n.id), kind);
+    for (const n of nodes)
+      for (const c of n.connectors || [])
+        if (c.edgeId === e.id) participants.set(String(n.id), c.type);
+    // Some source diagrams omit explicit participant lists; geometrically
+    // touching source segments still provide a declared visual connection.
+    if (!e.inputs && !e.outputs)
+      for (const n of nodes) {
+        if (participants.has(String(n.id))) continue;
+        const b = rect(n);
+        if (
+          points.some(
+            (q) =>
+              Math.hypot(
+                Math.max(b.x - q.x, 0, q.x - b.x - b.w),
+                Math.max(b.y - q.y, 0, q.y - b.y - b.h),
+              ) < 3,
+          )
+        )
+          participants.set(String(n.id), "OUTPUT");
+      }
+    const links = [];
+    for (const [id, kind] of participants) {
+      const target = reactomeNodes.get(id);
+      if (!target) continue;
+      const a = { x: target.x + target.w / 2, y: target.y + target.h / 2 };
+      links.push(
+        kind === "OUTPUT"
+          ? {
+              from: hub.id,
+              to: target.id,
+              a: { ...p },
+              b: a,
+              start: "none",
+              end: "arrow",
+            }
+          : {
+              from: target.id,
+              to: hub.id,
+              a,
+              b: { ...p },
+              start: "none",
+              end:
+                kind === "CATALYST"
+                  ? "catalysis"
+                  : kind === "INHIBITOR"
+                    ? "inhibition"
+                    : kind === "ACTIVATOR"
+                      ? "activation"
+                      : "none",
+            },
+      );
+    }
+    if (links.length) {
+      item.pathwayConnection = { version: 1, links };
+      items.push(item, hub);
+    } else {
+      makeConnection(
+        item,
+        null,
+        null,
+        points[0],
+        points.at(-1),
+        "none",
+        e.endShape ? "arrow" : "none",
+      );
+      item.pathwayConnectionRefs = true;
+      items.push(item);
+    }
   }
-  for (const n of nodes)
-    items.push(
-      node(
-        pathwayTypeFor("Reactome", n.renderableClass),
-        n.displayName,
-        rect(n),
-        row,
-        n.reactomeId || n.id,
-      ),
-    );
+  items.push(...reactomeNodes.values());
   for (const n of data.notes || [])
     if (n.prop)
       items.push(
         node("annotation", n.text || n.displayName || "", rect(n), row, n.id),
       );
   return finish(items, row, "source", [
-    "De bronindeling is behouden; verbindingen zijn afzonderlijk bewerkbaar.",
+    "Bronindeling als uitgangspunt; leesbare figuren en labels met gekoppelde reactiepijlen.",
   ]);
 }
 function arrow(points, kind) {
@@ -385,7 +647,19 @@ export function importGPML(text, row, Parser = globalThis.DOMParser) {
       arrow(points, attr(ps.at(-1), "ArrowHead")) +
         arrow([...points].reverse(), attr(ps[0], "ArrowHead")),
     );
-    if (item) edges.push(item);
+    if (item) {
+      makeConnection(
+        item,
+        attr(ps[0], "GraphRef"),
+        attr(ps.at(-1), "GraphRef"),
+        points[0],
+        points.at(-1),
+        markerFor(attr(ps[0], "ArrowHead")),
+        markerFor(attr(ps.at(-1), "ArrowHead")),
+      );
+      item.pathwayConnectionRefs = true;
+      edges.push(item);
+    }
   }
   const compartments = items.filter((i) => i.pathway.role === "compartment"),
     others = items.filter((i) => i.pathway.role !== "compartment");
@@ -395,24 +669,51 @@ export function importGPML(text, row, Parser = globalThis.DOMParser) {
     if (!members.length) continue;
     const x = Math.min(...members.map((i) => i.x)) - 8,
       y = Math.min(...members.map((i) => i.y)) - 8;
-    compartments.push(
-      node(
-        /complex/i.test(attr(group, "Style")) ? "complex" : "compartment",
-        attr(group, "TextLabel"),
-        {
-          x,
-          y,
-          w: Math.max(...members.map((i) => i.x + i.w)) - x + 8,
-          h: Math.max(...members.map((i) => i.y + i.h)) - y + 8,
-        },
-        row,
-        attr(group, "GraphId", key),
-        { members: members.map((i) => i.name).filter(Boolean) },
-      ),
+    const container = node(
+      /complex/i.test(attr(group, "Style")) ? "complex" : "compartment",
+      attr(group, "TextLabel"),
+      {
+        x,
+        y,
+        w: Math.max(...members.map((i) => i.x + i.w)) - x + 8,
+        h: Math.max(...members.map((i) => i.y + i.h)) - y + 8,
+      },
+      row,
+      attr(group, "GraphId", key),
+      { members: members.map((i) => i.name).filter(Boolean) },
     );
+    container.pathwayMemberIds = members.map((i) => i.id);
+    compartments.push(container);
   }
+  const anchorRefs = new Map();
+  for (const el of [
+    ...xmlChildren(root, "Interaction"),
+    ...xmlChildren(root, "GraphicalLine"),
+  ]) {
+    const parent = edges.find(
+      (e) => e.pathway.source.elementId === attr(el, "GraphId"),
+    );
+    if (parent)
+      for (const anchor of xmlChildren(child(el, "Graphics") || el, "Anchor"))
+        anchorRefs.set(attr(anchor, "GraphId"), {
+          id: parent.id,
+          u: Math.max(
+            0,
+            Math.min(1, Number(attr(anchor, "Position", ".5")) || 0),
+          ),
+        });
+  }
+  for (const edge of edges)
+    for (const link of edge.pathwayConnection.links)
+      for (const key of ["from", "to"]) {
+        const ref = anchorRefs.get(link[key]);
+        if (ref) {
+          link[key] = ref.id;
+          link[`${key}Anchor`] = ref.u;
+        }
+      }
   return finish([...compartments, ...edges, ...others], row, "source", [
-    "GPML-indeling behouden; gegroepeerde elementen en verbindingen zijn los bewerkbaar.",
+    "GPML-indeling als uitgangspunt; labels en figuren gescheiden en pijlen gekoppeld.",
   ]);
 }
 export function importKGML(text, Parser = globalThis.DOMParser) {
@@ -478,16 +779,25 @@ export function importKGML(text, Parser = globalThis.DOMParser) {
   const link = (a, b, type, key) => {
     if (positions.has(a) && positions.has(b)) {
       const points = clippedConnection(positions.get(a), positions.get(b));
-      relations.push(
-        edge(
-          points,
-          row,
-          key,
-          "",
-          type,
-          arrow(points, type === "inhibition" ? "TBar" : "Arrow"),
-        ),
+      const connection = edge(
+        points,
+        row,
+        key,
+        "",
+        type,
+        arrow(points, type === "inhibition" ? "TBar" : "Arrow"),
       );
+      makeConnection(
+        connection,
+        a,
+        b,
+        points[0],
+        points.at(-1),
+        "none",
+        type === "inhibition" ? "inhibition" : "arrow",
+      );
+      connection.pathwayConnectionRefs = true;
+      relations.push(connection);
     }
   };
   for (const el of xmlChildren(root, "relation")) {
@@ -626,25 +936,38 @@ export function importBioPAX(data, row) {
   const connect = (a, b, kind, key) => {
     if (positions.has(a) && positions.has(b)) {
       const ps = clippedConnection(positions.get(a), positions.get(b));
-      edges.push(
-        edge(
+      const connection = edge(
+        ps,
+        row,
+        key,
+        "",
+        kind,
+        arrow(
           ps,
-          row,
-          key,
-          "",
-          kind,
-          arrow(
-            ps,
-            kind === "inhibition"
-              ? "TBar"
-              : kind === "interaction"
-                ? "Line"
-                : kind === "catalysis"
-                  ? "mim-catalysis"
-                  : "Arrow",
-          ),
+          kind === "inhibition"
+            ? "TBar"
+            : kind === "interaction"
+              ? "Line"
+              : kind === "catalysis"
+                ? "mim-catalysis"
+                : "Arrow",
         ),
       );
+      makeConnection(
+        connection,
+        a,
+        b,
+        ps[0],
+        ps.at(-1),
+        "none",
+        kind === "interaction"
+          ? "none"
+          : kind === "conversion"
+            ? "arrow"
+            : markerFor(kind),
+      );
+      connection.pathwayConnectionRefs = true;
+      edges.push(connection);
     }
   };
   for (const e of processes) {
@@ -676,6 +999,167 @@ export function importBioPAX(data, row) {
   return finish([...edges, ...items], row, "automatic", [
     "Automatische indeling uit BioPAX; dit is geen oorspronkelijke bronfiguur.",
   ]);
+}
+export function improvePathwayDrawing(
+  originals,
+  Parser = globalThis.DOMParser,
+) {
+  const items = structuredClone(originals),
+    alreadyReadable = items.every((i) => i.pathwayLayoutVersion === 1);
+  for (const item of items)
+    item.pathwaySourceBounds = { x: item.x, y: item.y, w: item.w, h: item.h };
+  for (const item of items) {
+    // Old imported arrows have no endpoint IDs. Recover only the connections
+    // visible in their original vector geometry, before changing any sizes.
+    if (
+      !item.pathwayConnection &&
+      !item.pathwayReaction &&
+      (item.pathway.role === "edge" || item.pathway.type === "reaction") &&
+      Parser
+    ) {
+      const root = new Parser().parseFromString(
+        item.svg,
+        "image/svg+xml",
+      ).documentElement;
+      const vb = (root.getAttribute("viewBox") || `0 0 ${item.w} ${item.h}`)
+          .split(/[ ,]+/)
+          .map(Number),
+        paths = [...root.querySelectorAll("path")].filter(
+          (p) =>
+            !/[zZCQcq]/.test(p.getAttribute("d") || "") &&
+            (!p.getAttribute("fill") || p.getAttribute("fill") === "none"),
+        );
+      const point = (p, element) => {
+        for (
+          let el = element.parentElement;
+          el && el !== root;
+          el = el.parentElement
+        ) {
+          const t = el
+            .getAttribute("transform")
+            ?.match(/^translate\(\s*([\d.eE+-]+)[ ,]+([\d.eE+-]+)\s*\)$/);
+          if (t) {
+            p.x += Number(t[1]);
+            p.y += Number(t[2]);
+          }
+        }
+        const x = ((p.x - vb[0]) * item.w) / vb[2] - item.w / 2,
+          y = ((p.y - vb[1]) * item.h) / vb[3] - item.h / 2,
+          a = ((item.rotation || 0) * Math.PI) / 180;
+        return {
+          x: item.x + item.w / 2 + x * Math.cos(a) - y * Math.sin(a),
+          y: item.y + item.h / 2 + x * Math.sin(a) + y * Math.cos(a),
+        };
+      };
+      const links = [];
+      for (const path of paths) {
+        const nums = (
+          path
+            .getAttribute("d")
+            .match(/[-+]?(?:\d*\.\d+|\d+\.?\d*)(?:[eE][-+]?\d+)?/g) || []
+        ).map(Number);
+        if (nums.length < 4 || nums.length % 2) continue;
+        const first = point({ x: nums[0], y: nums[1] }, path),
+          last = point({ x: nums.at(-2), y: nums.at(-1) }, path);
+        if (Math.hypot(last.x - first.x, last.y - first.y) < 16) continue;
+        links.push({
+          from: null,
+          to: null,
+          a: first,
+          b: last,
+          start: "none",
+          end: markerFor(item.pathway.type),
+        });
+      }
+      if (links.length) {
+        item.pathwayConnection = { version: 1, links };
+        item.pathwayConnectionRefs = true;
+      }
+    }
+  }
+  resolveConnectionReferences(items);
+  for (const edge of items.filter((i) => i.pathwayConnection))
+    for (const link of edge.pathwayConnection.links)
+      for (const key of ["from", "to"]) {
+        if (link[key]) continue;
+        const p = link[key === "from" ? "a" : "b"],
+          candidates = [];
+        for (const other of items.filter(
+          (i) => i !== edge && i.pathwayConnection,
+        ))
+          for (const parent of other.pathwayConnection.links) {
+            const dx = parent.b.x - parent.a.x,
+              dy = parent.b.y - parent.a.y,
+              t =
+                ((p.x - parent.a.x) * dx + (p.y - parent.a.y) * dy) /
+                (dx * dx + dy * dy || 1),
+              distance = Math.hypot(
+                p.x - parent.a.x - t * dx,
+                p.y - parent.a.y - t * dy,
+              );
+            if (t > 0 && t < 1 && distance < 4)
+              candidates.push({ id: other.id, t, distance });
+          }
+        const best = candidates.sort((a, b) => a.distance - b.distance)[0];
+        if (best) {
+          link[key] = best.id;
+          link[`${key}Anchor`] = best.t;
+        }
+      }
+  for (const item of items) {
+    if (
+      item.pathwayConnection ||
+      item.pathwayReaction ||
+      item.pathway.role === "compartment" ||
+      item.pathwayMemberIds?.length ||
+      item.locked
+    )
+      continue;
+    const bounds = { x: item.x, y: item.y, w: item.w, h: item.h };
+    if (!alreadyReadable && !item.contourEdit && !item.contourOriginal) {
+      const m = item.pathway,
+        fresh = node(
+          m.type,
+          m.label,
+          bounds,
+          { source: m.source.database, id: m.source.pathwayId },
+          m.source.elementId,
+          { identifiers: m.identifiers, members: m.members },
+        );
+      fresh.svg = fresh.svg.replace(
+        /<metadata data-pathway-metadata="true">[\s\S]*?<\/metadata>/,
+        () =>
+          `<metadata data-pathway-metadata="true">${E(JSON.stringify(m))}</metadata>`,
+      );
+      Object.assign(item, {
+        x: fresh.x,
+        y: fresh.y,
+        w: fresh.w,
+        h: fresh.h,
+        svg: fresh.svg,
+        pathwayLabelLayout: fresh.pathwayLabelLayout,
+        pathwayGeometry: fresh.pathwayGeometry,
+      });
+    }
+    item.pathwaySourceBounds = bounds;
+  }
+  layoutPathway(items, { expand: !alreadyReadable });
+  const minX = Math.min(
+      ...items.filter((i) => !i.pathwayConnection).map((i) => i.x),
+    ),
+    minY = Math.min(
+      ...items.filter((i) => !i.pathwayConnection).map((i) => i.y),
+    );
+  const dx = Math.max(0, 40 - minX),
+    dy = Math.max(0, 40 - minY);
+  for (const item of items) {
+    item.x += dx;
+    item.y += dy;
+    item.pathwayLayoutVersion = 1;
+  }
+  remapPathwayLinks(items, new Map(), dx, dy);
+  syncPathwayConnections(items);
+  return items;
 }
 async function payload(url, { fetcher, signal, ...options }, format) {
   const response = await fetcher(url, { ...options, signal });

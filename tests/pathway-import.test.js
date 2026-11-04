@@ -66,10 +66,10 @@ const data = {
   ],
 };
 const gpml = `<Pathway xmlns="http://pathvisio.org/GPML/2013a" Name="IL5"><DataNode GraphId="a" TextLabel="AKT1" Type="Protein"><Graphics CenterX="100" CenterY="50" Width="80" Height="24"/><Xref Database="Entrez Gene" ID="207"/></DataNode><DataNode GraphId="b" TextLabel="STAT5" Type="Protein"><Graphics CenterX="250" CenterY="50" Width="80" Height="24"/></DataNode><Interaction GraphId="e"><Graphics><Point X="140" Y="50"/><Point X="210" Y="50" ArrowHead="TBar"/></Graphics></Interaction></Pathway>`;
-test("Reactome source layout imports separate nodes, compartments and all connector segments", () => {
+test("Reactome imports molecular nodes, compartments and live reaction branches", () => {
   const r = importReactomeDiagram(data, row);
-  assert.equal(r.items.length, 4);
-  assert.equal(r.layout, "source");
+  assert.equal(r.items.length, 5);
+  assert.equal(r.layout, "readable-source");
   assert.equal(r.items[0].pathway.type, "compartment");
   const a = r.items.find((i) => i.name === "HLA alpha"),
     b = r.items.find((i) => i.name === "HLA beta"),
@@ -77,8 +77,14 @@ test("Reactome source layout imports separate nodes, compartments and all connec
   assert.equal(b.x - a.x, 190);
   assert.equal(a.w, 100);
   assert.equal(a.pathway.source.elementId, "101");
-  assert.match(edge.svg, /M 200 72 L 240 72/);
-  assert.match(edge.svg, /M 240 72 L 290 72/);
+  assert.equal(edge.pathwayConnection.links.length, 2);
+  assert.ok(edge.pathwayConnection.links.some((l) => l.from === a.id));
+  assert.ok(
+    edge.pathwayConnection.links.some(
+      (l) => l.to === b.id && l.end === "arrow",
+    ),
+  );
+  assert.match(edge.svg, /data-pathway-connector/);
   for (const i of r.items) {
     assert.ok(sanitizedSVG(i.svg).includes("<svg"));
     assert.doesNotMatch(i.svg, /NaN|Infinity|<script|<image/);
@@ -196,13 +202,16 @@ test("pathway insertion is one undo step, keeps existing objects and survives a 
     notify: () => notifications++,
   };
   const count = Drawing2D.prototype.insertPathway.call(drawing, r);
-  assert.equal(count, 4);
+  assert.equal(count, r.items.length);
   assert.equal(checkpoints, 1);
   assert.equal(notifications, 1);
   assert.equal(doc.items[0].id, "old");
   assert.ok(doc.items[1].y >= 100);
   Drawing2D.prototype.insertPathway.call(drawing, r);
-  assert.equal(new Set(doc.items.map((i) => i.id)).size, 9);
+  assert.equal(
+    new Set(doc.items.map((i) => i.id)).size,
+    1 + r.items.length * 2,
+  );
   const project = newProject();
   project.sheet = {
     version: 1,
@@ -216,7 +225,7 @@ test("pathway insertion is one undo step, keeps existing objects and survives a 
       id: `copy-${n}`,
     });
   validateProject(JSON.parse(JSON.stringify(project)));
-  assert.equal(project.sheet.items.length, 319);
+  assert.equal(project.sheet.items.length, 311 + r.items.length * 2);
   const before = JSON.stringify(doc);
   assert.throws(
     () =>
@@ -253,7 +262,7 @@ test("live import requests select validated source routes and obey cancellation"
     },
     { fetcher },
   );
-  assert.equal(r.items.length, 4);
+  assert.equal(r.items.length, 5);
   assert.equal(r.source.source, "Reactome");
   assert.equal(
     seen[0],

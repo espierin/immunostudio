@@ -1,4 +1,5 @@
 import { validatePathwayMetadata } from "./pathway-elements.js";
+import { validatePathwayConnection } from "./pathway-layout.js";
 import { sourceStyles } from "./palettes.js";
 import { evaluateTimeline, framePlan } from "./animation.js";
 export const clone = (x) => structuredClone(x);
@@ -448,6 +449,45 @@ export function validateProject(p) {
       if (i.layerSide !== undefined && ![-1, 1].includes(i.layerSide))
         throw Error("Invalid 2D tissue side.");
       if (i.pathway) validatePathwayMetadata(i.pathway);
+      if (i.pathwayConnection) validatePathwayConnection(i.pathwayConnection);
+      if (i.pathwayGeometry) {
+        const g = i.pathwayGeometry;
+        if (
+          !["rect", "ellipse"].includes(g.shape) ||
+          ![g.x, g.y, g.w, g.h].every(
+            (v) => Number.isFinite(v) && v >= 0 && v <= 1,
+          ) ||
+          g.w === 0 ||
+          g.h === 0
+        )
+          throw Error("Invalid pathway artwork bounds.");
+        if (
+          g.outlines &&
+          (!Array.isArray(g.outlines) ||
+            g.outlines.length > 64 ||
+            g.outlines.some(
+              (path) =>
+                !Array.isArray(path) ||
+                path.length > 512 ||
+                path.some(
+                  (p) =>
+                    !Array.isArray(p) ||
+                    p.length !== 2 ||
+                    p.some((v) => !Number.isFinite(v) || v < 0 || v > 1),
+                ),
+            ))
+        )
+          throw Error("Invalid pathway outline.");
+      }
+      if (
+        i.pathwayMemberIds &&
+        (!Array.isArray(i.pathwayMemberIds) ||
+          i.pathwayMemberIds.length > 4000 ||
+          i.pathwayMemberIds.some(
+            (id) => typeof id !== "string" || id.length > 256,
+          ))
+      )
+        throw Error("Invalid pathway group members.");
       if (i.anchor2d) {
         const a = i.anchor2d;
         if (

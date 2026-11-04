@@ -53,6 +53,8 @@ import {
   moveCurveControl,
 } from "./curve-appearance2d.js";
 import { FloatingDrawingTools } from "./floating-drawing.js";
+import { syncPathwayConnections, remapPathwayLinks } from "./pathway-layout.js";
+import { improvePathwayDrawing } from "./pathway-import.js";
 const NS = "http://www.w3.org/2000/svg";
 const escape = (s) =>
   String(s ?? "").replace(
@@ -332,6 +334,14 @@ export class Drawing2D {
       id: uid(),
       y: item.y + offset,
     }));
+    const pathwayBatchId = uid();
+    for (const item of batch) item.pathwayBatchId = pathwayBatchId;
+    remapPathwayLinks(
+      batch,
+      new Map(result.items.map((item, n) => [item.id, batch[n].id])),
+      0,
+      offset,
+    );
     this.doc.items.push(...batch);
     (this.doc.pathwayImports ||= []).push({
       name: result.source.name,
@@ -384,6 +394,7 @@ export class Drawing2D {
   render() {
     const d = this.doc;
     if (!d) return;
+    syncPathwayConnections(d.items);
     this.svg.setAttribute(
       "viewBox",
       `${-d.panX} ${-d.panY} ${d.width / d.zoom} ${d.height / d.zoom}`,
@@ -646,6 +657,13 @@ export class Drawing2D {
         }
         const source = e.target.closest("[data-node-path]"),
           item = this.doc.items.find((i) => i.id === hit);
+        if (item?.pathwayConnection) {
+          this.select([item.id]);
+          this.onStatus(
+            "Maak de pathway-pijl eerst los om de punten handmatig te bewerken.",
+          );
+          return;
+        }
         if (source && item?.kind === "svg" && !item.locked) {
           const index = +source.dataset.nodePath,
             doc = new DOMParser().parseFromString(item.svg, "image/svg+xml");
@@ -1498,6 +1516,60 @@ export class Drawing2D {
     return true;
   }
   command(cmd) {
+    if (cmd === "pathway-layout") {
+      const selected = this.selectedItems().filter((i) => i.pathway);
+      const batches = new Set(
+        selected.map((i) => i.pathwayBatchId).filter(Boolean),
+      );
+      const keys = new Set(
+        selected.map(
+          (i) => `${i.pathway.source.database}:${i.pathway.source.pathwayId}`,
+        ),
+      );
+      const chosen = this.doc.items.filter(
+        (i) =>
+          i.pathway &&
+          (!selected.length ||
+            (batches.size
+              ? batches.has(i.pathwayBatchId)
+              : keys.has(
+                  `${i.pathway.source.database}:${i.pathway.source.pathwayId}`,
+                ))),
+      );
+      if (!chosen.length) return;
+      try {
+        const plans = improvePathwayDrawing(chosen);
+        const maxX = Math.max(...plans.map((i) => i.x + i.w)) + 50,
+          maxY = Math.max(...plans.map((i) => i.y + i.h)) + 50;
+        if (maxX > 10000 || maxY > 10000)
+          throw Error(
+            "Het pathway past niet op het tekenblad. Kies een kleiner deelpathway.",
+          );
+        this.beforeChange();
+        const map = new Map(plans.map((i) => [i.id, i]));
+        this.doc.items = this.doc.items.map((i) => map.get(i.id) || i);
+        this.doc.width = Math.max(this.doc.width, Math.ceil(maxX));
+        this.doc.height = Math.max(this.doc.height, Math.ceil(maxY));
+        this.nodeEdit = null;
+        this.notify();
+        this.onStatus(
+          "Pathway opnieuw ingedeeld; pijlen volgen hun gekoppelde elementen.",
+        );
+      } catch (error) {
+        this.onStatus(error.message);
+      }
+      return;
+    }
+    if (cmd === "pathway-detach") {
+      const edges = this.selectedItems().filter(
+        (i) => i.pathwayConnection && !i.locked,
+      );
+      if (!edges.length) return;
+      this.beforeChange();
+      for (const edge of edges) delete edge.pathwayConnection;
+      this.notify();
+      return;
+    }
     if (cmd === "pathway-reset") {
       const items = this.selectedItems().filter((i) => i.pathway && !i.locked);
       if (!items.length) return;
@@ -1670,11 +1742,31 @@ export class Drawing2D {
             (i.rotation =
               (i.rotation || 0) + (cmd === "rotate-left" ? -90 : 90)),
         );
-    else if (cmd === "delete")
+    else if (cmd === "delete") {
       this.doc.items = this.doc.items.filter(
         (i) => !this.selected.includes(i.id) || i.locked,
       );
-    else if (cmd === "duplicate" || cmd === "paste") {
+      for (;;) {
+        const retained = new Set(this.doc.items.map((i) => i.id)),
+          count = this.doc.items.length;
+        for (const i of this.doc.items) {
+          if (i.pathwayConnection)
+            i.pathwayConnection.links = i.pathwayConnection.links.filter(
+              (l) =>
+                (!l.from || retained.has(l.from)) &&
+                (!l.to || retained.has(l.to)),
+            );
+          if (i.pathwayMemberIds)
+            i.pathwayMemberIds = i.pathwayMemberIds.filter((id) =>
+              retained.has(id),
+            );
+        }
+        this.doc.items = this.doc.items.filter(
+          (i) => !i.pathwayConnection || i.pathwayConnection.links.length,
+        );
+        if (this.doc.items.length === count) break;
+      }
+    } else if (cmd === "duplicate" || cmd === "paste") {
       const originals = cmd === "paste" ? this.clipboard : items;
       const added = originals.map((i) => ({
         ...clone(i),
@@ -1684,6 +1776,19 @@ export class Drawing2D {
         groupId: null,
       }));
       const copies = new Map(originals.map((i, n) => [i.id, added[n].id]));
+      const batches = new Map();
+      for (const i of added)
+        if (i.pathwayBatchId) {
+          if (!batches.has(i.pathwayBatchId))
+            batches.set(i.pathwayBatchId, uid());
+          i.pathwayBatchId = batches.get(i.pathwayBatchId);
+        }
+      remapPathwayLinks(added, copies, 25, 25);
+      const known = new Set([...this.doc.items, ...added].map((i) => i.id));
+      for (const i of added)
+        for (const l of i.pathwayConnection?.links || [])
+          for (const k of ["from", "to"])
+            if (l[k] && !known.has(l[k])) l[k] = null;
       for (const i of added)
         if (i.anchor2d && copies.has(i.anchor2d.targetId))
           i.anchor2d.targetId = copies.get(i.anchor2d.targetId);
@@ -1785,6 +1890,8 @@ export class Drawing2D {
       .join(
         "",
       )}</div><p class="muted">Kies Punten bewerken en klik een onderdeel van een vectorbouwsteen. Sleep blauwe ankerpunten en oranje handvatten.</p>${this.nodeEdit ? button("node-add", "Punt toevoegen") : ""}<strong>Bewerken</strong><div class="drawing-grid">${[
+      ["pathway-layout", "Pathway leesbaar indelen"],
+      ["pathway-detach", "Pathway-pijl losmaken"],
       ["to-membrane", "Omzetten naar membraan"],
       ["copy", "Kopiëren"],
       ["paste", "Plakken"],
@@ -1843,6 +1950,7 @@ export class Drawing2D {
   }
   exportSVG(transparent = false) {
     const d = this.doc;
+    syncPathwayConnections(d.items);
     return `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="${NS}" xmlns:xlink="http://www.w3.org/1999/xlink" width="${d.width}" height="${d.height}" viewBox="0 0 ${d.width} ${d.height}"><title>ImmunoStudio 2D illustration</title>${transparent ? "" : `<rect width="100%" height="100%" fill="${d.background}"/>`}${d.items
       .filter((i) => i.visible)
       .map(

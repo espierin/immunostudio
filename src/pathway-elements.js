@@ -430,6 +430,21 @@ function wrapLabel(label) {
         (s.length > 25 || (i === 2 && lines.length > 3) ? "…" : ""),
     );
 }
+export function pathwayLabelLines(label, max) {
+  const lines = [""];
+  for (const word of String(label).split(/\s+/)) {
+    const chunks = [];
+    for (let i = 0; i < word.length; i += max)
+      chunks.push(word.slice(i, i + max));
+    for (const chunk of chunks) {
+      const i = lines.length - 1;
+      if ((lines[i] + " " + chunk).trim().length > max && lines[i])
+        lines.push(chunk);
+      else lines[i] = (lines[i] + " " + chunk).trim();
+    }
+  }
+  return lines;
+}
 export function importedPathwayLabel(m, layout) {
   const w = Number(layout.w),
     h = Number(layout.h),
@@ -437,14 +452,7 @@ export function importedPathwayLabel(m, layout) {
   if (![w, h, font].every(Number.isFinite))
     throw Error("Invalid imported label layout");
   const max = Math.max(4, Math.floor((w - 8) / (font * 0.55))),
-    lines = [];
-  for (const word of m.label.split(/\s+/)) {
-    if (!lines.length) lines.push("");
-    const i = lines.length - 1;
-    if ((lines[i] + " " + word).trim().length > max && lines[i])
-      lines.push(word);
-    else lines[i] = (lines[i] + " " + word).trim();
-  }
+    lines = pathwayLabelLines(m.label, max);
   const visible = layout.top
     ? lines.slice(0, 2)
     : lines.slice(0, Math.max(1, Math.floor(h / (font * 1.15))));

@@ -1,4 +1,5 @@
 import cellArtwork from "./biological-cell-art.json" with { type: "json" };
+import { parsePath } from "./vector-nodes.js";
 
 // Original schematic family symbols, not atomic structures or inferred expression.
 const cells = [
@@ -196,12 +197,14 @@ export function biologicalFigureFor(label, type = "protein") {
   const key = compact(String(label).replace(/\s*\[[^\]]+\]\s*$/, ""));
   const exact = lookup.get(key);
   if (exact) return exact;
-  const expanded = key
+  let expanded = key
     .replace(/^interleukin/, "il")
-    .replace(/^interferon/, "ifn")
-    .replace(/alpha/g, "a")
-    .replace(/beta/g, "b")
-    .replace(/gamma/g, "g");
+    .replace(/^interferon/, "ifn");
+  if (/^(il|ifn|tnf|tgf)/.test(expanded))
+    expanded = expanded
+      .replace(/alpha/g, "a")
+      .replace(/beta/g, "b")
+      .replace(/gamma/g, "g");
   if (lookup.has(expanded)) return lookup.get(expanded);
   if (expanded === "tnfa") return lookup.get("tnf");
   if (expanded === "tnfb") return lookup.get("lta");
@@ -270,4 +273,91 @@ export function biologicalArtwork(f) {
         )
         .join("");
   return `<g data-biological-family="${f.family}" fill="${fill}" stroke="${stroke}" stroke-width="2" stroke-linejoin="round">${art}</g>`;
+}
+const outlineCache = new Map();
+export function biologicalOutlines(f) {
+  if (outlineCache.has(f.id)) return outlineCache.get(f.id);
+  const native = f.asset && cellArtwork[f.asset],
+    body = native ? native.body : biologicalArtwork(f),
+    out = [];
+  const sample = (d) => {
+    const points = [];
+    let p = [0, 0];
+    for (const c of parsePath(d)) {
+      const v = c.values;
+      if (c.type === "M" || c.type === "L") {
+        p = v;
+        points.push([...p]);
+      } else if (c.type === "C" || c.type === "Q") {
+        const old = p;
+        for (let k = 1; k <= 6; k++) {
+          const t = k / 6,
+            u = 1 - t;
+          points.push(
+            c.type === "C"
+              ? [0, 1].map(
+                  (i) =>
+                    u * u * u * old[i] +
+                    3 * u * u * t * v[i] +
+                    3 * u * t * t * v[i + 2] +
+                    t * t * t * v[i + 4],
+                )
+              : [0, 1].map(
+                  (i) => u * u * old[i] + 2 * u * t * v[i] + t * t * v[i + 2],
+                ),
+          );
+        }
+        p = v.slice(-2);
+      }
+    }
+    return points;
+  };
+  for (const m of body.matchAll(/<path\b[^>]*\bd="([^"]+)"[^>]*>/g)) {
+    if (!/[zZ]/.test(m[1])) continue;
+    const p = sample(m[1]);
+    if (p.length >= 3) out.push(p);
+    if (native) break;
+  }
+  if (!native) {
+    const value = (s, key, fallback = 0) =>
+      Number(s.match(new RegExp(`\\b${key}="([^"]+)"`))?.[1] ?? fallback);
+    for (const m of body.matchAll(/<(rect|ellipse|circle)\b[^>]*>/g)) {
+      const s = m[0];
+      if (m[1] === "rect") {
+        const x = value(s, "x"),
+          y = value(s, "y"),
+          w = value(s, "width"),
+          h = value(s, "height");
+        out.push([
+          [x, y],
+          [x + w, y],
+          [x + w, y + h],
+          [x, y + h],
+        ]);
+      } else {
+        const x = value(s, "cx"),
+          y = value(s, "cy"),
+          rx = value(s, "rx", value(s, "r")),
+          ry = value(s, "ry", value(s, "r"));
+        out.push(
+          Array.from({ length: 48 }, (_, i) => [
+            x + rx * Math.cos((i * Math.PI) / 24),
+            y + ry * Math.sin((i * Math.PI) / 24),
+          ]),
+        );
+      }
+    }
+  } else {
+    const [x, y, w, h] = native.viewBox.split(/[ ,]+/).map(Number),
+      s = Math.min(128 / w, 108 / h),
+      ox = 56 + (128 - w * s) / 2,
+      oy = 2 + (108 - h * s) / 2;
+    for (const p of out)
+      for (const q of p) {
+        q[0] = ox + (q[0] - x) * s;
+        q[1] = oy + (q[1] - y) * s;
+      }
+  }
+  outlineCache.set(f.id, out);
+  return out;
 }

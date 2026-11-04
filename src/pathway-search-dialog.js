@@ -27,7 +27,7 @@ export class PathwaySearchDialog {
       <div class="pathway-kegg"><a class="pathway-kegg-link" target="_blank" rel="noopener noreferrer">Zoek verder op de KEGG-website ↗</a><small>Externe ingang: KEGG-resultaten verschijnen op de KEGG-website. Voor moleculen is daar een aanvullende gen-/compoundzoekactie nodig.</small></div>
       <div class="pathway-file-import"><button type="button" data-pathway-file>Pathwaybestand importeren…</button><small>GPML · KGML (KEGG) · Reactome-diagram-JSON</small><input type="file" accept=".gpml,.xml,.kgml,.json" hidden></div>
       <div class="pathway-search-status" role="status" aria-live="polite"></div><div class="pathway-search-results"></div><div class="pathway-search-more"></div>
-      <footer>Kies Op tekenblad plaatsen voor losse bewerkbare elementen. Bronindelingen worden overgenomen waar beschikbaar; anders wordt de indeling automatisch gemaakt.</footer>`;
+      <footer>Kies Op tekenblad plaatsen voor bewerkbare figuren met leesbare labels en gekoppelde pijlen. De bronindeling is het uitgangspunt voor een ruimere indeling.</footer>`;
     document.body.append(this.dialog);
     this.form = this.dialog.querySelector("form");
     const topicGroups = this.dialog.querySelector(".pathway-topic-groups");

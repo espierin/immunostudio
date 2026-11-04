@@ -1,5 +1,11 @@
 const entries = `
 Nieuw|New
+Kies Op tekenblad plaatsen voor bewerkbare figuren met leesbare labels en gekoppelde pijlen. De bronindeling is het uitgangspunt voor een ruimere indeling.|Choose Place on drawing page for editable figures with readable labels and connected arrows. The source layout guides a more spacious arrangement.
+Pathway leesbaar indelen|Improve pathway layout
+Pathway-pijl losmaken|Detach pathway arrow
+Pathway opnieuw ingedeeld; pijlen volgen hun gekoppelde elementen.|Pathway arranged; arrows follow their connected elements.
+Maak de pathway-pijl eerst los om de punten handmatig te bewerken.|Detach the pathway arrow first to edit its points manually.
+Het pathway past niet op het tekenblad. Kies een kleiner deelpathway.|The pathway does not fit on the page. Choose a smaller subpathway.
 Nieuw project|New project
 Openen|Open
 Project|Project
