@@ -121,12 +121,13 @@ export function tissueMarkup(item, style) {
   )}" fill="none" stroke="${outline}" stroke-width="2"/></g>`;
   return svg;
 }
-export function curveAppearanceMarkup(item, style) {
+export function curveAppearanceMarkup(item, style, footprints = []) {
   const d = curvePath(item),
     fill = item.fillEnabled ? item.fill || style.head : "none",
     interior = `<path data-curve-fill="true" d="${d}" fill="${fill}" stroke="none"/>`,
     kind = item.lineStyle || "membrane";
-  if (kind === "membrane") return interior + membraneMarkup(item, style);
+  if (kind === "membrane")
+    return interior + membraneMarkup(item, style, footprints);
   if (kind !== "line") return interior + tissueMarkup(item, style);
   return (
     interior +
@@ -137,7 +138,7 @@ export function curveAppearanceMarkup(item, style) {
 // invalidate artwork; all curve, appearance and palette changes do.
 export function createCurveAppearanceCache(render = curveAppearanceMarkup) {
   const cache = new WeakMap();
-  return (item, style) => {
+  return (item, style, footprints = []) => {
     const key = JSON.stringify([
       item.w,
       item.h,
@@ -152,11 +153,12 @@ export function createCurveAppearanceCache(render = curveAppearanceMarkup) {
       item.cellWidth,
       item.layerSide,
       item.bilayerThickness,
+      footprints,
       style,
     ]);
     let entry = cache.get(item);
     if (!entry || entry.key !== key) {
-      entry = { key, markup: render(item, style) };
+      entry = { key, markup: render(item, style, footprints) };
       cache.set(item, entry);
     }
     return entry.markup;

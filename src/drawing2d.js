@@ -1,3 +1,4 @@
+import { receptorFootprints } from "./receptor-footprints.js";
 import { spreadReceptors, measureReceptors } from "./receptor-spacing.js";
 import { sheetActionEnabled } from "./sheet-actions.js";
 import {
@@ -222,6 +223,7 @@ export class Drawing2D {
       amount: 8,
       interior: true,
       receptorGap: 6,
+      autoSpread: false,
     };
     this.clipboard = [];
     this.cache = new Map();
@@ -484,7 +486,12 @@ export class Drawing2D {
     this.selectionBar?.update();
   }
   itemMarkup(i) {
-    if (i.kind === "membrane") return this.curveMarkup(i, this.style);
+    if (i.kind === "membrane")
+      return this.curveMarkup(
+        i,
+        this.style,
+        receptorFootprints(i, this.doc.items),
+      );
     const fill = i.fillEnabled === false ? "none" : i.fill || "none",
       stroke = i.stroke || "none",
       sw = i.strokeWidth ?? 3;
@@ -640,11 +647,24 @@ export class Drawing2D {
           this.nodeEdit = null;
           const anchors = embeddedAnchors(session);
           session.brushRadius = this.sculptOptions.radius;
+          const receptors = this.doc.items.filter(
+            (i) =>
+              i.visible !== false &&
+              i.anchor2d?.targetId === item.id &&
+              i.anchor2d.pathIndex === session.index,
+          );
           interaction = {
             type: "sculpt",
             start: p,
             session,
             anchors,
+            spacing:
+              this.sculptOptions.autoSpread && receptors.length > 1
+                ? {
+                    items: receptors,
+                    bounds: measureReceptors(this, receptors),
+                  }
+                : null,
             interior: this.sculptOptions.interior
               ? prepareInterior(session, anchors)
               : [],
@@ -896,6 +916,17 @@ export class Drawing2D {
         }
         try {
           writeContour(s, points, x.anchors, x.interior);
+          x.lastPoints = points;
+          if (x.spacing)
+            spreadReceptors(
+              x.spacing.items,
+              { points, closed: s.closed },
+              {
+                bounds: x.spacing.bounds,
+                gap: this.sculptOptions.receptorGap,
+                iterations: 64,
+              },
+            );
           this.render();
         } catch (error) {
           this.onStatus(error.message);
@@ -1091,6 +1122,22 @@ export class Drawing2D {
     this.svg.addEventListener("pointerup", (e) => {
       if (!interaction) return;
       const type = interaction.type;
+      if (type === "sculpt" && interaction.spacing && interaction.lastPoints) {
+        const x = interaction;
+        const result = spreadReceptors(
+          x.spacing.items,
+          { points: x.lastPoints, closed: x.session.closed },
+          {
+            bounds: x.spacing.bounds,
+            gap: this.sculptOptions.receptorGap,
+            iterations: 96,
+          },
+        );
+        if (result.remaining)
+          this.onStatus(
+            "Er is nog receptoroverlap. Maak de membraan ruimer, verklein de receptoren of pas de receptorafstand aan.",
+          );
+      }
       if (type === "draw" && interaction.item.kind === "path") {
         const pts = interaction.points,
           item = interaction.item,

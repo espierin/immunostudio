@@ -1,3 +1,4 @@
+import { polygonsOverlap, subtractFootprint } from "./receptor-footprints.js";
 import { bezier, tangent } from "./model.js";
 export function membranePoints(item) {
   return (
@@ -65,7 +66,7 @@ export function membraneLeaflets(item) {
   });
   return { points, thickness, radius, leaflets };
 }
-export function membraneMarkup(item, style) {
+export function membraneMarkup(item, style, footprints = []) {
   const { points, thickness, radius, leaflets } = membraneLeaflets(item),
     head = style.head,
     tail = style.tail,
@@ -81,8 +82,31 @@ export function membraneMarkup(item, style) {
   const upper = Array.from({ length: 121 }, (_, i) => offset(i / 120, -1)),
     lower = Array.from({ length: 121 }, (_, i) => offset(1 - i / 120, 1));
   let svg = `<path d="M${[...upper, ...lower].map((p) => p.join(" ")).join("L")}Z" fill="${style.core || "#D9EAF6"}" stroke="none"/>`;
+  if (footprints.length) {
+    const polygons = [];
+    for (let n = 0; n < 120; n++) {
+      let parts = [[upper[n], upper[n + 1], lower[119 - n], lower[120 - n]]];
+      for (const footprint of footprints)
+        parts = parts.flatMap((p) => subtractFootprint(p, footprint));
+      polygons.push(...parts);
+    }
+    svg = `<path data-membrane-core="true" d="${polygons.map((p) => "M" + p.map((v) => v.join(" ")).join("L") + "Z").join("")}" fill="${style.core || "#D9EAF6"}" stroke="none"/>`;
+  }
   for (const { side, lipids } of leaflets) {
     for (const { center, tangent: v, normal } of lipids) {
+      if (footprints.length) {
+        const point = (along, depth) => [
+          center[0] + v[0] * along + normal[0] * side * depth,
+          center[1] + v[1] * along + normal[1] * side * depth,
+        ];
+        const lipid = [
+          point(-radius - 0.8, radius * 0.84 + 0.8),
+          point(radius + 0.8, radius * 0.84 + 0.8),
+          point(radius + 0.8, -thickness / 2),
+          point(-radius - 0.8, -thickness / 2),
+        ];
+        if (footprints.some((p) => polygonsOverlap(lipid, p))) continue;
+      }
       const angle = (Math.atan2(v[1], v[0]) * 180) / Math.PI,
         length = thickness / 2 - radius * 0.78 - 1;
       for (const branch of [-1, 1]) {

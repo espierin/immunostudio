@@ -1,4 +1,7 @@
 const entries = `
+Receptoren automatisch spreiden|Automatically spread receptors
+Schuif gekoppelde receptoren tijdens het sculpten langs de membraan uit elkaar. Vergrendelde receptoren blijven staan.|Slide attached receptors apart along the membrane while sculpting. Locked receptors stay in place.
+Er is nog receptoroverlap. Maak de membraan ruimer, verklein de receptoren of pas de receptorafstand aan.|Some receptors still overlap. Enlarge the membrane, reduce receptor size or adjust receptor spacing.
 2D: sleep over overlappende receptoren om ze langs de membraan te spreiden.|2D: drag over overlapping receptors to spread them along the membrane.
 Zoekterm wissen|Clear search
 Zoekterm wissen (Esc)|Clear search (Esc)
