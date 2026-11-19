@@ -1,6 +1,12 @@
-import { createAutosave } from './autosave.js';
+import { installWorkspacePanels } from "./workspace-panels.js";
+import { matchesLibrary } from "./library-search.js";
+import { createAutosave } from "./autosave.js";
 import { PathwaySearchDialog } from "./pathway-search-dialog.js";
-import {copyVectorImage,copyRasterImage,exportOfficeImage} from './vector-clipboard.js';
+import {
+  copyVectorImage,
+  copyRasterImage,
+  exportOfficeImage,
+} from "./vector-clipboard.js";
 import { pathwayCatalog, makePathwayItem } from "./pathway-elements.js";
 import { CommandPalette } from "./command-palette.js";
 import { starterProject } from "./starter-projects.js";
@@ -162,7 +168,7 @@ request.onerror = () =>
 document.querySelector("#app").innerHTML = `
 <header><a class="brand" href="#"><img class="brandmark" src="./immunostudio-icon.svg" alt="" width="44" height="44"><div>ImmunoStudio<small>SCIENTIFIC ILLUSTRATION STUDIO</small></div></a><div class="project-title"><input id="project-name" aria-label="Projectnaam"><span id="save-state">Lokaal project</span></div><label class="labels-toggle"><input id="all-labels" type="checkbox" checked> Labels</label><div class="editor-mode-switch"><button data-editor-mode="2d">2D</button><button data-editor-mode="3d" class="active">3D</button></div><label class="language-switch"><span class="visually-hidden">Interface-taal</span><select id="interface-language" aria-label="Interface-taal" title="Interface-taal"><option value="nl">Nederlands</option><option value="en">English</option></select></label><div class="header-actions"><details class="pathway-menu"><summary>Pathways</summary><div><button data-action="pathway-search">Pathways zoeken…</button><button data-action="pathway-topics">Immunologie en celbiologie…</button><button data-action="pathway-kegg">KEGG (externe website)…</button><button data-action="pathway-library">2D-pathwaybouwstenen</button><button data-action="pathway-layout">Pathway leesbaar indelen</button></div></details><button data-action="new" title="Nieuw project">Nieuw</button><button data-action="open">Openen</button><button data-action="save">↓ Project</button><button class="primary" data-action="export">Exporteren ↗</button></div></header>
 <nav class="toolbar"><div class="toolgroup"><button data-action="undo" title="Ongedaan maken (Ctrl+Z)">↶</button><button data-action="redo" title="Opnieuw (Ctrl+Shift+Z)">↷</button></div><div class="toolgroup modes"><button data-mode="select">↖ Selecteren</button><button data-mode="curve">⌁ Membraan</button><button data-mode="move">✥ Verplaatsen</button><button data-mode="rotate">⟳ Draaien</button><button data-mode="hinge">⤷ Conformatie</button></div><div class="toolgroup"><button data-action="label">T Label</button><button data-action="arrow">↗ Pijl</button></div><span class="toolbar-note">3D werkplaats <span class="dot"></span> lokaal op dit apparaat</span><button data-action="help">? Handleiding</button></nav>
-<main><aside class="library"><div class="panel-head"><h2>Bibliotheek</h2><button data-action="import" title="Eigen SVG, GLB, PDB of mmCIF importeren">＋</button></div><div class="tabs"><button data-tab="models">3D-modellen</button><button data-tab="basis">Basis set</button><button data-tab="pathway">Pathway-elementen</button><button data-tab="pdb">PDB</button></div><div class="search-wrap"><span>⌕</span><input id="search" placeholder="Zoek een molecuul…" aria-label="Bibliotheek doorzoeken"></div><select id="category" aria-label="Categorie"><option value="">Alle categorieën</option></select><select id="basis-representation" aria-label="Basisweergave" hidden><option value="volume">3D · afgerond volume</option><option value="relief">3D · reliëf</option><option value="flat">Originele 2D-vector</option></select><div class="library-filters"><button data-library-filter="all">Alles</button><button data-library-filter="favorites">★ Favorieten</button></div><button class="pathway-library-search" data-action="pathway-search" hidden>Pathways zoeken…</button><div id="library-info" class="library-info"></div><div id="library-items"></div><div id="pagination"></div><div class="library-footer"><span class="dot"></span> Jouw vormen. Eén werkplaats.<small>Basis set 2026 · native SVG + 3D</small><div class="manual-links" data-no-translate><a href="./manual/en.html" target="_blank" rel="noopener" lang="en">English manual</a><a href="./manual/nl.html" target="_blank" rel="noopener" lang="nl">Handleiding NL</a></div></div></aside>
+<main><aside class="library"><div class="panel-head"><h2>Bibliotheek</h2><button data-action="import" title="Eigen SVG, GLB, PDB of mmCIF importeren">＋</button></div><div class="tabs"><button data-tab="models">3D-modellen</button><button data-tab="basis">Basis set</button><button data-tab="pathway">Pathway-elementen</button><button data-tab="pdb">PDB</button></div><div class="search-wrap"><span>⌕</span><input id="search" placeholder="Zoek een molecuul…" aria-label="Bibliotheek doorzoeken"><button type="button" class="search-clear" data-clear-search aria-label="Zoekterm wissen" title="Zoekterm wissen (Esc)" hidden>×</button></div><select id="category" aria-label="Categorie"><option value="">Alle categorieën</option></select><select id="basis-representation" aria-label="Basisweergave" hidden><option value="volume">3D · afgerond volume</option><option value="relief">3D · reliëf</option><option value="flat">Originele 2D-vector</option></select><div class="library-filters"><button data-library-filter="all">Alles</button><button data-library-filter="favorites">★ Favorieten</button></div><button class="pathway-library-search" data-action="pathway-search" hidden>Pathways zoeken…</button><div id="library-info" class="library-info"></div><div id="library-items"></div><div id="pagination"></div><div class="library-footer"><span class="dot"></span> Jouw vormen. Eén werkplaats.<small>Basis set 2026 · native SVG + 3D</small><div class="manual-links" data-no-translate><a href="./manual/en.html" target="_blank" rel="noopener" lang="en">English manual</a><a href="./manual/nl.html" target="_blank" rel="noopener" lang="nl">Handleiding NL</a></div></div></aside>
 <section class="workspace"><div class="sheet-toolbar"><button data-action="undo">↶</button><button data-action="redo">↷</button><span class="tool-divider"></span><button data-sheet-tool="select">↖ Selecteren</button><button data-sheet-tool="move">✥ Verplaatsen</button><button data-sheet-tool="rotate">⟳ Draaien</button><button data-sheet-tool="pan">✥ Pan</button><button data-sheet-tool="text">T Tekst</button><button data-sheet-tool="arrow">↗ Pijl</button><button data-sheet-tool="line">╱ Lijn</button><button data-sheet-tool="rect">▭ Kader</button><button data-sheet-tool="ellipse">◯ Ellips</button><button data-sheet-tool="membrane">⌁ Membraan</button><button data-sheet-tool="freehand">⌁ Tekenen</button><button data-sheet-tool="sculpt">Sculpten</button><button data-sheet-action="floating-tools" title="Sculpting en modifiers" aria-label="Sculpting en modifiers">Modifiers</button><button data-sheet-action="fit">Pas blad</button><button data-sheet-action="fit-selection" title="Pas selectie" aria-label="Pas selectie">◎</button><button data-sheet-action="zoom-out">−</button><button data-sheet-action="zoom-in">＋</button><button data-action="properties">⚙</button></div><div class="view-toolbar"><span id="scene-title">MEMBRAANSCÈNE</span><div><button data-action="focus">◎ Focus selectie</button><button data-action="reset-camera">⌂ Standaardzicht</button><button class="inspector-toggle" data-action="properties">⚙ Eigenschappen</button><button id="cut-toggle" data-action="cut">◐ Doorsnede aan</button></div></div><div id="viewport"><div id="drawing2d" hidden></div><div class="scene-badge">ORTHOGRAFISCH <span>·</span> ECHTE 3D</div><div class="compartment top">EXTRACELLULAIR</div><div class="compartment bottom">CYTOPLASMA</div><div class="scene-hint" id="scene-hint">Slepen: kijkhoek · rechtermuisknop: pan · scrollen: zoom</div><div class="axis"><b>Y</b><span>└── X</span><small>Z ↙</small></div></div><section class="timeline"><div class="timeline-head"><div><button id="play" data-action="play" aria-label="Animatie afspelen">▶</button><span id="time-readout">0.00 / 8.00 s</span></div><div><button data-action="keyframe">◇ Sleutelbeeld</button><label>Duur <input id="duration" type="number" min="1" max="30" step="1"> s</label><button data-action="delete-key">Verwijder key</button></div></div><div class="timeline-track"><span>SCÈNE & CAMERA</span><div class="ruler"><div id="keyframes"></div><input id="scrubber" type="range" min="0" max="8" step="0.01" value="0" aria-label="Animatietijd"></div></div></section></section>
 <aside class="inspector"><div class="inspector-tabs" role="tablist" aria-label="Werkpanelen"><button role="tab" data-inspector-tab="properties">Eigenschappen</button><button role="tab" data-inspector-tab="drawing">Tekenen</button></div><section id="drawing-tools" role="tabpanel"></section><section id="inspector-properties" role="tabpanel"><div class="three-source-controls"><button data-action="create-all-3d-variants">3D uit 2D-tekening</button><button data-action="add-vesicle">Vesikel toevoegen</button></div><div class="panel-head"><h2>Eigenschappen</h2><span id="selection-type">MODEL</span></div><div id="properties"></div><details open><summary>Membraan</summary><div class="details-body"><label class="check"><input type="checkbox" data-project-boolean="membraneEnabled"> Membraan tonen</label><label>Dikte <span>nm</span><input data-project="thickness" type="range" min=".6" max="3" step=".1"></label><label>Diepte <span>nm</span><input data-project="depth" type="range" min="4" max="24" step="1"></label><label>Vervaging achterzijde<input data-project="fade" type="range" min="0" max=".85" step=".05"></label><button data-mode="curve" class="wide">⌁ Béziercurve bewerken</button><button data-action="add-curve" class="wide">＋ Curvepunt toevoegen</button><div id="curve-fields"></div></div></details><details><summary>Camera & focus</summary><div class="details-body"><label>Projectie<select id="projection"><option value="orthographic">Orthografisch</option><option value="perspective">Perspectief</option></select></label><label>Focusgedrag<select id="camera-mode"><option value="follow">Follow-me · verplaats mee</option><option value="look">Kijk naar focus</option><option value="free">Vrije camera</option></select></label><label>Zoom<input id="camera-zoom" type="number" min=".3" max="8" step=".1" value="1"></label><div class="view-buttons">${["Voor", "Achter", "Links", "Rechts", "Boven", "Onder"].map((v) => `<button data-view="${v}">${v}</button>`).join("")}</div><button class="wide" data-action="focus">◎ Gebruik selectie als focuspunt</button></div></details><details class="three-properties"><summary>Animatie en render</summary><div id="animation-settings" class="details-body"></div></details><details open><summary>Stylesheet</summary><div class="details-body"><select id="style-preset" aria-label="Stylesheet"><option value="basis">Basis set 2026</option><option value="light">Illustrated Light</option><option value="dark">Dark Presentation</option><option value="custom">Eigen stylesheet</option></select><div class="swatches" id="swatches"></div><div class="row"><button data-action="style-import">Importeren</button><button data-action="style-export">↓ JSON</button></div></div></details><details open><summary>Scène <span id="object-count"></span></summary><div id="scene-tree"></div></details></section></aside></main>
 <footer><span id="status">Gereed</span><span id="scene-meta"></span><span>ImmunoStudio · v0.2</span></footer><div id="toast" role="status"></div><div id="export-progress" hidden><span>Export voorbereiden…</span><progress max="1" value="0"></progress><button data-action="cancel-export">Annuleren</button></div><dialog id="modal"><div id="modal-content"></div></dialog><input id="file-input" type="file" hidden><input id="project-input" type="file" accept=".immuno,.json,.zip" hidden><input id="style-input" type="file" accept=".json" hidden>`;
@@ -274,8 +280,10 @@ function toast(message) {
   $("#status").textContent = message;
 }
 function updateHistoryButtons() {
-  for (const button of document.querySelectorAll('[data-action="undo"]')) button.disabled = !undo.length;
-  for (const button of document.querySelectorAll('[data-action="redo"]')) button.disabled = !redo.length;
+  for (const button of document.querySelectorAll('[data-action="undo"]'))
+    button.disabled = !undo.length;
+  for (const button of document.querySelectorAll('[data-action="redo"]'))
+    button.disabled = !redo.length;
 }
 function checkpoint() {
   undo.push(clone(project));
@@ -317,22 +325,38 @@ function followAnchor() {
   view.setCamera(project.camera);
 }
 const projectSaver = createAutosave({
-  snapshot: () => { project.currentTime = time; return clone(project); },
-  write: (snapshot) => new Promise((resolve, reject) => {
-    if (!db) { reject(Error("Local storage unavailable")); return; }
-    const tx = db.transaction("projects", "readwrite");
-    tx.oncomplete = resolve;
-    tx.onerror = tx.onabort = () => reject(tx.error || Error("Local storage failed"));
-    tx.objectStore("projects").put(snapshot, "autosave");
-  }),
-  onSaving: () => { dirty = true; $("#save-state").textContent = "Wijzigingen opslaan…"; },
-  onSaved: () => { dirty = false; $("#save-state").textContent = "✓ Op dit apparaat bewaard"; },
+  snapshot: () => {
+    project.currentTime = time;
+    return clone(project);
+  },
+  write: (snapshot) =>
+    new Promise((resolve, reject) => {
+      if (!db) {
+        reject(Error("Local storage unavailable"));
+        return;
+      }
+      const tx = db.transaction("projects", "readwrite");
+      tx.oncomplete = resolve;
+      tx.onerror = tx.onabort = () =>
+        reject(tx.error || Error("Local storage failed"));
+      tx.objectStore("projects").put(snapshot, "autosave");
+    }),
+  onSaving: () => {
+    dirty = true;
+    $("#save-state").textContent = "Wijzigingen opslaan…";
+  },
+  onSaved: () => {
+    dirty = false;
+    $("#save-state").textContent = "✓ Op dit apparaat bewaard";
+  },
   onError: () => {
     $("#save-state").textContent = "Download project om te bewaren";
     if (db) toast("Automatisch bewaren mislukt. Download het project.");
   },
 });
-function autosave() { projectSaver.schedule(); }
+function autosave() {
+  projectSaver.schedule();
+}
 window.addEventListener("pagehide", () => projectSaver.flush());
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "hidden") projectSaver.flush();
@@ -368,6 +392,9 @@ function setMode(next) {
   renderCurve();
 }
 function renderLibrary() {
+  document.querySelector("[data-clear-search]").hidden = !query;
+  $("#library-info").setAttribute("role", "status");
+  $("#library-info").setAttribute("aria-live", "polite");
   document.querySelector(".pathway-library-search").hidden = tab !== "pathway";
   document.querySelector(".library-filters").hidden = tab !== "basis";
   document.querySelectorAll("[data-library-filter]").forEach((b) => {
@@ -410,16 +437,11 @@ function renderLibrary() {
     $("#pagination").innerHTML = "";
     return;
   }
-  const words = query.toLowerCase().split(/\s+/).filter(Boolean);
   const results = data.filter(
     (c) =>
       (!category || c.category === category) &&
       (tab !== "basis" || !favoritesOnly || favorites.has(c.file)) &&
-      words.every((w) =>
-        (c.name + " " + c.title + " " + c.keywords + " " + c.category)
-          .toLowerCase()
-          .includes(w),
-      ),
+      matchesLibrary(c, query),
   );
   const size = tab === "basis" || tab === "pathway" ? 24 : 20;
   page = Math.min(page, Math.max(0, Math.ceil(results.length / size) - 1));
@@ -443,7 +465,7 @@ function renderLibrary() {
     '<p class="muted">Geen resultaten.</p><button class="wide" data-library-reset>Toon alle elementen</button>';
   $("#pagination").innerHTML =
     results.length > size
-      ? `<button data-action="prev" ${page === 0 ? "disabled" : ""}>←</button><span>${page + 1} / ${Math.ceil(results.length / size)}</span><button data-action="next" ${(page + 1) * size >= results.length ? "disabled" : ""}>→</button>`
+      ? `<button data-action="prev" aria-label="Vorige pagina" title="Vorige pagina" ${page === 0 ? "disabled" : ""}>←</button><span>${page + 1} / ${Math.ceil(results.length / size)}</span><button data-action="next" aria-label="Volgende pagina" title="Volgende pagina" ${(page + 1) * size >= results.length ? "disabled" : ""}>→</button>`
       : "";
 }
 function assetUrl(file) {
@@ -698,14 +720,18 @@ async function action(name) {
     case "close":
       $("#modal").close();
       break;
-    case 'copy-vector':
+    case "copy-vector":
       await copySelectedVector();
       break;
-    case 'copy-selection-png':
+    case "copy-selection-png":
       await copySelectedPNG();
       break;
-    case 'download-vector-selection':
-      if(pendingVectorSVG)download(new Blob([pendingVectorSVG],{type:'image/svg+xml'}),project.name+'-selection.svg');
+    case "download-vector-selection":
+      if (pendingVectorSVG)
+        download(
+          new Blob([pendingVectorSVG], { type: "image/svg+xml" }),
+          project.name + "-selection.svg",
+        );
       break;
     case "undo":
       if (undo.length) {
@@ -753,7 +779,8 @@ async function action(name) {
       break;
     }
     case "import":
-      $("#file-input").accept = project.editorMode === "2d" ? ".svg" : ".svg,.glb,.pdb,.cif,.mmcif";
+      $("#file-input").accept =
+        project.editorMode === "2d" ? ".svg" : ".svg,.glb,.pdb,.cif,.mmcif";
       $("#file-input").click();
       break;
     case "style-import":
@@ -837,7 +864,10 @@ async function action(name) {
       break;
     case "duplicate":
       if (i) {
-        if (project.items.length >= 200) { toast("Maximaal 200 objecten per scène."); break; }
+        if (project.items.length >= 200) {
+          toast("Maximaal 200 objecten per scène.");
+          break;
+        }
         checkpoint();
         const n = clone(i);
         n.id = uid();
@@ -1119,13 +1149,25 @@ async function action(name) {
       setMode("curve");
       break;
     case "properties":
-      $(".inspector").classList.toggle("open");
+      inspectorTab = "properties";
+      renderDrawingPanel();
+      workspacePanels.toggleProperties();
+      break;
+    case "close-properties":
+      workspacePanels.properties(false);
+      break;
+    case "toggle-library":
+      workspacePanels.toggleLibrary();
       break;
   }
 }
 document.addEventListener("click", (e) => {
   const button = e.target.closest("button");
   if (!button) return;
+  if (button.hasAttribute("data-clear-search")) {
+    clearLibrarySearch();
+    return;
+  }
   if (button.dataset.favorite) {
     const file = button.dataset.favorite;
     if (favorites.has(file)) favorites.delete(file);
@@ -1251,14 +1293,31 @@ $("#project-name").addEventListener("change", (e) => {
   autosave();
 });
 let librarySearchTimer;
+function clearLibrarySearch() {
+  clearTimeout(librarySearchTimer);
+  pdbSearchRequest?.abort();
+  query = "";
+  page = 0;
+  $("#search").value = "";
+  renderLibrary();
+  $("#search").focus();
+}
+
 $("#search").addEventListener("input", (e) => {
   query = e.target.value;
   page = 0;
   clearTimeout(librarySearchTimer);
+  document.querySelector("[data-clear-search]").hidden = !query;
   if (tab === "pdb") pdbSearchRequest?.abort();
   if (tab !== "pdb") librarySearchTimer = setTimeout(renderLibrary, 120);
 });
 $("#search").addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    e.preventDefault();
+    e.stopPropagation();
+    clearLibrarySearch();
+    return;
+  }
   if (e.key === "Enter" && tab === "pdb")
     pdbSearch().catch((e) => toast(e.message));
 });
@@ -1492,14 +1551,23 @@ document.addEventListener("keydown", (e) => {
     document.querySelector("dialog[open]")
   )
     return;
-  if (["INPUT", "SELECT", "TEXTAREA"].includes(e.target.tagName) || e.target.isContentEditable || e.defaultPrevented) return;
+  if (
+    ["INPUT", "SELECT", "TEXTAREA"].includes(e.target.tagName) ||
+    e.target.isContentEditable ||
+    e.defaultPrevented
+  )
+    return;
   if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z") {
     e.preventDefault();
     action(e.shiftKey ? "redo" : "undo");
   } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "y") {
     e.preventDefault();
     action("redo");
-  } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "d" && project.editorMode === "3d") {
+  } else if (
+    (e.ctrlKey || e.metaKey) &&
+    e.key.toLowerCase() === "d" &&
+    project.editorMode === "3d"
+  ) {
     e.preventDefault();
     action("duplicate");
   } else if (e.key === "Delete" || e.key === "Backspace") {
@@ -1619,8 +1687,14 @@ async function pdbSearch() {
   if (!resultsBox) return;
   resultsBox.innerHTML = '<p class="muted">Structuren zoeken…</p>';
   try {
-    const results = await searchStructures(q, {signal:request.signal});
-    if (request !== pdbSearchRequest || tab !== "pdb" || query.trim() !== q || !resultsBox.isConnected) return;
+    const results = await searchStructures(q, { signal: request.signal });
+    if (
+      request !== pdbSearchRequest ||
+      tab !== "pdb" ||
+      query.trim() !== q ||
+      !resultsBox.isConnected
+    )
+      return;
     resultsBox.innerHTML =
       results
         .map(
@@ -1632,7 +1706,12 @@ async function pdbSearch() {
       /* Result click opens dialog via handler below. */
     }
   } catch (err) {
-    if (request.signal.aborted || request !== pdbSearchRequest || !resultsBox.isConnected) return;
+    if (
+      request.signal.aborted ||
+      request !== pdbSearchRequest ||
+      !resultsBox.isConnected
+    )
+      return;
     resultsBox.innerHTML =
       '<p class="muted">' +
       esc(err.message) +
@@ -1649,7 +1728,8 @@ async function loadRemoteStructure() {
   const id = $("#pdb-id").value.trim().toUpperCase();
   if (!/^[A-Z0-9]{4,12}$/.test(id)) throw Error("Ongeldig PDB-ID");
   const assembly = $("#assembly")?.value || "1";
-  const field = $("#pdb-id"), progress = $("#structure-progress");
+  const field = $("#pdb-id"),
+    progress = $("#structure-progress");
   const request = new AbortController();
   remoteStructureRequest?.abort();
   remoteStructureRequest = request;
@@ -1659,13 +1739,21 @@ async function loadRemoteStructure() {
       assembly === "asym"
         ? `https://files.rcsb.org/download/${id}.cif`
         : `https://files.rcsb.org/download/${id}-assembly${assembly}.cif`;
-    const res = await fetch(url, {signal:AbortSignal.any([request.signal,AbortSignal.timeout(30000)])});
+    const res = await fetch(url, {
+      signal: AbortSignal.any([request.signal, AbortSignal.timeout(30000)]),
+    });
     if (!res.ok)
       throw Error(
         `Ophalen mislukt (${res.status}). Probeer de asymmetrische eenheid.`,
       );
     const text = await res.text();
-    if (request.signal.aborted || !field.isConnected || !$("#modal").open || $("#pdb-id") !== field) return;
+    if (
+      request.signal.aborted ||
+      !field.isConnected ||
+      !$("#modal").open ||
+      $("#pdb-id") !== field
+    )
+      return;
     structures = {
       ...parseCIF(text),
       name: id,
@@ -1674,7 +1762,8 @@ async function loadRemoteStructure() {
     };
     structureDialog();
   } catch (err) {
-    if (!request.signal.aborted && progress.isConnected) progress.textContent = err.message;
+    if (!request.signal.aborted && progress.isConnected)
+      progress.textContent = err.message;
   } finally {
     if (remoteStructureRequest === request) remoteStructureRequest = null;
   }
@@ -1872,7 +1961,7 @@ async function exportVideo() {
     view.gizmo.getHelper().visible = true;
   }
 }
-fetch("./library/index.json", {cache:"no-cache"})
+fetch("./library/index.json", { cache: "no-cache" })
   .then((r) => {
     if (!r.ok) throw Error();
     return r.json();
@@ -1888,7 +1977,9 @@ async function loadStarter(kind) {
     if (kind === "membrane") {
       const data = library.length
         ? library
-        : await fetch("./library/index.json", {cache:"no-cache"}).then((r) => r.json());
+        : await fetch("./library/index.json", { cache: "no-cache" }).then((r) =>
+            r.json(),
+          );
       const asset = data.find((a) =>
         a.file.split("/").at(-1).startsWith("basic_151_"),
       );
@@ -1965,6 +2056,21 @@ function resetWorkspaceLayout() {
   drawing2D.floating.save();
 }
 for (const toolbar of document.querySelectorAll(".sheet-toolbar,.toolbar")) {
+  const libraryToggle = document.createElement("button");
+  libraryToggle.dataset.action = "toggle-library";
+  libraryToggle.className = "library-panel-toggle";
+  libraryToggle.textContent = "Bibliotheek";
+  libraryToggle.title = "Bibliotheek tonen of verbergen";
+  toolbar.prepend(libraryToggle);
+}
+const closeProperties = document.createElement("button");
+closeProperties.dataset.action = "close-properties";
+closeProperties.className = "inspector-close";
+closeProperties.textContent = "×";
+closeProperties.setAttribute("aria-label", "Eigenschappen sluiten");
+document.querySelector(".inspector-tabs").append(closeProperties);
+const workspacePanels = installWorkspacePanels();
+for (const toolbar of document.querySelectorAll(".sheet-toolbar,.toolbar")) {
   const button = document.createElement("button");
   button.dataset.workspaceFocus = "";
   button.textContent = "⛶";
@@ -2002,92 +2108,105 @@ const pathwaySearch = new PathwaySearchDialog(
     drawing2D.svg.focus({ preventScroll: true });
   },
 );
-const commands = new CommandPalette(() => [
-  {
-    label: "Pathway leesbaar indelen",
-    keywords:
-      "pathway layout arrange readable connections arrows uitlijnen leesbaar pijlen",
-    run: () => action("pathway-layout"),
-  },
-  {
-    label: "Immunologie en celbiologie",
-    keywords:
-      "antigen processing presentation MHC HLA cross presentation immune immunology autophagy cell biology",
-    run: () => action("pathway-topics"),
-  },
-  {
-    label: "Pathways zoeken",
-    keywords: "Reactome WikiPathways molecule pathway search database ID",
-    run: () => action("pathway-search"),
-  },
-  {
-    label: "Startpagina",
-    run: () => {
-      openingPage.update(project);
-      openingPage.show();
+const commands = new CommandPalette(
+  () => [
+    {
+      label: "Pathway leesbaar indelen",
+      keywords:
+        "pathway layout arrange readable connections arrows uitlijnen leesbaar pijlen",
+      run: () => action("pathway-layout"),
     },
-  },
-  {
-    label: "Focusmodus",
-    shortcut: "F9",
-    keywords: "focus canvas hide panels",
-    run: () =>
-      setFocusLayout(
-        !document.documentElement.classList.contains("workspace-focus"),
-      ),
-  },
-  {
-    label: "Werkruimte herstellen",
-    keywords: "reset layout panels",
-    run: resetWorkspaceLayout,
-  },
-  { label: "Project openen", keywords: "open file", run: () => action("open") },
-  {
-    label: "Project downloaden",
-    keywords: "save backup",
-    shortcut: "Ctrl+S",
-    run: () => action("save"),
-  },
-  {
-    label: "Exporteren",
-    keywords: "png svg emf word powerpoint",
-    run: () => action("export"),
-  },
-  { label: "Handleiding", keywords: "help manual", run: () => action("help") },
-  ...(project.editorMode === "2d"
-    ? [
-        ...[
-          ["select", "Selecteren"],
-          ["move", "Verplaatsen"],
-          ["nodes", "Punten bewerken"],
-          ["sculpt", "Sculpten"],
-          ["membrane", "Membraan"],
-          ["text", "Tekst"],
-        ].map(([tool, label]) => ({
-          label,
-          run: () => drawing2D.setTool(tool),
-        })),
-        ...[
-          ["floating-tools", "Sculpting en modifiers"],
-          ["fit", "Pas blad"],
-          ["fit-selection", "Pas selectie"],
-          ["duplicate", "Dupliceren"],
-          ["mirror-x", "Horizontaal spiegelen"],
-          ["to-membrane", "Omzetten naar membraan"],
-          ["to-editable-curve", "Bézierlijn bewerken"],
-          ["contour-smooth", "Gladmaken"],
-          ["contour-simplify", "Vereenvoudigen"],
-        ].map(([cmd, label]) => ({
-          label,
-          keywords: cmd,
-          disabled:
-            !["fit", "floating-tools"].includes(cmd) &&
-            !(cmd === "fit-selection" ? drawing2D.selectedItems().length : drawing2D.selectedItems().some((i) => !i.locked)),
-          run: () => drawing2D.command(cmd),
-        })),
-      ]
-    : []),
-], (error) => toast(error.message));
+    {
+      label: "Immunologie en celbiologie",
+      keywords:
+        "antigen processing presentation MHC HLA cross presentation immune immunology autophagy cell biology",
+      run: () => action("pathway-topics"),
+    },
+    {
+      label: "Pathways zoeken",
+      keywords: "Reactome WikiPathways molecule pathway search database ID",
+      run: () => action("pathway-search"),
+    },
+    {
+      label: "Startpagina",
+      run: () => {
+        openingPage.update(project);
+        openingPage.show();
+      },
+    },
+    {
+      label: "Focusmodus",
+      shortcut: "F9",
+      keywords: "focus canvas hide panels",
+      run: () =>
+        setFocusLayout(
+          !document.documentElement.classList.contains("workspace-focus"),
+        ),
+    },
+    {
+      label: "Werkruimte herstellen",
+      keywords: "reset layout panels",
+      run: resetWorkspaceLayout,
+    },
+    {
+      label: "Project openen",
+      keywords: "open file",
+      run: () => action("open"),
+    },
+    {
+      label: "Project downloaden",
+      keywords: "save backup",
+      shortcut: "Ctrl+S",
+      run: () => action("save"),
+    },
+    {
+      label: "Exporteren",
+      keywords: "png svg emf word powerpoint",
+      run: () => action("export"),
+    },
+    {
+      label: "Handleiding",
+      keywords: "help manual",
+      run: () => action("help"),
+    },
+    ...(project.editorMode === "2d"
+      ? [
+          ...[
+            ["select", "Selecteren"],
+            ["move", "Verplaatsen"],
+            ["nodes", "Punten bewerken"],
+            ["sculpt", "Sculpten"],
+            ["membrane", "Membraan"],
+            ["text", "Tekst"],
+          ].map(([tool, label]) => ({
+            label,
+            run: () => drawing2D.setTool(tool),
+          })),
+          ...[
+            ["floating-tools", "Sculpting en modifiers"],
+            ["fit", "Pas blad"],
+            ["fit-selection", "Pas selectie"],
+            ["duplicate", "Dupliceren"],
+            ["mirror-x", "Horizontaal spiegelen"],
+            ["to-membrane", "Omzetten naar membraan"],
+            ["to-editable-curve", "Bézierlijn bewerken"],
+            ["contour-smooth", "Gladmaken"],
+            ["contour-simplify", "Vereenvoudigen"],
+          ].map(([cmd, label]) => ({
+            label,
+            keywords: cmd,
+            disabled:
+              !["fit", "floating-tools"].includes(cmd) &&
+              !(cmd === "fit-selection"
+                ? drawing2D.selectedItems().length
+                : drawing2D.selectedItems().some((i) => !i.locked)),
+            run: () => drawing2D.command(cmd),
+          })),
+        ]
+      : []),
+  ],
+  (error) => toast(error.message),
+);
 const commandButton = document.createElement("button");
 commandButton.textContent = "⌕";
 commandButton.title = "Opdrachten zoeken (Ctrl+K / F3)";
@@ -2394,8 +2513,13 @@ function setEditorMode(next, save = true) {
   }
   renderInspector();
   updateHistoryButtons();
-  const importButton = document.querySelector('.library [data-action="import"]');
-  importButton.title = next === "2d" ? "Eigen SVG importeren" : "Eigen SVG, GLB, PDB of mmCIF importeren";
+  const importButton = document.querySelector(
+    '.library [data-action="import"]',
+  );
+  importButton.title =
+    next === "2d"
+      ? "Eigen SVG importeren"
+      : "Eigen SVG, GLB, PDB of mmCIF importeren";
   if (save) autosave();
 }
 
@@ -2405,30 +2529,38 @@ $("#all-labels").addEventListener("change", (e) => {
   changed();
 });
 
-let pendingVectorSVG=null,copyingVector=false;
-async function copySelectedVector(){
-  if(copyingVector||project.editorMode!=='2d')return;
-  pendingVectorSVG=null;
-  const svg=drawing2D.exportSelectionSVG();copyingVector=true;
-  toast('Vector voor het klembord voorbereiden...');
-  try{
+let pendingVectorSVG = null,
+  copyingVector = false;
+async function copySelectedVector() {
+  if (copyingVector || project.editorMode !== "2d") return;
+  pendingVectorSVG = null;
+  const svg = drawing2D.exportSelectionSVG();
+  copyingVector = true;
+  toast("Vector voor het klembord voorbereiden...");
+  try {
     await copyVectorImage(svg);
-    toast('SVG-vector op het klembord. Plak met Ctrl+V in PowerPoint.');
-  }catch(error){
-    pendingVectorSVG=svg;
-    showModal(`<h2>Vector kopiëren</h2><p>${esc(error.message)}</p><p>Rechtstreeks vector kopiëren werkt zonder helper in browsers met SVG-klembordondersteuning. Gebruik een recente versie van Edge of Chrome en PowerPoint.</p><p>Je kunt de SVG ook downloaden en in PowerPoint invoegen via Invoegen, Afbeeldingen. Kies PNG als je alleen een afbeelding nodig hebt: PNG blijft geen vector.</p><div class="row"><button class="primary" data-action="download-vector-selection">Selectie als SVG downloaden</button><button data-action="copy-selection-png">Kopiëren als PNG</button></div>`);
-  }finally{copyingVector=false;}
+    toast("SVG-vector op het klembord. Plak met Ctrl+V in PowerPoint.");
+  } catch (error) {
+    pendingVectorSVG = svg;
+    showModal(
+      `<h2>Vector kopiëren</h2><p>${esc(error.message)}</p><p>Rechtstreeks vector kopiëren werkt zonder helper in browsers met SVG-klembordondersteuning. Gebruik een recente versie van Edge of Chrome en PowerPoint.</p><p>Je kunt de SVG ook downloaden en in PowerPoint invoegen via Invoegen, Afbeeldingen. Kies PNG als je alleen een afbeelding nodig hebt: PNG blijft geen vector.</p><div class="row"><button class="primary" data-action="download-vector-selection">Selectie als SVG downloaden</button><button data-action="copy-selection-png">Kopiëren als PNG</button></div>`,
+    );
+  } finally {
+    copyingVector = false;
+  }
 }
-async function copySelectedPNG(){
-  if(copyingVector)return;
-  const svg=pendingVectorSVG||drawing2D.exportSelectionSVG();
-  copyingVector=true;
-  try{
+async function copySelectedPNG() {
+  if (copyingVector) return;
+  const svg = pendingVectorSVG || drawing2D.exportSelectionSVG();
+  copyingVector = true;
+  try {
     await copyRasterImage(svg);
-    pendingVectorSVG=null;
-    $('#modal').close();
-    toast('PNG-afbeelding op het klembord. Plak met Ctrl+V in PowerPoint.');
-  }finally{copyingVector=false;}
+    pendingVectorSVG = null;
+    $("#modal").close();
+    toast("PNG-afbeelding op het klembord. Plak met Ctrl+V in PowerPoint.");
+  } finally {
+    copyingVector = false;
+  }
 }
 async function exportOffice(format) {
   if (recording) return;
@@ -2452,7 +2584,7 @@ async function exportOffice(format) {
   setExportLock(true);
   toast(format.toUpperCase() + " voorbereiden…");
   try {
-    const blob = await exportOfficeImage(svg, format, {outlineText});
+    const blob = await exportOfficeImage(svg, format, { outlineText });
     download(blob, project.name + "." + format);
     toast(
       format.toUpperCase() +

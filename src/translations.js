@@ -1,4 +1,19 @@
 const entries = `
+2D: sleep over overlappende receptoren om ze langs de membraan te spreiden.|2D: drag over overlapping receptors to spread them along the membrane.
+Zoekterm wissen|Clear search
+Zoekterm wissen (Esc)|Clear search (Esc)
+Vorige pagina|Previous page
+Volgende pagina|Next page
+Receptoren spreiden|Spread receptors
+Receptorafstand (px)|Receptor spacing (px)
+Receptoren spreiden verschuift gekoppelde moleculen langs de membraan, zonder de contour te veranderen.|Spread receptors slides attached molecules along the membrane without changing the contour.
+Selecteer een membraan of een gekoppelde receptor.|Select a membrane or an attached receptor.
+Koppel eerst minstens twee receptoren aan dit membraan.|Attach at least two receptors to this membrane first.
+Receptoren gespreid; membraanankers blijven behouden.|Receptors spread; membrane anchors are preserved.
+Spreiden uitgevoerd. Er is nog overlap: gebruik het spreidpenseel, maak de membraan ruimer of verklein de receptoren.|Spacing applied. Some overlap remains: use the spacing brush, enlarge the membrane or reduce receptor size.
+Bibliotheek tonen of verbergen|Show or hide library
+Eigenschappen openen of sluiten|Open or close properties
+Eigenschappen sluiten|Close properties
 Selectie gekopieerd binnen ImmunoStudio.|Selection copied within ImmunoStudio.
 Maximaal 4000 elementen per tekenblad.|A drawing page supports up to 4000 elements.
 Selecteer een figuur om te bewerken.|Select a figure to edit.

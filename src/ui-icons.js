@@ -82,7 +82,10 @@ export function decorateUI(root = document) {
       button.dataset.mode;
     button.title = explanations[helpKey]?.[0] || text.textContent;
     button.setAttribute("aria-description", button.title);
-    if (["undo", "redo"].includes(button.dataset.action)) {
+    if (
+      ["undo", "redo"].includes(button.dataset.action) ||
+      button.hasAttribute("data-compact-icon")
+    ) {
       button.setAttribute("aria-label", text.textContent);
       text.className = "visually-hidden";
     }

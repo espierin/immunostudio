@@ -1,5 +1,7 @@
 # ImmunoStudio 0.2
 
+Receptor spacing: use Sculpt & modifiers, Membrane anchors, Spread receptors for one-click separation, or choose Spread receptors as the sculpt brush mode for local control. Attached molecules slide along the same contour and retain their anchor and local normal orientation. Locked molecules stay fixed. Insufficient space is reported without shrinking or removing receptors. The library now normalizes accents, Greek letters and punctuation in searches. Compact workspaces have Library and Properties toggles with accessible state and an inspector close button. Both manuals include these controls.
+
 Online: **https://espierin.github.io/immunostudio/**
 
 Detailed user manuals: [English](public/manual/en.html) · [Nederlands](public/manual/nl.html). Both have a table of contents, practical tutorials, fifteen captioned screenshots/detail views, export reference and print/PDF layout. Click any illustration to open the original screenshot. Online: [English](https://espierin.github.io/immunostudio/manual/en.html) · [Nederlands](https://espierin.github.io/immunostudio/manual/nl.html). Regenerate after editing: `node scripts/build-manuals.mjs`.

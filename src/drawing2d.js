@@ -1,6 +1,11 @@
-import { sheetActionEnabled } from './sheet-actions.js';
-import { figureLabelMarkup, figureLabelControls, figureLabelBounds } from './figure-label.js';
-import { fitReceptorAnchor } from './receptor-anchor.js';
+import { spreadReceptors, measureReceptors } from "./receptor-spacing.js";
+import { sheetActionEnabled } from "./sheet-actions.js";
+import {
+  figureLabelMarkup,
+  figureLabelControls,
+  figureLabelBounds,
+} from "./figure-label.js";
+import { fitReceptorAnchor } from "./receptor-anchor.js";
 import {
   validatePathwayMetadata,
   pathwayProperties,
@@ -216,6 +221,7 @@ export class Drawing2D {
       strength: 0.7,
       amount: 8,
       interior: true,
+      receptorGap: 6,
     };
     this.clipboard = [];
     this.cache = new Map();
@@ -281,7 +287,9 @@ export class Drawing2D {
         : tool === "move"
           ? "2D: sleep een element om het te verplaatsen."
           : tool === "sculpt"
-            ? "2D: sleep bij de rand om te sculpten. Radius en sterkte staan in het zwevende menu."
+            ? this.sculptOptions.mode === "spread"
+              ? "2D: sleep over overlappende receptoren om ze langs de membraan te spreiden."
+              : "2D: sleep bij de rand om te sculpten. Radius en sterkte staan in het zwevende menu."
             : tool === "select"
               ? "2D: selecteren, slepen en hoekpunten schalen."
               : "2D: " + tool + " tekenen.",
@@ -508,17 +516,19 @@ export class Drawing2D {
           this.cache.delete(this.cache.keys().next().value);
         this.cache.set(key, markup);
       }
-      return markup.replace(
-        /<svg\b([^>]*)>/,
-        (tag, attrs) =>
-          "<svg " +
-          attrs.replace(/\s(?:width|height|x|y|overflow)="[^"]*"/g, "") +
-          ' overflow="visible" x="0" y="0" width="' +
-          i.w +
-          '" height="' +
-          i.h +
-          '">',
-      ) + figureLabelMarkup(i, this.labelsVisible !== false, this.style.label);
+      return (
+        markup.replace(
+          /<svg\b([^>]*)>/,
+          (tag, attrs) =>
+            "<svg " +
+            attrs.replace(/\s(?:width|height|x|y|overflow)="[^"]*"/g, "") +
+            ' overflow="visible" x="0" y="0" width="' +
+            i.w +
+            '" height="' +
+            i.h +
+            '">',
+        ) + figureLabelMarkup(i, this.labelsVisible !== false, this.style.label)
+      );
     }
     if (i.kind === "text" && this.labelsVisible === false) return "";
     if (i.kind === "text") {
@@ -575,6 +585,25 @@ export class Drawing2D {
           this.selectedItems().length === 1
             ? this.selectedItems()[0]
             : this.doc.items.find((i) => i.id === hit);
+        if (this.sculptOptions.mode === "spread") {
+          try {
+            const session = this.receptorSession(item);
+            this.beforeChange();
+            interaction = {
+              type: "receptor-spread",
+              session,
+              start: p,
+              last: p,
+            };
+            this.selected = [session.contour.item.id];
+            this.sculptCursor = p;
+            this.render();
+            this.onSelect(this.selected);
+          } catch (error) {
+            this.onStatus(error.message);
+          }
+          return;
+        }
         if (!item || item.locked) {
           this.onStatus(
             "Selecteer een niet-vergrendelde cel, weefselcontour of membraan.",
@@ -832,6 +861,23 @@ export class Drawing2D {
       if (x.type === "pan") {
         this.doc.panX += dx;
         this.doc.panY += dy;
+        this.render();
+        return;
+      }
+      if (x.type === "receptor-spread") {
+        const distance = Math.hypot(p.x - x.last.x, p.y - x.last.y);
+        x.last = p;
+        if (!distance) return;
+        spreadReceptors(x.session.items, x.session.contour, {
+          bounds: x.session.bounds,
+          gap: this.sculptOptions.receptorGap,
+          focus: [p.x, p.y],
+          radius: this.sculptOptions.radius,
+          maxShift:
+            Math.min(this.sculptOptions.radius * 0.4, distance) *
+            this.sculptOptions.strength,
+          iterations: 12,
+        });
         this.render();
         return;
       }
@@ -1122,7 +1168,10 @@ export class Drawing2D {
       "wheel",
       (e) => {
         e.preventDefault();
-        Object.assign(this.doc,zoomViewport(this.doc,e.deltaY<0?1.12:1/1.12,this.point(e)));
+        Object.assign(
+          this.doc,
+          zoomViewport(this.doc, e.deltaY < 0 ? 1.12 : 1 / 1.12, this.point(e)),
+        );
         this.render();
         this.onSelect(this.selected);
       },
@@ -1203,9 +1252,12 @@ export class Drawing2D {
           if (field === "name" && item.pathway)
             updatePathwayItem(item, "label", value);
           item[field] = value;
-          if (field === "figureLabel" && String(value).trim()) item.figureLabelVisible = true;
-          if (field === "figureLabelSize") item[field] = Math.max(5, Math.min(120, +value || 18));
-          if (field === "figureLabelY") item[field] = Math.max(0, Math.min(1, +value || 0));
+          if (field === "figureLabel" && String(value).trim())
+            item.figureLabelVisible = true;
+          if (field === "figureLabelSize")
+            item[field] = Math.max(5, Math.min(120, +value || 18));
+          if (field === "figureLabelY")
+            item[field] = Math.max(0, Math.min(1, +value || 0));
           if (field === "layerSide") item.layerSide = +value === -1 ? -1 : 1;
           if (field === "layerThickness")
             item.layerThickness = Math.max(12, Math.min(240, +value || 90));
@@ -1336,6 +1388,27 @@ export class Drawing2D {
     circle.setAttribute("cy", this.sculptCursor.y);
     circle.setAttribute("r", this.sculptOptions.radius);
   }
+  receptorSession(item) {
+    const target = item?.anchor2d
+      ? this.doc.items.find((i) => i.id === item.anchor2d.targetId)
+      : item;
+    if (!target)
+      throw Error("Selecteer een membraan of een gekoppelde receptor.");
+    const contour = prepareContour(
+      this,
+      target,
+      item.anchor2d?.pathIndex ?? target.contourEdit?.pathIndex,
+    );
+    const items = this.doc.items.filter(
+      (i) =>
+        i.visible !== false &&
+        i.anchor2d?.targetId === target.id &&
+        i.anchor2d.pathIndex === contour.index,
+    );
+    if (items.length < 2)
+      throw Error("Koppel eerst minstens twee receptoren aan dit membraan.");
+    return { contour, items, bounds: measureReceptors(this, items) };
+  }
   sculptCommand(cmd) {
     if (cmd === "floating-tools") {
       this.floating.show();
@@ -1351,6 +1424,21 @@ export class Drawing2D {
       const items = this.selectedItems().filter((i) => !i.locked);
       if (!items.length)
         throw Error("Selecteer eerst een niet-vergrendeld object.");
+      if (cmd === "anchor-spread") {
+        const session = this.receptorSession(items[0]);
+        this.beforeChange();
+        const result = spreadReceptors(session.items, session.contour, {
+          bounds: session.bounds,
+          gap: this.sculptOptions.receptorGap,
+        });
+        this.notify();
+        this.onStatus(
+          result.remaining
+            ? "Spreiden uitgevoerd. Er is nog overlap: gebruik het spreidpenseel, maak de membraan ruimer of verklein de receptoren."
+            : "Receptoren gespreid; membraanankers blijven behouden.",
+        );
+        return true;
+      }
       if (cmd === "anchor-target") {
         if (items.length !== 1 || items[0].anchor2d)
           throw Error(
@@ -1690,7 +1778,10 @@ export class Drawing2D {
       return;
     }
     if (cmd === "zoom-in" || cmd === "zoom-out") {
-      Object.assign(this.doc,zoomViewport(this.doc,cmd === "zoom-in" ? 1.25 : .8));
+      Object.assign(
+        this.doc,
+        zoomViewport(this.doc, cmd === "zoom-in" ? 1.25 : 0.8),
+      );
       this.render();
       this.onSelect(this.selected);
       return;
@@ -1814,21 +1905,38 @@ export class Drawing2D {
         if (i.anchor2d && copies.has(i.anchor2d.targetId)) {
           i.anchor2d.targetId = copies.get(i.anchor2d.targetId);
         } else if (i.anchor2d) {
-          const target = this.doc.items.find(t => t.id === i.anchor2d.targetId);
-          if (!target) { delete i.anchor2d; continue; }
+          const target = this.doc.items.find(
+            (t) => t.id === i.anchor2d.targetId,
+          );
+          if (!target) {
+            delete i.anchor2d;
+            continue;
+          }
           try {
             const contour = prepareContour(this, target, i.anchor2d.pathIndex);
             let length = 0;
             for (let n = 1; n < contour.points.length; n++)
-              length += Math.hypot(...contour.points[n].map((v,k) => v-contour.points[n-1][k]));
+              length += Math.hypot(
+                ...contour.points[n].map(
+                  (v, k) => v - contour.points[n - 1][k],
+                ),
+              );
             if (contour.closed)
-              length += Math.hypot(...contour.points[0].map((v,k) => v-contour.points.at(-1)[k]));
-            const step = Math.min(.25, offset / Math.max(1, length));
+              length += Math.hypot(
+                ...contour.points[0].map(
+                  (v, k) => v - contour.points.at(-1)[k],
+                ),
+              );
+            const step = Math.min(0.25, offset / Math.max(1, length));
             const next = i.anchor2d.u + step;
-            i.anchor2d.u = contour.closed ? next % 1 : next <= 1 ? next : Math.max(0,i.anchor2d.u-step);
+            i.anchor2d.u = contour.closed
+              ? next % 1
+              : next <= 1
+                ? next
+                : Math.max(0, i.anchor2d.u - step);
           } catch {
             // The membrane may be hidden. Keep a distinct position on its edge.
-            i.anchor2d.u = (i.anchor2d.u + .05) % 1;
+            i.anchor2d.u = (i.anchor2d.u + 0.05) % 1;
           }
         }
       }
@@ -1884,7 +1992,7 @@ export class Drawing2D {
     ]
       .map(
         ([key, label]) =>
-          `<button data-sheet-action="${key}" ${sheetActionEnabled(this.doc,this.selected,this.clipboard,key) ? "" : "disabled"}>${label}</button>`,
+          `<button data-sheet-action="${key}" ${sheetActionEnabled(this.doc, this.selected, this.clipboard, key) ? "" : "disabled"}>${label}</button>`,
       )
       .join("")}</div><strong>Uitlijnen</strong><div class="view-buttons">${[
       ["left", "Links"],
@@ -1896,18 +2004,18 @@ export class Drawing2D {
     ]
       .map(
         ([key, label]) =>
-          `<button data-sheet-action="align-${key}" ${sheetActionEnabled(this.doc,this.selected,this.clipboard,"align-"+key) ? "" : "disabled"}>${label}</button>`,
+          `<button data-sheet-action="align-${key}" ${sheetActionEnabled(this.doc, this.selected, this.clipboard, "align-" + key) ? "" : "disabled"}>${label}</button>`,
       )
       .join(
         "",
-      )}</div><div class="row"><button data-sheet-action="distribute-x" ${sheetActionEnabled(this.doc,this.selected,this.clipboard,"distribute-x") ? "" : "disabled"}>Verdelen X</button><button data-sheet-action="distribute-y" ${sheetActionEnabled(this.doc,this.selected,this.clipboard,"distribute-y") ? "" : "disabled"}>Verdelen Y</button></div></div>${pageFormatControls()}<label>Bladbreedte<input type="number" data-sheet-page="width" min="100" max="10000" value="${this.doc.width}"></label><label>Bladhoogte<input type="number" data-sheet-page="height" min="100" max="10000" value="${this.doc.height}"></label><label>Bladkleur<input type="color" data-sheet-page="background" value="${this.doc.background}"></label><label class="check"><input type="checkbox" data-sheet-page="grid" ${this.doc.grid ? "checked" : ""}> Raster tonen</label><label class="check"><input type="checkbox" data-sheet-page="snap" ${this.doc.snap ? "checked" : ""}> Op raster uitlijnen</label><p class="muted">Ctrl+A selecteren · Ctrl+D dupliceren · Ctrl+G groeperen · Shift+Ctrl+G losmaken · pijltjes verplaatsen.</p></div>`;
+      )}</div><div class="row"><button data-sheet-action="distribute-x" ${sheetActionEnabled(this.doc, this.selected, this.clipboard, "distribute-x") ? "" : "disabled"}>Verdelen X</button><button data-sheet-action="distribute-y" ${sheetActionEnabled(this.doc, this.selected, this.clipboard, "distribute-y") ? "" : "disabled"}>Verdelen Y</button></div></div>${pageFormatControls()}<label>Bladbreedte<input type="number" data-sheet-page="width" min="100" max="10000" value="${this.doc.width}"></label><label>Bladhoogte<input type="number" data-sheet-page="height" min="100" max="10000" value="${this.doc.height}"></label><label>Bladkleur<input type="color" data-sheet-page="background" value="${this.doc.background}"></label><label class="check"><input type="checkbox" data-sheet-page="grid" ${this.doc.grid ? "checked" : ""}> Raster tonen</label><label class="check"><input type="checkbox" data-sheet-page="snap" ${this.doc.snap ? "checked" : ""}> Op raster uitlijnen</label><p class="muted">Ctrl+A selecteren · Ctrl+D dupliceren · Ctrl+G groeperen · Shift+Ctrl+G losmaken · pijltjes verplaatsen.</p></div>`;
     return includeTools
       ? html
       : html.slice(0, html.indexOf('<div class="sheet-arrange">')) + "</div>";
   }
   toolsHTML() {
     const button = (cmd, label) =>
-      `<button data-sheet-action="${cmd}" ${sheetActionEnabled(this.doc,this.selected,this.clipboard,cmd) ? "" : "disabled"}>${label}</button>`;
+      `<button data-sheet-action="${cmd}" ${sheetActionEnabled(this.doc, this.selected, this.clipboard, cmd) ? "" : "disabled"}>${label}</button>`;
     const html = this.propertiesHTML(true),
       tail = html.slice(html.indexOf('<div class="sheet-arrange">'));
     return `<div class="details-body drawing-details"><h2>Tekenen</h2><button data-sheet-action="floating-tools" class="wide">Sculpting en modifiers</button><p class="muted">${this.selected.length} geselecteerde elementen</p><strong>Selectie</strong><div class="drawing-grid">${[
@@ -2000,13 +2108,21 @@ export class Drawing2D {
       )
       .join("")}</svg>`;
   }
-  exportSelectionSVG(){
+  exportSelectionSVG() {
     syncPathwayConnections(this.doc.items);
-    const items=this.selectedItems().filter(i=>i.visible);
-    if(!items.length)throw Error('Selecteer eerst een 2D-figuur.');
-    const boundsItems=this.labelsVisible===false?items:[...items,...items.map(figureLabelBounds).filter(Boolean)];
-    const b=sheetBounds(boundsItems),padding=10,x=b.x-padding,y=b.y-padding,w=b.w+padding*2,h=b.h+padding*2;
-    return `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="${NS}" xmlns:xlink="http://www.w3.org/1999/xlink" width="${Math.ceil(w)}" height="${Math.ceil(h)}" viewBox="${x} ${y} ${w} ${h}"><title>ImmunoStudio selection</title>${items.map(i=>`<g transform="translate(${i.x+i.w/2} ${i.y+i.h/2}) rotate(${i.rotation||0}) translate(${-i.w/2} ${-i.h/2})" opacity="${i.opacity}"><g transform="translate(${i.w/2} ${i.h/2}) scale(${i.mirrorX?-1:1} ${i.mirrorY?-1:1}) translate(${-i.w/2} ${-i.h/2})">${this.itemMarkup(i)}</g></g>`).join('')}</svg>`;
+    const items = this.selectedItems().filter((i) => i.visible);
+    if (!items.length) throw Error("Selecteer eerst een 2D-figuur.");
+    const boundsItems =
+      this.labelsVisible === false
+        ? items
+        : [...items, ...items.map(figureLabelBounds).filter(Boolean)];
+    const b = sheetBounds(boundsItems),
+      padding = 10,
+      x = b.x - padding,
+      y = b.y - padding,
+      w = b.w + padding * 2,
+      h = b.h + padding * 2;
+    return `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="${NS}" xmlns:xlink="http://www.w3.org/1999/xlink" width="${Math.ceil(w)}" height="${Math.ceil(h)}" viewBox="${x} ${y} ${w} ${h}"><title>ImmunoStudio selection</title>${items.map((i) => `<g transform="translate(${i.x + i.w / 2} ${i.y + i.h / 2}) rotate(${i.rotation || 0}) translate(${-i.w / 2} ${-i.h / 2})" opacity="${i.opacity}"><g transform="translate(${i.w / 2} ${i.h / 2}) scale(${i.mirrorX ? -1 : 1} ${i.mirrorY ? -1 : 1}) translate(${-i.w / 2} ${-i.h / 2})">${this.itemMarkup(i)}</g></g>`).join("")}</svg>`;
   }
   async exportPNG(width = 1920, transparent = false) {
     const text = this.exportSVG(transparent),

@@ -1,4 +1,8 @@
 export const explanations = {
+  "anchor-spread": [
+    "Spreid overlappende receptoren op dit membraan. De ankers blijven behouden; vergrendelde moleculen blijven staan.",
+    "Separate overlapping receptors on this membrane. Anchors are preserved; locked molecules stay in place.",
+  ],
   "to-editable-curve": [
     "Maak van de geselecteerde lijn of vorm een bewerkbare Béziercurve. Sleep blauwe punten en oranje handvatten.",
     "Make the selected line or shape an editable Bézier curve. Drag blue anchors and orange handles.",
