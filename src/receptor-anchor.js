@@ -1,3 +1,4 @@
+import { isMembraneCell } from "./cell-look.js";
 // Source coordinates refer to the transmembrane stem, not the figure bounds.
 // CD4 is drawn with its extracellular domains pointing down in the source set.
 const nativeProfiles = [
@@ -88,18 +89,39 @@ export function receptorAnchorProfile(item) {
   return null;
 }
 
+export function membraneThickness(item) {
+  return (
+    item.bilayerThickness ||
+    (item.kind === "svg" && isMembraneCell(item)
+      ? Math.max(6, Math.min(14, Math.min(item.w, item.h) * 0.035))
+      : 34)
+  );
+}
+export function embeddedStemProfile(name) {
+  if (/CCR5/i.test(name)) return { x: 122.5, y: 61, width: 114.6, span: 62 };
+  const file = /basic[_-]150[_-]CD4|CD4.*(?:coreceptor|four.domain)/i.test(name)
+    ? nativeProfiles[0]
+    : /basic[_-]14[_-]TCR|TCR.*(?:with.CD8|CD8)/i.test(name)
+      ? nativeProfiles[1]
+      : /basic[_-]13[_-]TCR|TCR.*(?:CD3|alpha)/i.test(name)
+        ? nativeProfiles[2]
+        : /basic[_-]15[_-]CD8|CD8.*coreceptor/i.test(name)
+          ? nativeProfiles[3]
+          : null;
+  return file;
+}
 export function fitReceptorAnchor(item, target, onlyIfChanged = false) {
   const profile = receptorAnchorProfile(item);
   if (!profile || !item.anchor2d || !(item.h > 0) || !(item.w > 0))
     return false;
   const stamp = JSON.stringify([
     profile,
-    target.bilayerThickness || 34,
+    membraneThickness(target),
     !!item.mirrorX,
     !!item.mirrorY,
   ]);
   if (onlyIfChanged && item.anchor2d.receptorFit === stamp) return false;
-  const h = (target.bilayerThickness || 34) / profile.span;
+  const h = membraneThickness(target) / profile.span;
   const ratio = h / item.h;
   item.w *= ratio;
   item.h = h;

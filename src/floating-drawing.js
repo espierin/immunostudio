@@ -25,7 +25,7 @@ export class FloatingDrawingTools {
     this.element = document.createElement("section");
     this.element.className = "floating-drawing";
     this.element.setAttribute("aria-label", "Sculpting en modifiers");
-    this.element.innerHTML = `<div class="floating-grip" tabindex="0" title="Sleep deze balk om het menu te verplaatsen. Pijltjestoetsen verplaatsen het menu."><strong>Sculpting en modifiers</strong><button data-floating="minimize" title="Minimaliseren of openen" aria-expanded="false">▾</button><button data-floating="expand" title="Breder of smaller maken">⤢</button><button data-floating="close" title="Zwevend menu sluiten">×</button></div><div class="floating-content"><p class="floating-selection" data-no-translate></p><div class="drawing-grid"><button data-sheet-tool="select">Selecteren</button><button data-sheet-tool="nodes">Punten bewerken</button><button data-sheet-tool="sculpt">Sculpten</button><button data-sheet-action="contour-reset">Contour herstellen</button></div><div class="floating-line-appearance"></div><details open><summary>Sculptpenseel</summary><label>Werking<select data-sculpt-option="mode"><option value="drag">Duwen en trekken</option><option value="inflate">Opbollen</option><option value="deflate">Induwen</option><option value="smooth">Lokaal gladmaken</option><option value="spread">Receptoren spreiden</option></select></label><label>Radius (px)<input type="number" min="10" max="400" step="5" value="100" data-sculpt-option="radius"></label><label>Sterkte (%)<input type="range" min="5" max="100" value="70" data-sculpt-option="strength"></label><label title="Schuif gekoppelde receptoren tijdens het sculpten langs de membraan uit elkaar. Vergrendelde receptoren blijven staan.">Receptoren automatisch spreiden<input type="checkbox" data-sculpt-option="autoSpread" ${drawing.sculptOptions.autoSpread ? "checked" : ""}></label><label>Binnenstructuren meevormen<input type="checkbox" data-sculpt-option="interior" checked></label><p class="muted">Receptoren spreiden verschuift gekoppelde moleculen langs de membraan, zonder de contour te veranderen.</p><p class="muted">Selecteer een cel of weefsel en sleep bij de rand. Kies eerst een onderdeel met Punten bewerken voor een specifieke contour. Shift keert duwen en opbollen om.</p></details><details open><summary>Contourmodifiers</summary><label>Afstand / tolerantie (px)<input type="number" min=".5" max="100" step=".5" value="8" data-sculpt-option="amount"></label><div class="drawing-grid"><button data-sheet-action="contour-smooth">Gladmaken</button><button data-sheet-action="contour-simplify">Vereenvoudigen</button><button data-sheet-action="contour-inset">Krimpen</button><button data-sheet-action="contour-outset">Vergroten</button><button data-sheet-action="mirror-x">Horizontaal spiegelen</button><button data-sheet-action="mirror-y">Verticaal spiegelen</button></div><p class="muted">Contourmodifiers volgen de gekozen membraanrand. Spiegelen werkt op het hele object. Gebruik Ongedaan maken om een stap terug te gaan.</p></details><details open><summary>Membraanankers</summary><p class="floating-target" data-no-translate></p><div class="drawing-grid"><button data-sheet-action="anchor-target">Gebruik als membraan</button><button data-sheet-action="anchor-attach">Koppel selectie</button><button data-sheet-action="anchor-detach">Losmaken van membraan</button><button data-sheet-action="anchor-flip">Andere membraanzijde</button></div><label>Receptorafstand (px)<input type="number" min="0" max="100" step="1" value="6" data-sculpt-option="receptorGap"></label><button class="wide" data-sheet-action="anchor-spread" title="Spreid overlappende receptoren op dit membraan. De ankers blijven behouden; vergrendelde moleculen blijven staan.">Receptoren spreiden</button><button class="wide" data-sheet-action="anchor-mark-embedded">Onderdeel als membraanmolecuul</button><label>Positie langs rand (%)<input type="number" data-anchor-field="u" min="0" max="100" step=".5"></label><label>Afstand tot rand (px)<input type="number" data-anchor-field="offset" min="-300" max="300" step="1"></label><label>Ankerhoogte in molecuul (%)<input type="number" data-anchor-field="pivotY" min="0" max="100" step="1"></label><p class="muted">Kies eerst de cel of het membraan als doel, selecteer daarna de losse moleculen en koppel ze. Gekoppelde moleculen volgen de rand en blijven haaks staan. Ingebouwde herkenbare receptorgroepen bewegen automatisch mee bij sculpten.</p></details></div>`;
+    this.element.innerHTML = `<div class="floating-grip" tabindex="0" title="Sleep deze balk om het menu te verplaatsen. Pijltjestoetsen verplaatsen het menu."><strong>Sculpting en modifiers</strong><button data-floating="minimize" title="Minimaliseren of openen" aria-expanded="false">▾</button><button data-floating="expand" title="Breder of smaller maken">⤢</button><button data-floating="close" title="Zwevend menu sluiten">×</button></div><div class="floating-content"><p class="floating-selection" data-no-translate></p><div class="drawing-grid"><button data-sheet-tool="select">Selecteren</button><button data-sheet-tool="nodes">Punten bewerken</button><button data-sheet-tool="sculpt">Sculpten</button><button data-sheet-action="contour-reset">Contour herstellen</button></div><div class="floating-line-appearance"></div><details open><summary>Sculptpenseel</summary><label>Werking<select data-sculpt-option="mode"><option value="drag">Duwen en trekken</option><option value="inflate">Opbollen</option><option value="deflate">Induwen</option><option value="smooth">Lokaal gladmaken</option><option value="spread">Receptoren spreiden</option><option value="bend">Moleculen opzij buigen</option></select></label><label>Radius (px)<input type="number" min="10" max="400" step="5" value="100" data-sculpt-option="radius"></label><label>Sterkte (%)<input type="range" min="5" max="100" value="70" data-sculpt-option="strength"></label><label title="Schuif gekoppelde receptoren tijdens het sculpten langs de membraan uit elkaar. Vergrendelde receptoren blijven staan.">Receptoren automatisch spreiden<input type="checkbox" data-sculpt-option="autoSpread" ${drawing.sculptOptions.autoSpread ? "checked" : ""}></label><label>Binnenstructuren meevormen<input type="checkbox" data-sculpt-option="interior" checked></label><p class="muted">Receptoren spreiden verschuift gekoppelde moleculen langs de membraan, zonder de contour te veranderen.</p><p class="muted">Selecteer een cel of weefsel en sleep bij de rand. Kies eerst een onderdeel met Punten bewerken voor een specifieke contour. Shift keert duwen en opbollen om.</p></details><details open><summary>Contourmodifiers</summary><label>Afstand / tolerantie (px)<input type="number" min=".5" max="100" step=".5" value="8" data-sculpt-option="amount"></label><div class="drawing-grid"><button data-sheet-action="contour-smooth">Gladmaken</button><button data-sheet-action="contour-simplify">Vereenvoudigen</button><button data-sheet-action="contour-inset">Krimpen</button><button data-sheet-action="contour-outset">Vergroten</button><button data-sheet-action="mirror-x">Horizontaal spiegelen</button><button data-sheet-action="mirror-y">Verticaal spiegelen</button></div><p class="muted">Contourmodifiers volgen de gekozen membraanrand. Spiegelen werkt op het hele object. Gebruik Ongedaan maken om een stap terug te gaan.</p></details><details open><summary>Membraanankers</summary><p class="floating-target" data-no-translate></p><div class="drawing-grid"><button data-sheet-action="anchor-target">Gebruik als membraan</button><button data-sheet-action="anchor-attach">Koppel selectie</button><button data-sheet-action="anchor-detach">Losmaken van membraan</button><button data-sheet-action="anchor-flip">Andere membraanzijde</button></div><label>Receptorafstand (px)<input type="number" min="0" max="100" step="1" value="6" data-sculpt-option="receptorGap"></label><button class="wide" data-sheet-action="anchor-spread" title="Spreid overlappende receptoren op dit membraan. De ankers blijven behouden; vergrendelde moleculen blijven staan.">Receptoren spreiden</button><button class="wide" data-sheet-action="anchor-unbend" title="Herstel de kanteling van receptoren zonder de membraan te veranderen.">Receptoren rechtzetten</button><button class="wide" data-sheet-action="anchor-mark-embedded">Onderdeel als membraanmolecuul</button><label>Positie langs rand (%)<input type="number" data-anchor-field="u" min="0" max="100" step=".5"></label><label title="Kantelt het molecuul rond zijn vaste membraananker, zonder de membraan te veranderen.">Kanteling bij anker (°)<input type="number" data-anchor-field="tilt" min="-60" max="60" step="1"></label><label>Afstand tot rand (px)<input type="number" data-anchor-field="offset" min="-300" max="300" step="1"></label><label>Ankerhoogte in molecuul (%)<input type="number" data-anchor-field="pivotY" min="0" max="100" step="1"></label><p class="muted">Kies eerst de cel of het membraan als doel, selecteer daarna de losse moleculen en koppel ze. Gekoppelde moleculen volgen de rand en blijven haaks staan. Ingebouwde herkenbare receptorgroepen bewegen automatisch mee bij sculpten.</p></details></div>`;
     const panels = ["sculpt", "modifiers", "anchors"];
     for (const [index, details] of [
       ...this.element.querySelectorAll(".floating-content > details"),
@@ -118,7 +118,18 @@ export class FloatingDrawingTools {
           !editable ||
           d.doc.items.filter(
             (i) => i.anchor2d?.targetId === targetId && i.visible !== false,
-          ).length < 2;
+          ).length +
+            d.embeddedReceptorCount(targetId) <
+            2;
+      }
+      if (action === "anchor-unbend") {
+        const targetId = selected[0]?.anchor2d?.targetId || selected[0]?.id;
+        button.disabled =
+          !editable ||
+          !(
+            d.doc.items.some((i) => i.anchor2d?.targetId === targetId) ||
+            d.embeddedReceptorCount(targetId)
+          );
       }
       if (action === "anchor-attach")
         button.disabled =
@@ -133,7 +144,7 @@ export class FloatingDrawingTools {
       input.disabled = !a || selected[0].locked;
       if (document.activeElement !== input)
         input.value = a
-          ? key === "offset"
+          ? ["offset", "tilt"].includes(key)
             ? a[key] || 0
             : Math.round((a[key] ?? 0.8) * 1000) / 10
           : "";
@@ -195,7 +206,7 @@ export class FloatingDrawingTools {
                 Number.isFinite(+e.target.value) ? +e.target.value : 1,
               ),
             ) / (key === "strength" ? 100 : 1);
-      if (key === "mode" && e.target.value === "spread")
+      if (key === "mode" && ["spread", "bend"].includes(e.target.value))
         this.drawing.setTool("sculpt");
     });
     this.element.addEventListener("change", (e) => {
@@ -207,9 +218,11 @@ export class FloatingDrawingTools {
       for (const i of this.drawing.selectedItems())
         if (i.anchor2d && !i.locked)
           i.anchor2d[key] =
-            key === "offset"
-              ? Math.max(-300, Math.min(300, value))
-              : Math.max(0, Math.min(100, value)) / 100;
+            key === "tilt"
+              ? Math.max(-60, Math.min(60, value))
+              : key === "offset"
+                ? Math.max(-300, Math.min(300, value))
+                : Math.max(0, Math.min(100, value)) / 100;
       this.drawing.notify();
     });
     const grip = this.element.querySelector(".floating-grip");

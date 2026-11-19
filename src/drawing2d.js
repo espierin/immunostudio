@@ -1,12 +1,17 @@
+import { cellMembraneKey, updateCellMembranes } from "./cell-membrane2d.js";
 import { receptorFootprints } from "./receptor-footprints.js";
-import { spreadReceptors, measureReceptors } from "./receptor-spacing.js";
+import {
+  bendReceptors,
+  spreadReceptors,
+  measureReceptors,
+} from "./receptor-spacing.js";
 import { sheetActionEnabled } from "./sheet-actions.js";
 import {
   figureLabelMarkup,
   figureLabelControls,
   figureLabelBounds,
 } from "./figure-label.js";
-import { fitReceptorAnchor } from "./receptor-anchor.js";
+import { membraneThickness, fitReceptorAnchor } from "./receptor-anchor.js";
 import {
   validatePathwayMetadata,
   pathwayProperties,
@@ -52,6 +57,7 @@ import {
   embeddedAnchors,
   writeContour,
   syncSheetAnchors,
+  syncEmbeddedReceptors,
   followEmbedded,
   prepareInterior,
   followInterior,
@@ -289,9 +295,11 @@ export class Drawing2D {
         : tool === "move"
           ? "2D: sleep een element om het te verplaatsen."
           : tool === "sculpt"
-            ? this.sculptOptions.mode === "spread"
-              ? "2D: sleep over overlappende receptoren om ze langs de membraan te spreiden."
-              : "2D: sleep bij de rand om te sculpten. Radius en sterkte staan in het zwevende menu."
+            ? this.sculptOptions.mode === "bend"
+              ? "2D: sleep over membraanmoleculen om ze rond hun vaste anker opzij te buigen."
+              : this.sculptOptions.mode === "spread"
+                ? "2D: sleep over overlappende receptoren om ze langs de membraan te spreiden."
+                : "2D: sleep bij de rand om te sculpten. Radius en sterkte staan in het zwevende menu."
             : tool === "select"
               ? "2D: selecteren, slepen en hoekpunten schalen."
               : "2D: " + tool + " tekenen.",
@@ -480,6 +488,7 @@ export class Drawing2D {
       this.syncingAnchors = false;
       return;
     }
+    updateCellMembranes(this);
     this.renderVectorNodes();
     this.renderSculptGuide();
     this.floating?.update();
@@ -496,6 +505,20 @@ export class Drawing2D {
       stroke = i.stroke || "none",
       sw = i.strokeWidth ?? 3;
     if (i.kind === "svg") {
+      const cell = this.cellMembranes?.get(i.id);
+      if (
+        cell?.key ===
+        cellMembraneKey(
+          i,
+          this.style,
+          this.doc.items,
+          this.labelsVisible !== false,
+        )
+      )
+        return (
+          cell.markup +
+          figureLabelMarkup(i, this.labelsVisible !== false, this.style.label)
+        );
       const key =
         i.id +
         "|" +
@@ -592,12 +615,18 @@ export class Drawing2D {
           this.selectedItems().length === 1
             ? this.selectedItems()[0]
             : this.doc.items.find((i) => i.id === hit);
-        if (this.sculptOptions.mode === "spread") {
+        if (["spread", "bend"].includes(this.sculptOptions.mode)) {
           try {
-            const session = this.receptorSession(item);
+            const session = this.receptorSession(
+              item,
+              this.sculptOptions.mode === "bend" ? 1 : 2,
+            );
             this.beforeChange();
             interaction = {
-              type: "receptor-spread",
+              type:
+                this.sculptOptions.mode === "bend"
+                  ? "receptor-bend"
+                  : "receptor-spread",
               session,
               start: p,
               last: p,
@@ -659,9 +688,10 @@ export class Drawing2D {
             session,
             anchors,
             spacing:
-              this.sculptOptions.autoSpread && receptors.length > 1
+              this.sculptOptions.autoSpread &&
+              receptors.length + anchors.length > 1
                 ? {
-                    items: receptors,
+                    items: [...receptors, ...anchors.map((a) => a.proxy)],
                     bounds: measureReceptors(this, receptors),
                   }
                 : null,
@@ -884,6 +914,21 @@ export class Drawing2D {
         this.render();
         return;
       }
+      if (x.type === "receptor-bend") {
+        const delta = [p.x - x.last.x, p.y - x.last.y];
+        x.last = p;
+        bendReceptors(x.session.items, x.session.contour, delta, {
+          bounds: x.session.bounds,
+          focus: [p.x, p.y],
+          radius: this.sculptOptions.radius,
+          strength: this.sculptOptions.strength,
+        });
+        syncEmbeddedReceptors(x.session.anchors);
+        if (x.session.anchors.length)
+          followEmbedded(x.session.contour, x.session.anchors);
+        this.render();
+        return;
+      }
       if (x.type === "receptor-spread") {
         const distance = Math.hypot(p.x - x.last.x, p.y - x.last.y);
         x.last = p;
@@ -898,6 +943,9 @@ export class Drawing2D {
             this.sculptOptions.strength,
           iterations: 12,
         });
+        syncEmbeddedReceptors(x.session.anchors);
+        if (x.session.anchors.length)
+          followEmbedded(x.session.contour, x.session.anchors);
         this.render();
         return;
       }
@@ -915,7 +963,6 @@ export class Drawing2D {
           return;
         }
         try {
-          writeContour(s, points, x.anchors, x.interior);
           x.lastPoints = points;
           if (x.spacing)
             spreadReceptors(
@@ -927,6 +974,8 @@ export class Drawing2D {
                 iterations: 64,
               },
             );
+          syncEmbeddedReceptors(x.anchors);
+          writeContour(s, points, x.anchors, x.interior);
           this.render();
         } catch (error) {
           this.onStatus(error.message);
@@ -1133,6 +1182,8 @@ export class Drawing2D {
             iterations: 96,
           },
         );
+        syncEmbeddedReceptors(x.anchors);
+        writeContour(x.session, x.lastPoints, x.anchors, x.interior);
         if (result.remaining)
           this.onStatus(
             "Er is nog receptoroverlap. Maak de membraan ruimer, verklein de receptoren of pas de receptorafstand aan.",
@@ -1435,7 +1486,18 @@ export class Drawing2D {
     circle.setAttribute("cy", this.sculptCursor.y);
     circle.setAttribute("r", this.sculptOptions.radius);
   }
-  receptorSession(item) {
+  embeddedReceptorCount(targetId) {
+    const cached = this.cellMembranes?.get(targetId);
+    if (cached) return cached.embeddedCount;
+    const target = this.doc.items.find((i) => i.id === targetId);
+    if (target?.kind !== "svg") return 0;
+    try {
+      return embeddedAnchors(prepareContour(this, target)).length;
+    } catch {
+      return 0;
+    }
+  }
+  receptorSession(item, minimum = 2) {
     const target = item?.anchor2d
       ? this.doc.items.find((i) => i.id === item.anchor2d.targetId)
       : item;
@@ -1452,9 +1514,20 @@ export class Drawing2D {
         i.anchor2d?.targetId === target.id &&
         i.anchor2d.pathIndex === contour.index,
     );
-    if (items.length < 2)
-      throw Error("Koppel eerst minstens twee receptoren aan dit membraan.");
-    return { contour, items, bounds: measureReceptors(this, items) };
+    const anchors = embeddedAnchors(contour);
+    const all = [...items, ...anchors.map((a) => a.proxy)];
+    if (all.length < minimum)
+      throw Error(
+        minimum === 1
+          ? "Selecteer een gekoppelde receptor of een cel met membraanmoleculen."
+          : "Koppel eerst minstens twee receptoren aan dit membraan.",
+      );
+    return {
+      contour,
+      items: all,
+      anchors,
+      bounds: measureReceptors(this, items),
+    };
   }
   sculptCommand(cmd) {
     if (cmd === "floating-tools") {
@@ -1471,6 +1544,19 @@ export class Drawing2D {
       const items = this.selectedItems().filter((i) => !i.locked);
       if (!items.length)
         throw Error("Selecteer eerst een niet-vergrendeld object.");
+      if (cmd === "anchor-unbend") {
+        const session = this.receptorSession(items[0], 1);
+        this.beforeChange();
+        for (const item of session.items)
+          if (!item.locked) item.anchor2d.tilt = 0;
+        for (const a of session.anchors)
+          if (!a.proxy.locked) a.proxy.anchor2d.tilt = -a.initialTilt;
+        syncEmbeddedReceptors(session.anchors);
+        if (session.anchors.length)
+          followEmbedded(session.contour, session.anchors);
+        this.notify();
+        return true;
+      }
       if (cmd === "anchor-spread") {
         const session = this.receptorSession(items[0]);
         this.beforeChange();
@@ -1478,6 +1564,9 @@ export class Drawing2D {
           bounds: session.bounds,
           gap: this.sculptOptions.receptorGap,
         });
+        syncEmbeddedReceptors(session.anchors);
+        if (session.anchors.length)
+          followEmbedded(session.contour, session.anchors);
         this.notify();
         this.onStatus(
           result.remaining
@@ -2029,7 +2118,7 @@ export class Drawing2D {
       i = items[0];
     const number = (title, key, value) =>
       `<label>${title}<input type="number" data-sheet-field="${key}" value="${Math.round(value * 100) / 100}" step="1" ${i?.anchor2d && ["x", "y", "rotation"].includes(key) ? "disabled" : ""}></label>`;
-    const html = `<div class="details-body"><strong ${i ? "data-no-translate" : ""}>${items.length > 1 ? items.length + " geselecteerde elementen" : i ? escape(i.name) : "2D tekenblad"}</strong>${i ? `${i.anchor2d ? '<div class="hinge-box"><strong>Membraananker</strong><p>Positie en rotatie volgen de membraanrand. Bewerk het anker in het zwevende menu.</p><button data-sheet-action="floating-tools">Membraananker bewerken</button></div>' : ""}<label>Naam<input maxlength="512" data-sheet-field="name" value="${escape(i.name)}"></label><div class="coordinates">${number("X", "x", i.x)}${number("Y", "y", i.y)}</div><div class="coordinates">${number("Breedte", "w", i.w)}${number("Hoogte", "h", i.h)}</div>${number("Rotatie (°)", "rotation", i.rotation || 0)}<label>Dekking<input type="range" data-sheet-field="opacity" min="0" max="1" step=".05" value="${i.opacity}"></label>${pathwayProperties(i)}${figureLabelControls(i)}${lineAppearanceControls(i)}${i.kind === "membrane" && (!i.lineStyle || i.lineStyle === "membrane") ? `<div class="hinge-box"><strong>Lipidendubbellaag</strong>${number("Membraandikte", "bilayerThickness", i.bilayerThickness || 34)}<p class="muted">${(i.curve.length - 1) / 3 + 1} curvepunten. Sleep de punten en oranje handvatten. Dubbelklik op het membraan om een extra punt toe te voegen.</p><button data-sheet-action="add-curve-point">＋ Punt toevoegen</button></div>` : ""}${i.kind === "text" ? `<label>Tekst<textarea data-sheet-field="text">${escape(i.text)}</textarea></label>${number("Tekstgrootte", "fontSize", i.fontSize)}<label class="check"><input type="checkbox" data-sheet-field="bold" ${i.bold ? "checked" : ""}> Vet</label>` : ""}${i.kind !== "svg" ? `<div class="row"><label>Vulling <input type="color" data-sheet-field="fill" value="${i.fill || "#ffffff"}"></label><label>Contour <input type="color" data-sheet-field="stroke" value="${i.stroke || "#064986"}"></label></div>${number("Lijndikte", "strokeWidth", i.strokeWidth || 3)}` : '<p class="muted">Native vector. Verhoudingen blijven behouden bij slepen van de hoekpunten.</p>'}${i.kind === "svg" && isCellElement(i) ? `<label class="check"><input type="checkbox" data-sheet-field="volumeLook" ${i.volumeLook ? "checked" : ""}> Volumewerking</label>` : ""}<label class="check"><input type="checkbox" data-sheet-field="locked" ${i.locked ? "checked" : ""}> Vergrendeld</label><div class="row"><button data-sheet-action="duplicate">Dupliceren</button><button data-sheet-action="delete" class="danger">Verwijderen</button></div>` : '<p class="muted">Voeg een losse bouwsteen toe of teken een vorm. Shift-klik voor meervoudige selectie.</p>'}<div class="sheet-arrange"><strong>Ordenen</strong><div class="view-buttons">${[
+    const html = `<div class="details-body"><strong ${i ? "data-no-translate" : ""}>${items.length > 1 ? items.length + " geselecteerde elementen" : i ? escape(i.name) : "2D tekenblad"}</strong>${i ? `${i.anchor2d ? '<div class="hinge-box"><strong>Membraananker</strong><p>Positie en rotatie volgen de membraanrand. Bewerk het anker in het zwevende menu.</p><button data-sheet-action="floating-tools">Membraananker bewerken</button></div>' : ""}<label>Naam<input maxlength="512" data-sheet-field="name" value="${escape(i.name)}"></label><div class="coordinates">${number("X", "x", i.x)}${number("Y", "y", i.y)}</div><div class="coordinates">${number("Breedte", "w", i.w)}${number("Hoogte", "h", i.h)}</div>${number("Rotatie (°)", "rotation", i.rotation || 0)}<label>Dekking<input type="range" data-sheet-field="opacity" min="0" max="1" step=".05" value="${i.opacity}"></label>${pathwayProperties(i)}${figureLabelControls(i)}${lineAppearanceControls(i)}${i.kind === "membrane" && (!i.lineStyle || i.lineStyle === "membrane") ? `<div class="hinge-box"><strong>Lipidendubbellaag</strong>${number("Membraandikte", "bilayerThickness", i.bilayerThickness || 34)}<p class="muted">${(i.curve.length - 1) / 3 + 1} curvepunten. Sleep de punten en oranje handvatten. Dubbelklik op het membraan om een extra punt toe te voegen.</p><button data-sheet-action="add-curve-point">＋ Punt toevoegen</button></div>` : ""}${i.kind === "text" ? `<label>Tekst<textarea data-sheet-field="text">${escape(i.text)}</textarea></label>${number("Tekstgrootte", "fontSize", i.fontSize)}<label class="check"><input type="checkbox" data-sheet-field="bold" ${i.bold ? "checked" : ""}> Vet</label>` : ""}${i.kind !== "svg" ? `<div class="row"><label>Vulling <input type="color" data-sheet-field="fill" value="${i.fill || "#ffffff"}"></label><label>Contour <input type="color" data-sheet-field="stroke" value="${i.stroke || "#064986"}"></label></div>${number("Lijndikte", "strokeWidth", i.strokeWidth || 3)}` : '<p class="muted">Native vector. Verhoudingen blijven behouden bij slepen van de hoekpunten.</p>'}${i.kind === "svg" && isCellElement(i) ? `<label class="check"><input type="checkbox" data-sheet-field="volumeLook" ${i.volumeLook ? "checked" : ""}> Volumewerking</label><label class="check"><input type="checkbox" data-sheet-field="cellBilayer" ${i.cellBilayer !== false ? "checked" : ""}> Lipidendubbellaag tonen</label>${number("Membraandikte", "bilayerThickness", membraneThickness(i))}` : ""}<label class="check"><input type="checkbox" data-sheet-field="locked" ${i.locked ? "checked" : ""}> Vergrendeld</label><div class="row"><button data-sheet-action="duplicate">Dupliceren</button><button data-sheet-action="delete" class="danger">Verwijderen</button></div>` : '<p class="muted">Voeg een losse bouwsteen toe of teken een vorm. Shift-klik voor meervoudige selectie.</p>'}<div class="sheet-arrange"><strong>Ordenen</strong><div class="view-buttons">${[
       ["front", "Vooraan"],
       ["back", "Achteraan"],
       ["forward", "Vooruit"],

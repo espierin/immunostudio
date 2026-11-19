@@ -1,4 +1,13 @@
 const entries = `
+Receptoren rechtzetten|Straighten receptors
+Herstel de kanteling van receptoren zonder de membraan te veranderen.|Reset receptor tilt without changing the membrane.
+Moleculen opzij buigen|Bend molecules sideways
+Kanteling bij anker (°)|Tilt at anchor (°)
+Kantelt het molecuul rond zijn vaste membraananker, zonder de membraan te veranderen.|Tilts the molecule about its fixed membrane anchor without changing the membrane.
+Lipidendubbellaag tonen|Show lipid bilayer
+Selecteer een gekoppelde receptor of een cel met membraanmoleculen.|Select an attached receptor or a cell with membrane molecules.
+2D: sleep over membraanmoleculen om ze rond hun vaste anker opzij te buigen.|2D: drag over membrane molecules to tilt them about their fixed anchors.
+
 Receptoren automatisch spreiden|Automatically spread receptors
 Schuif gekoppelde receptoren tijdens het sculpten langs de membraan uit elkaar. Vergrendelde receptoren blijven staan.|Slide attached receptors apart along the membrane while sculpting. Locked receptors stay in place.
 Er is nog receptoroverlap. Maak de membraan ruimer, verklein de receptoren of pas de receptorafstand aan.|Some receptors still overlap. Enlarge the membrane, reduce receptor size or adjust receptor spacing.

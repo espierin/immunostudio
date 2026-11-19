@@ -1,4 +1,9 @@
-import { fitReceptorAnchor } from './receptor-anchor.js';
+import { sampledStemFootprint } from "./receptor-footprints.js";
+import {
+  membraneThickness,
+  embeddedStemProfile,
+  fitReceptorAnchor,
+} from "./receptor-anchor.js";
 import {
   vectorElements,
   elementPath,
@@ -178,10 +183,36 @@ export function embeddedAnchors(session) {
       container = container.parentElement;
     if (chosen.has(container)) continue;
     chosen.add(container);
+    const stemNode = [container, ...container.querySelectorAll("g")].find((n) =>
+      embeddedStemProfile(
+        [
+          n.id,
+          n.getAttribute("inkscape:label"),
+          n.getAttribute("data-receptor"),
+        ].join(" "),
+      ),
+    );
+    const stemProfile =
+      stemNode &&
+      embeddedStemProfile(
+        [
+          stemNode.id,
+          stemNode.getAttribute("inkscape:label"),
+          stemNode.getAttribute("data-receptor"),
+        ].join(" "),
+      );
+    const stemMatrix =
+      stemNode && session.screenToSheet.multiply(stemNode.getScreenCTM());
+    const stemPoint =
+      stemProfile && point([stemProfile.x, stemProfile.y], stemMatrix);
     const box = container.getBBox(),
       matrix = session.screenToSheet.multiply(container.getScreenCTM()),
       centre = point([box.x + box.width / 2, box.y + box.height / 2], matrix),
-      closest = nearestContour(session.points, centre, session.closed),
+      closest = nearestContour(
+        session.points,
+        stemPoint || centre,
+        session.closed,
+      ),
       size = Math.max(box.width, box.height) * Math.hypot(matrix.a, matrix.b);
     if (closest.distance > Math.max(14, size * 0.8)) continue;
     const stored = container.getAttribute("data-membrane-u"),
@@ -193,7 +224,74 @@ export function embeddedAnchors(session) {
       side =
         +(container.getAttribute("data-membrane-side") || 0) ||
         (axis[0] * frame.normal[0] + axis[1] * frame.normal[1] >= 0 ? 1 : -1);
+    const normalAngle = Math.atan2(
+        frame.normal[1] * side,
+        frame.normal[0] * side,
+      ),
+      rotation = normalAngle + Math.PI / 2,
+      c = Math.cos(rotation),
+      sin = Math.sin(rotation);
+    const corners = [
+      [box.x, box.y],
+      [box.x + box.width, box.y],
+      [box.x + box.width, box.y + box.height],
+      [box.x, box.y + box.height],
+    ].map((p) => point(p, matrix));
+    const local = corners.map((p) => {
+      const x = p[0] - frame.point[0],
+        y = p[1] - frame.point[1];
+      return [x * c + y * sin, -x * sin + y * c];
+    });
+    const x = Math.min(...local.map((p) => p[0])),
+      y = Math.min(...local.map((p) => p[1])),
+      w = Math.max(1, Math.max(...local.map((p) => p[0])) - x),
+      h = Math.max(1, Math.max(...local.map((p) => p[1])) - y);
+    const tilt = +(container.getAttribute("data-membrane-tilt") || 0);
+    const proxy = {
+      id: `embedded-${session.item.id}-${groups.indexOf(container)}`,
+      w,
+      h,
+      locked: !!session.item.locked,
+      anchor2d: {
+        u,
+        pivotX: -x / w,
+        pivotY: -y / h,
+        side,
+        offset: 0,
+        angle: 0,
+        tilt: 0,
+      },
+    };
     anchors.push({
+      proxy,
+      tilt,
+      initialTilt: tilt,
+      normalAngle,
+      stem: stemProfile
+        ? [
+            [
+              stemProfile.x - stemProfile.width / 2,
+              stemProfile.y - stemProfile.span / 2,
+            ],
+            [
+              stemProfile.x + stemProfile.width / 2,
+              stemProfile.y - stemProfile.span / 2,
+            ],
+            [
+              stemProfile.x + stemProfile.width / 2,
+              stemProfile.y + stemProfile.span / 2,
+            ],
+            [
+              stemProfile.x - stemProfile.width / 2,
+              stemProfile.y + stemProfile.span / 2,
+            ],
+          ].map((p) => point(p, stemMatrix))
+        : sampledStemFootprint(
+            container,
+            frame,
+            session.screenToSheet,
+            membraneThickness(session.item),
+          ),
       index: groups.indexOf(container),
       u,
       side,
@@ -246,7 +344,8 @@ function moveEmbedded(doc, worldPoints, closed, anchors) {
     const frame = contourFrame(worldPoints, a.u, closed),
       angle =
         Math.atan2(frame.normal[1] * a.side, frame.normal[0] * a.side) -
-        a.axisAngle,
+        a.normalAngle +
+        (((a.tilt || 0) - (a.initialTilt || 0)) * Math.PI) / 180,
       delta = new DOMMatrix()
         .translate(frame.point[0], frame.point[1])
         .rotate((angle * 180) / Math.PI)
@@ -260,6 +359,7 @@ function moveEmbedded(doc, worldPoints, closed, anchors) {
     );
     g.setAttribute("data-membrane-u", String(a.u));
     g.setAttribute("data-membrane-side", String(a.side));
+    g.setAttribute("data-membrane-tilt", String(a.tilt || 0));
   }
 }
 function deformParts(doc, session, worldPoints, interior) {
@@ -409,4 +509,14 @@ export function syncSheetAnchors(drawing) {
     } catch {}
   }
   return changed;
+}
+
+export function syncEmbeddedReceptors(anchors) {
+  for (const a of anchors) {
+    a.u = a.proxy.anchor2d.u;
+    a.tilt = Math.max(
+      -60,
+      Math.min(60, a.initialTilt + (a.proxy.anchor2d.tilt || 0)),
+    );
+  }
 }

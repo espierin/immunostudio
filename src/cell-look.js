@@ -1,5 +1,5 @@
 export function isCellElement(item) {
-  return /cell|lymphocyt|neutroph|monocyt|macroph|dendritic|erythro|platelet|cardiomy|_T_CD|_NK_/i.test(
+  return /cell|lymphocyt|neutroph|monocyt|macroph|dendritic|erythro|platelet|cardiomy|fibroblast|endothelial|epithelial|astrocyt|microglia|hepatocyt|basophil|eosinophil|_T_CD|_NK_/i.test(
     `${item.name || ""} ${item.sourceFile || ""}`,
   );
 }
@@ -84,4 +84,14 @@ export function enhanceCellVector(text, prefix) {
   }
   root.prepend(defs);
   return new XMLSerializer().serializeToString(root);
+}
+
+export function isMembraneCell(item) {
+  const text = `${item.name || ""} ${item.sourceFile || ""}`;
+  return (
+    isHemisphereCell(item) &&
+    !/flow.?cell|cytomet|cell.?sort|barcod|microfluid|cell.?free|cell.?suspension|cell.?adhesion|droplet|cell.?product.?bag/i.test(
+      text,
+    )
+  );
 }

@@ -496,6 +496,7 @@ export function validateProject(p) {
       ) throw Error("Invalid figure label.");
       if (i.anchor2d) {
         const a = i.anchor2d;
+        if (a.tilt !== undefined && (!Number.isFinite(a.tilt) || Math.abs(a.tilt)>60)) throw Error("Invalid receptor tilt.");
         if (
           (a.receptorFit !== undefined && (typeof a.receptorFit !== "string" || a.receptorFit.length > 512)) ||
           typeof a.targetId !== "string" ||

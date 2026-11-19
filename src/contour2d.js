@@ -284,7 +284,7 @@ export function anchoredPose(item, frame, anchor) {
     rotation =
       Math.atan2(normal[1], normal[0]) +
       Math.PI / 2 +
-      ((anchor.angle || 0) * Math.PI) / 180,
+      (((anchor.angle || 0) + (anchor.tilt || 0)) * Math.PI) / 180,
     c = Math.cos(rotation),
     s = Math.sin(rotation),
     x = ((anchor.pivotX ?? 0.5) - 0.5) * item.w,

@@ -1,14 +1,14 @@
 import { receptorAnchorProfile } from "./receptor-anchor.js";
 
 // Footprints describe only the transmembrane portion, in membrane artwork coordinates.
-export function receptorFootprints(target, items) {
+export function receptorFootprints(target, items, pathIndex = 0) {
   const result = [];
   for (const item of items) {
     if (
       item.visible === false ||
       item.opacity === 0 ||
       item.anchor2d?.targetId !== target.id ||
-      (item.anchor2d.pathIndex ?? 0) !== 0
+      (pathIndex !== null && (item.anchor2d.pathIndex ?? 0) !== pathIndex)
     )
       continue;
     const profile = receptorAnchorProfile(item);
@@ -103,4 +103,48 @@ export function subtractFootprint(subject, clip) {
     inside = next;
   }
   return outside;
+}
+
+// For other receptor artwork, sample the geometry that actually crosses the membrane slab.
+export function sampledStemFootprint(node, frame, screenToSheet, thickness) {
+  if (!node) return null;
+  let low = Infinity,
+    high = -Infinity;
+  for (const shape of node.querySelectorAll("[data-node-path]"))
+    try {
+      if (!shape.getTotalLength) continue;
+      const matrix = screenToSheet.multiply(shape.getScreenCTM()),
+        scale = Math.hypot(matrix.a, matrix.b);
+      const length = shape.getTotalLength(),
+        count = Math.max(8, Math.min(160, Math.ceil((length * scale) / 3)));
+      const stroke = Math.max(
+        0.5,
+        ((parseFloat(getComputedStyle(shape).strokeWidth) || 1) * scale) / 2,
+      );
+      for (let n = 0; n <= count; n++) {
+        const p = shape.getPointAtLength((length * n) / count),
+          world = new DOMPoint(p.x, p.y).matrixTransform(matrix),
+          dx = world.x - frame.point[0],
+          dy = world.y - frame.point[1];
+        if (
+          Math.abs(dx * frame.normal[0] + dy * frame.normal[1]) >
+          thickness / 2 + stroke
+        )
+          continue;
+        const along = dx * frame.tangent[0] + dy * frame.tangent[1];
+        low = Math.min(low, along - stroke);
+        high = Math.max(high, along + stroke);
+      }
+    } catch {}
+  if (!Number.isFinite(low)) return null;
+  const point = (along, depth) => [
+    frame.point[0] + frame.tangent[0] * along + frame.normal[0] * depth,
+    frame.point[1] + frame.tangent[1] * along + frame.normal[1] * depth,
+  ];
+  return [
+    point(low, -thickness / 2 - 0.5),
+    point(high, -thickness / 2 - 0.5),
+    point(high, thickness / 2 + 0.5),
+    point(low, thickness / 2 + 0.5),
+  ];
 }
