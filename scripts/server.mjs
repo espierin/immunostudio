@@ -6,6 +6,7 @@ import { randomUUID, randomBytes } from "node:crypto";
 import { spawn } from "node:child_process";
 import { createRequire } from "node:module";
 import { officeExport, hasOfficeExporter } from "./office-export.mjs";
+import {officeClipboard} from './office-clipboard.mjs';
 const officeAvailable = await hasOfficeExporter();
 const require = createRequire(import.meta.url),
   root = path.resolve("dist"),
@@ -27,8 +28,9 @@ try {
       windowsHide: true,
       stdio: "ignore",
     });
-    p.on("error", () => resolve(false));
-    p.on("exit", (code) => resolve(code === 0));
+    const timer=setTimeout(()=>{p.kill();resolve(false);},2500);
+    p.on("error", () => {clearTimeout(timer);resolve(false);});
+    p.on("exit", (code) => {clearTimeout(timer);resolve(code === 0);});
   });
 } catch {}
 const types = {
@@ -85,14 +87,30 @@ const server = http.createServer(async (req, res) => {
     const name = decodeURIComponent(
       new URL(req.url, "http://localhost").pathname,
     );
+    if(name==='/api/status'||name==='/api/office/clipboard'){
+      const origin=req.headers.origin,allowed=new Set(['https://espierin.github.io',`http://127.0.0.1:${port}`,`http://localhost:${port}`]);
+      if(origin&&!allowed.has(origin)){json(res,{error:'Ongeldige oorsprong'},403);return;}
+      if(origin){
+        res.setHeader('Access-Control-Allow-Origin',origin);res.setHeader('Vary','Origin');
+        res.setHeader('Access-Control-Allow-Methods','GET, POST, OPTIONS');res.setHeader('Access-Control-Allow-Headers','Content-Type, X-ImmunoStudio');
+        res.setHeader('Access-Control-Allow-Private-Network','true');
+      }
+      if(req.method==='OPTIONS'){res.writeHead(204);res.end();return;}
+    }
     if (name === "/api/status" && req.method === "GET") {
       json(res, {
         encoder,
         token,
         formats: encoder ? ["mp4", "avi", "gif"] : [],
         office: officeAvailable,
+        officeClipboard:process.platform==='win32'&&officeAvailable,
       });
       return;
+    }
+    if(name==='/api/office/clipboard'&&req.method==='POST'){
+      if(req.headers['x-immunostudio']!==token){json(res,{error:'Ongeldige exportsessie'},403);return;}
+      const payload=JSON.parse(await body(req,36*1024*1024));
+      json(res,await officeClipboard(payload.svg));return;
     }
     if (name === "/api/office/export" && req.method === "POST") {
       const origin = req.headers.origin;

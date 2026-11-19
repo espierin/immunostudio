@@ -1,6 +1,7 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { extendedPathwayHelp } from "./pathway-search-help.mjs";
 import { pathwayImportHelp } from "./pathway-import-help.mjs";
+import {appendVectorCopyHelp} from './vector-copy-help.mjs';
 
 const manuals = {
   en: {
@@ -434,10 +435,12 @@ function sectionFigures(lang, section) {
     })
     .join("");
 }
+appendVectorCopyHelp(manuals);
 await mkdir("public/manual", { recursive: true });
 for (const [lang, m] of Object.entries(manuals)) {
   const other = lang === "en" ? "nl" : "en";
   const html = `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${m.title}</title><link rel="icon" href="../immunostudio-icon.svg"><style>${css}${shotCSS}</style></head><body><header><div>IMMUNOSTUDIO · USER DOCUMENTATION</div><h1>${m.title}</h1><p>${m.subtitle}</p><p class="shot-note">${lang === "nl" ? "Screenshots uit versie 0.2. Klik op een afbeelding om het volledige screenshot op ware grootte te openen. Detailbeelden zijn uitsneden van ongewijzigde screenshots." : "Screenshots from version 0.2. Click an image to open the full screenshot at its original size. Detail views are crops of unmodified screenshots."}</p><nav class="actions"><a href="../">${m.back}</a><a href="${other}.html" lang="${other}">${m.other}</a><button onclick="window.print()">${m.print}</button></nav></header><div class="layout"><aside aria-label="${m.contents}"><b>${m.contents}</b>${m.sections.map(([id, title]) => `<a href="#${id}">${title}</a>`).join("")}</aside><article>${m.sections.map(([id, title, body]) => `<section id="${id}"><h2>${title}</h2>${body}${sectionFigures(lang, id)}</section>`).join("")}</article></div><footer>ImmunoStudio · 3 November 2026 · <a href="${other}.html">${m.other}</a></footer></body></html>`;
-  await writeFile(`public/manual/${lang}.html`, html);
+  const cleaned=html.replaceAll('3 November 2026','19 November 2026').replace(/(\d)[\u2012-\u2015](\d)/g,lang==='nl'?'$1 tot $2':'$1 to $2').replace(/[\u2012-\u2015]/g,', ');
+  await writeFile(`public/manual/${lang}.html`, cleaned);
 }
 console.log("Generated English and Dutch manuals, 23 sections each.");

@@ -1,0 +1,11 @@
+import {writeFile,mkdir} from 'node:fs/promises';
+import {fileURLToPath} from 'node:url';
+import path from 'node:path';
+import {ccr5SVG} from '../src/receptor-art.js';
+import {pathwaySVG,newPathwayMetadata} from '../src/pathway-elements.js';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
+const dir=path.join(root,'public/library/02_HLA_peptiden_en_receptoren');
+await mkdir(dir,{recursive:true});
+await writeFile(path.join(dir,'immunostudio_CCR5.svg'),ccr5SVG());
+await writeFile(path.join(root,'public/pathway-elements/bio-ccr5.svg'),pathwaySVG(newPathwayMetadata('bio-ccr5')));
+console.log('Generated editable CCR5 receptor figure.');

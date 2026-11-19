@@ -1,5 +1,6 @@
 import cellArtwork from "./biological-cell-art.json" with { type: "json" };
 import { parsePath } from "./vector-nodes.js";
+import {ccr5Artwork} from './receptor-art.js';
 
 // Original schematic family symbols, not atomic structures or inferred expression.
 const cells = [
@@ -217,6 +218,7 @@ export function biologicalFigureFor(label, type = "protein") {
   return null;
 }
 export function biologicalArtwork(f) {
+  if(f.id==='ccr5')return ccr5Artwork();
   if (f.asset && cellArtwork[f.asset])
     return `<svg xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:xlink="http://www.w3.org/1999/xlink" x="56" y="2" width="128" height="108" viewBox="${cellArtwork[f.asset].viewBox}">${cellArtwork[f.asset].body}</svg>`;
   const stroke = "#064986",

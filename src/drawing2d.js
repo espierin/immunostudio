@@ -1889,7 +1889,7 @@ export class Drawing2D {
       )
       .join(
         "",
-      )}</div><p class="muted">Kies Punten bewerken en klik een onderdeel van een vectorbouwsteen. Sleep blauwe ankerpunten en oranje handvatten.</p>${this.nodeEdit ? button("node-add", "Punt toevoegen") : ""}<strong>Bewerken</strong><div class="drawing-grid">${[
+      )}</div><p class="muted">Kies Punten bewerken en klik een onderdeel van een vectorbouwsteen. Sleep blauwe ankerpunten en oranje handvatten.</p>${this.nodeEdit ? button("node-add", "Punt toevoegen") : ""}<strong>Bewerken</strong><button data-action="copy-vector" title="Selectie als vector kopiëren voor PowerPoint of Word" ${this.selected.length ? "" : "disabled"}>Vector kopiëren</button><div class="drawing-grid">${[
       ["pathway-layout", "Pathway leesbaar indelen"],
       ["pathway-detach", "Pathway-pijl losmaken"],
       ["to-membrane", "Omzetten naar membraan"],
@@ -1958,6 +1958,13 @@ export class Drawing2D {
           `<g id="object-${i.id}" transform="translate(${i.x + i.w / 2} ${i.y + i.h / 2}) rotate(${i.rotation || 0}) translate(${-i.w / 2} ${-i.h / 2})" opacity="${i.opacity}"><g transform="translate(${i.w / 2} ${i.h / 2}) scale(${i.mirrorX ? -1 : 1} ${i.mirrorY ? -1 : 1}) translate(${-i.w / 2} ${-i.h / 2})">${this.itemMarkup(i)}</g></g>`,
       )
       .join("")}</svg>`;
+  }
+  exportSelectionSVG(){
+    syncPathwayConnections(this.doc.items);
+    const items=this.selectedItems().filter(i=>i.visible);
+    if(!items.length)throw Error('Selecteer eerst een 2D-figuur.');
+    const b=sheetBounds(items),padding=10,x=b.x-padding,y=b.y-padding,w=b.w+padding*2,h=b.h+padding*2;
+    return `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="${NS}" xmlns:xlink="http://www.w3.org/1999/xlink" width="${Math.ceil(w)}" height="${Math.ceil(h)}" viewBox="${x} ${y} ${w} ${h}"><title>ImmunoStudio selection</title>${items.map(i=>`<g transform="translate(${i.x+i.w/2} ${i.y+i.h/2}) rotate(${i.rotation||0}) translate(${-i.w/2} ${-i.h/2})" opacity="${i.opacity}"><g transform="translate(${i.w/2} ${i.h/2}) scale(${i.mirrorX?-1:1} ${i.mirrorY?-1:1}) translate(${-i.w/2} ${-i.h/2})">${this.itemMarkup(i)}</g></g>`).join('')}</svg>`;
   }
   async exportPNG(width = 1920, transparent = false) {
     const text = this.exportSVG(transparent),

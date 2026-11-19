@@ -1,4 +1,32 @@
 const entries = `
+Membraanmoleculen|Membrane molecules
+Vector kopiëren|Copy vector
+Selectie als vector kopiëren voor PowerPoint of Word|Copy selection as vector for PowerPoint or Word
+Selecteer eerst een 2D-figuur.|Select a 2D figure first.
+Vector voor het klembord voorbereiden...|Preparing vector for clipboard...
+EMF op het klembord. Plak in PowerPoint of Word.|EMF copied. Paste into PowerPoint or Word.
+SVG op het klembord. De doelapp moet SVG-plakken ondersteunen.|SVG copied. The target application must support pasting SVG.
+Voor het Office-vector-klembord is de lokale ImmunoStudio-helper met Inkscape nodig.|The Office vector clipboard requires the local ImmunoStudio helper with Inkscape.
+Start de lokale ImmunoStudio-helper met Inkscape voor rechtstreeks plakken als EMF in PowerPoint of Word. Je browser kan toestemming vragen om de lokale helper te bereiken.|Start the local ImmunoStudio helper with Inkscape to paste directly as EMF in PowerPoint or Word. Your browser may ask for permission to reach the local helper.
+Je kunt de selectie ook als SVG downloaden en in Office invoegen via Afbeeldingen. De figuur blijft dan vector.|You can also download the selection as SVG and insert it in Office using Pictures. The figure remains vector.
+Selectie als SVG downloaden|Download selection as SVG
+Lokale ImmunoStudio openen|Open local ImmunoStudio
+Kopiëren naar het Office-klembord is mislukt.|Copying to the Office clipboard failed.
+
+Flowcytometrie en celsortering|Flow cytometry and cell sorting
+Textbook-uitbreidingen|Textbook building blocks
+Biologische en technologische uitbreidingen|Biological and technology building blocks
+Gamma-delta, BTN en BTNL|Gamma-delta, BTN and BTNL
+Coeliakie|Celiac disease
+Onderwijs infectie en immuniteit|Infection and immunity building blocks
+Transplantatie immunologie|Transplantation immunology
+Aminozuren en darm|Amino acids and intestine
+Bacteriën / Bacteria|Bacteria
+Schimmels / Fungi|Fungi
+Parasieten / Parasites|Parasites
+Organen en weefsels|Organs and tissues
+Laboratorium en context|Laboratory and context
+
 Nieuw|New
 Kies Op tekenblad plaatsen voor bewerkbare figuren met leesbare labels en gekoppelde pijlen. De bronindeling is het uitgangspunt voor een ruimere indeling.|Choose Place on drawing page for editable figures with readable labels and connected arrows. The source layout guides a more spacious arrangement.
 Pathway leesbaar indelen|Improve pathway layout

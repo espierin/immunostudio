@@ -27,11 +27,12 @@ export async function hasOfficeExporter() {
 }
 function run(args) {
   return new Promise((resolve, reject) => {
-    const child = spawn(inkscape, args, {
+    const child = spawn(inkscape, ['--app-id-tag=immunostudio-office',...args], {
       windowsHide: true,
       stdio: ["ignore", "pipe", "pipe"],
     });
     let log = "";
+    child.stdout.resume();
     const timeout = setTimeout(() => {
       child.kill();
       reject(Error("Office-export duurde te lang."));
@@ -74,7 +75,6 @@ export async function officeExport(svg, format, { outlineText = true } = {}) {
     if (outlineText) {
       await run([
         input,
-        "--batch-process",
         "--export-text-to-path",
         "--export-plain-svg",
         "--export-type=svg",
@@ -87,7 +87,6 @@ export async function officeExport(svg, format, { outlineText = true } = {}) {
     }
     await run([
       source,
-      "--batch-process",
       "--export-area-page",
       "--export-type=" + format,
       "--export-filename=" + output,

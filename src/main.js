@@ -1,4 +1,5 @@
 import { PathwaySearchDialog } from "./pathway-search-dialog.js";
+import {copyVectorImage} from './vector-clipboard.js';
 import { pathwayCatalog, makePathwayItem } from "./pathway-elements.js";
 import { CommandPalette } from "./command-palette.js";
 import { starterProject } from "./starter-projects.js";
@@ -684,6 +685,12 @@ async function action(name) {
       break;
     case "close":
       $("#modal").close();
+      break;
+    case 'copy-vector':
+      await copySelectedVector();
+      break;
+    case 'download-vector-selection':
+      if(pendingVectorSVG)download(new Blob([pendingVectorSVG],{type:'image/svg+xml'}),project.name+'-selection.svg');
       break;
     case "undo":
       if (undo.length) {
@@ -1826,7 +1833,7 @@ async function exportVideo() {
     view.gizmo.getHelper().visible = true;
   }
 }
-fetch("./library/index.json")
+fetch("./library/index.json", {cache:"no-cache"})
   .then((r) => {
     if (!r.ok) throw Error();
     return r.json();
@@ -1842,7 +1849,7 @@ async function loadStarter(kind) {
     if (kind === "membrane") {
       const data = library.length
         ? library
-        : await fetch("./library/index.json").then((r) => r.json());
+        : await fetch("./library/index.json", {cache:"no-cache"}).then((r) => r.json());
       const asset = data.find((a) =>
         a.file.split("/").at(-1).startsWith("basic_151_"),
       );
@@ -2356,6 +2363,19 @@ $("#all-labels").addEventListener("change", (e) => {
   changed();
 });
 
+let pendingVectorSVG=null,copyingVector=false;
+async function copySelectedVector(){
+  if(copyingVector||project.editorMode!=='2d')return;
+  const svg=drawing2D.exportSelectionSVG();copyingVector=true;
+  toast('Vector voor het klembord voorbereiden...');
+  try{
+    const result=await copyVectorImage(svg);
+    toast(result.format==='emf'?'EMF op het klembord. Plak in PowerPoint of Word.':'SVG op het klembord. De doelapp moet SVG-plakken ondersteunen.');
+  }catch(error){
+    pendingVectorSVG=svg;
+    showModal(`<h2>Vector kopiëren</h2><p>${esc(error.message)}</p><p>Start de lokale ImmunoStudio-helper met Inkscape voor rechtstreeks plakken als EMF in PowerPoint of Word. Je browser kan toestemming vragen om de lokale helper te bereiken.</p><p>Je kunt de selectie ook als SVG downloaden en in Office invoegen via Afbeeldingen. De figuur blijft dan vector.</p><div class="row"><button class="primary" data-action="download-vector-selection">Selectie als SVG downloaden</button><a href="http://127.0.0.1:5180/" target="_blank" rel="noopener">Lokale ImmunoStudio openen</a></div>`);
+  }finally{copyingVector=false;}
+}
 async function exportOffice(format) {
   if (recording) return;
   const status = await fetch("./api/status")
