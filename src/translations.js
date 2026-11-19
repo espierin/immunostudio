@@ -1,4 +1,10 @@
 const entries = `
+Figuurlabel|Figure label
+Tekstlabel tonen|Show text label
+Labeltekst|Label text
+Labelgrootte|Label size
+Labelpositie|Label position
+0 is bovenaan, 1 is onderaan de figuur|0 is the top, 1 is the bottom of the figure
 Membraanmoleculen|Membrane molecules
 Vector kopiëren|Copy vector
 Selectie als vector kopiëren voor PowerPoint of Word|Copy selection as vector for PowerPoint or Word

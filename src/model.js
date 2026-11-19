@@ -488,6 +488,12 @@ export function validateProject(p) {
           ))
       )
         throw Error("Invalid pathway group members.");
+      if (
+        (i.figureLabel !== undefined && (typeof i.figureLabel !== "string" || i.figureLabel.length > 512)) ||
+        (i.figureLabelVisible !== undefined && typeof i.figureLabelVisible !== "boolean") ||
+        (i.figureLabelSize !== undefined && (!Number.isFinite(i.figureLabelSize) || i.figureLabelSize < 5 || i.figureLabelSize > 120)) ||
+        (i.figureLabelY !== undefined && (!Number.isFinite(i.figureLabelY) || i.figureLabelY < 0 || i.figureLabelY > 1))
+      ) throw Error("Invalid figure label.");
       if (i.anchor2d) {
         const a = i.anchor2d;
         if (
