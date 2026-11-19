@@ -20,13 +20,19 @@ export class FloatingDrawingTools {
         JSON.parse(localStorage.getItem(this.key) || "{}"),
       );
     } catch {}
-    drawing.sculptOptions.autoSpread = this.state.autoSpread === true;
+    drawing.sculptOptions.autoEcto = this.state.autoEcto === true;
+    drawing.sculptOptions.autoSpread =
+      !drawing.sculptOptions.autoEcto && this.state.autoSpread === true;
+    drawing.sculptOptions.autoEctoLimit = Math.max(
+      5,
+      Math.min(60, Number(this.state.autoEctoLimit) || 45),
+    );
     if (Math.abs(this.state.x - (innerWidth - 310)) < 12)
       this.state.x = Math.max(12, innerWidth - 630);
     this.element = document.createElement("section");
     this.element.className = "floating-drawing";
     this.element.setAttribute("aria-label", "Sculpting en modifiers");
-    this.element.innerHTML = `<div class="floating-grip" tabindex="0" title="Sleep deze balk om het menu te verplaatsen. Pijltjestoetsen verplaatsen het menu."><strong>Sculpting en modifiers</strong><button data-floating="minimize" title="Minimaliseren of openen" aria-expanded="false">▾</button><button data-floating="expand" title="Breder of smaller maken">⤢</button><button data-floating="close" title="Zwevend menu sluiten">×</button></div><div class="floating-content"><p class="floating-selection" data-no-translate></p><div class="drawing-grid"><button data-sheet-tool="select">Selecteren</button><button data-sheet-tool="nodes">Punten bewerken</button><button data-sheet-tool="sculpt">Sculpten</button><button data-sheet-action="contour-reset">Contour herstellen</button></div><div class="floating-line-appearance"></div><details open><summary>Sculptpenseel</summary><label>Werking<select data-sculpt-option="mode"><option value="drag">Duwen en trekken</option><option value="inflate">Opbollen</option><option value="deflate">Induwen</option><option value="smooth">Lokaal gladmaken</option><option value="spread">Receptoren spreiden</option><option value="ecto">Extracellulaire delen buigen</option><option value="bend">Hele moleculen kantelen</option></select></label><label>Radius (px)<input type="number" min="10" max="400" step="5" value="100" data-sculpt-option="radius"></label><label>Sterkte (%)<input type="range" min="5" max="100" value="70" data-sculpt-option="strength"></label><label title="Schuif gekoppelde receptoren tijdens het sculpten langs de membraan uit elkaar. Vergrendelde receptoren blijven staan.">Receptoren automatisch spreiden<input type="checkbox" data-sculpt-option="autoSpread" ${drawing.sculptOptions.autoSpread ? "checked" : ""}></label><label>Binnenstructuren meevormen<input type="checkbox" data-sculpt-option="interior" checked></label><p class="muted">Receptoren spreiden verschuift gekoppelde moleculen langs de membraan, zonder de contour te veranderen.</p><p class="muted">Selecteer een cel of weefsel en sleep bij de rand. Kies eerst een onderdeel met Punten bewerken voor een specifieke contour. Shift keert duwen en opbollen om.</p></details><details open><summary>Contourmodifiers</summary><label>Afstand / tolerantie (px)<input type="number" min=".5" max="100" step=".5" value="8" data-sculpt-option="amount"></label><div class="drawing-grid"><button data-sheet-action="contour-smooth">Gladmaken</button><button data-sheet-action="contour-simplify">Vereenvoudigen</button><button data-sheet-action="contour-inset">Krimpen</button><button data-sheet-action="contour-outset">Vergroten</button><button data-sheet-action="mirror-x">Horizontaal spiegelen</button><button data-sheet-action="mirror-y">Verticaal spiegelen</button></div><p class="muted">Contourmodifiers volgen de gekozen membraanrand. Spiegelen werkt op het hele object. Gebruik Ongedaan maken om een stap terug te gaan.</p></details><details open><summary>Membraanankers</summary><p class="floating-target" data-no-translate></p><div class="drawing-grid"><button data-sheet-action="anchor-target">Gebruik als membraan</button><button data-sheet-action="anchor-attach">Koppel selectie</button><button data-sheet-action="anchor-detach">Losmaken van membraan</button><button data-sheet-action="anchor-flip">Andere membraanzijde</button></div><label>Receptorafstand (px)<input type="number" min="0" max="100" step="1" value="6" data-sculpt-option="receptorGap"></label><button class="wide" data-sheet-action="anchor-spread" title="Spreid overlappende receptoren op dit membraan. De ankers blijven behouden; vergrendelde moleculen blijven staan.">Receptoren spreiden</button><button class="wide" data-sheet-action="anchor-unbend" title="Herstel de kanteling van receptoren zonder de membraan te veranderen.">Receptoren rechtzetten</button><button class="wide" data-sheet-action="anchor-mark-embedded">Onderdeel als membraanmolecuul</button><label>Positie langs rand (%)<input type="number" data-anchor-field="u" min="0" max="100" step=".5"></label><label title="Buigt alleen het extracellulaire deel van TCR, CD4 of CD8. Het transmembraandeel blijft vast.">Extracellulaire buiging (°)<input type="number" data-anchor-field="ectoBend" min="-60" max="60" step="1"></label><label title="Kantelt het molecuul rond zijn vaste membraananker, zonder de membraan te veranderen.">Kanteling bij anker (°)<input type="number" data-anchor-field="tilt" min="-60" max="60" step="1"></label><label>Afstand tot rand (px)<input type="number" data-anchor-field="offset" min="-300" max="300" step="1"></label><label>Ankerhoogte in molecuul (%)<input type="number" data-anchor-field="pivotY" min="0" max="100" step="1"></label><p class="muted">Kies eerst de cel of het membraan als doel, selecteer daarna de losse moleculen en koppel ze. Gekoppelde moleculen volgen de rand en blijven haaks staan. Ingebouwde herkenbare receptorgroepen bewegen automatisch mee bij sculpten.</p></details></div>`;
+    this.element.innerHTML = `<div class="floating-grip" tabindex="0" title="Sleep deze balk om het menu te verplaatsen. Pijltjestoetsen verplaatsen het menu."><strong>Sculpting en modifiers</strong><button data-floating="minimize" title="Minimaliseren of openen" aria-expanded="false">▾</button><button data-floating="expand" title="Breder of smaller maken">⤢</button><button data-floating="close" title="Zwevend menu sluiten">×</button></div><div class="floating-content"><p class="floating-selection" data-no-translate></p><div class="drawing-grid"><button data-sheet-tool="select">Selecteren</button><button data-sheet-tool="nodes">Punten bewerken</button><button data-sheet-tool="sculpt">Sculpten</button><button data-sheet-action="contour-reset">Contour herstellen</button></div><div class="floating-line-appearance"></div><details open><summary>Sculptpenseel</summary><label>Werking<select data-sculpt-option="mode"><option value="drag">Duwen en trekken</option><option value="inflate">Opbollen</option><option value="deflate">Induwen</option><option value="smooth">Lokaal gladmaken</option><option value="spread">Receptoren spreiden</option><option value="ecto">Extracellulaire delen buigen</option><option value="bend">Hele moleculen kantelen</option></select></label><label>Radius (px)<input type="number" min="10" max="400" step="5" value="100" data-sculpt-option="radius"></label><label>Sterkte (%)<input type="range" min="5" max="100" value="70" data-sculpt-option="strength"></label><label title="Schuif gekoppelde receptoren tijdens het sculpten langs de membraan uit elkaar. Vergrendelde receptoren blijven staan.">Receptoren automatisch spreiden<input type="checkbox" data-sculpt-option="autoSpread" ${drawing.sculptOptions.autoSpread ? "checked" : ""}></label><label title="Buigt overlappende buitendomeinen tijdens membraansculpting. De posities langs de membraan blijven vast; automatisch spreiden wordt uitgeschakeld.">Buitendelen automatisch uit elkaar buigen<input type="checkbox" data-sculpt-option="autoEcto" ${drawing.sculptOptions.autoEcto ? "checked" : ""}></label><label>Maximale automatische buiging (°)<input type="number" min="5" max="60" step="5" value="${drawing.sculptOptions.autoEctoLimit}" data-sculpt-option="autoEctoLimit"></label><label>Binnenstructuren meevormen<input type="checkbox" data-sculpt-option="interior" checked></label><p class="muted">Receptoren spreiden verschuift gekoppelde moleculen langs de membraan, zonder de contour te veranderen.</p><p class="muted">Selecteer een cel of weefsel en sleep bij de rand. Kies eerst een onderdeel met Punten bewerken voor een specifieke contour. Shift keert duwen en opbollen om.</p></details><details open><summary>Contourmodifiers</summary><label>Afstand / tolerantie (px)<input type="number" min=".5" max="100" step=".5" value="8" data-sculpt-option="amount"></label><div class="drawing-grid"><button data-sheet-action="contour-smooth">Gladmaken</button><button data-sheet-action="contour-simplify">Vereenvoudigen</button><button data-sheet-action="contour-inset">Krimpen</button><button data-sheet-action="contour-outset">Vergroten</button><button data-sheet-action="mirror-x">Horizontaal spiegelen</button><button data-sheet-action="mirror-y">Verticaal spiegelen</button></div><p class="muted">Contourmodifiers volgen de gekozen membraanrand. Spiegelen werkt op het hele object. Gebruik Ongedaan maken om een stap terug te gaan.</p></details><details open><summary>Membraanankers</summary><p class="floating-target" data-no-translate></p><div class="drawing-grid"><button data-sheet-action="anchor-target">Gebruik als membraan</button><button data-sheet-action="anchor-attach">Koppel selectie</button><button data-sheet-action="anchor-detach">Losmaken van membraan</button><button data-sheet-action="anchor-flip">Andere membraanzijde</button></div><label>Receptorafstand (px)<input type="number" min="0" max="100" step="1" value="6" data-sculpt-option="receptorGap"></label><button class="wide" data-sheet-action="anchor-spread" title="Spreid overlappende receptoren op dit membraan. De ankers blijven behouden; vergrendelde moleculen blijven staan.">Receptoren spreiden</button><button class="wide" data-sheet-action="anchor-unbend" title="Herstel de kanteling van receptoren zonder de membraan te veranderen.">Receptoren rechtzetten</button><button class="wide" data-sheet-action="anchor-mark-embedded">Onderdeel als membraanmolecuul</button><label>Positie langs rand (%)<input type="number" data-anchor-field="u" min="0" max="100" step=".5"></label><label title="Buigt alleen het extracellulaire deel van TCR, CD4 of CD8. Het transmembraandeel blijft vast.">Extracellulaire buiging (°)<input type="number" data-anchor-field="ectoBend" min="-60" max="60" step="1"></label><label title="Kantelt het molecuul rond zijn vaste membraananker, zonder de membraan te veranderen.">Kanteling bij anker (°)<input type="number" data-anchor-field="tilt" min="-60" max="60" step="1"></label><label>Afstand tot rand (px)<input type="number" data-anchor-field="offset" min="-300" max="300" step="1"></label><label>Ankerhoogte in molecuul (%)<input type="number" data-anchor-field="pivotY" min="0" max="100" step="1"></label><p class="muted">Kies eerst de cel of het membraan als doel, selecteer daarna de losse moleculen en koppel ze. Gekoppelde moleculen volgen de rand en blijven haaks staan. Ingebouwde herkenbare receptorgroepen bewegen automatisch mee bij sculpten.</p></details></div>`;
     const panels = ["sculpt", "modifiers", "anchors"];
     for (const [index, details] of [
       ...this.element.querySelectorAll(".floating-content > details"),
@@ -72,6 +78,9 @@ export class FloatingDrawingTools {
     this.update();
   }
   update() {
+    this.element.querySelector(
+      '[data-sculpt-option="autoEctoLimit"]',
+    ).disabled = !this.drawing.sculptOptions.autoEcto;
     const d = this.drawing,
       selected = d.selectedItems(),
       target = d.doc.items.find((i) => i.id === d.anchorTargetId),
@@ -187,11 +196,20 @@ export class FloatingDrawingTools {
     this.element.addEventListener("input", (e) => {
       const key = e.target.dataset.sculptOption;
       if (!key) return;
-      if (key === "interior" || key === "autoSpread") {
+      if (["interior", "autoSpread", "autoEcto"].includes(key)) {
         this.drawing.sculptOptions[key] = e.target.checked;
-        if (key === "autoSpread") {
-          this.state.autoSpread = e.target.checked;
+        if (key !== "interior") {
+          this.state[key] = e.target.checked;
+          if (e.target.checked) {
+            const other = key === "autoEcto" ? "autoSpread" : "autoEcto";
+            this.state[other] = false;
+            this.drawing.sculptOptions[other] = false;
+            this.element.querySelector(
+              `[data-sculpt-option="${other}"]`,
+            ).checked = false;
+          }
           this.save();
+          this.update();
         }
         return;
       }
@@ -199,7 +217,7 @@ export class FloatingDrawingTools {
         key === "mode"
           ? e.target.value
           : Math.max(
-              key === "strength"
+              ["strength", "autoEctoLimit"].includes(key)
                 ? 5
                 : key === "radius"
                   ? 10
@@ -207,10 +225,14 @@ export class FloatingDrawingTools {
                     ? 0
                     : 0.5,
               Math.min(
-                key === "radius" ? 400 : 100,
+                key === "radius" ? 400 : key === "autoEctoLimit" ? 60 : 100,
                 Number.isFinite(+e.target.value) ? +e.target.value : 1,
               ),
             ) / (key === "strength" ? 100 : 1);
+      if (key === "autoEctoLimit") {
+        this.state.autoEctoLimit = this.drawing.sculptOptions.autoEctoLimit;
+        this.save();
+      }
       if (key === "mode" && ["spread", "bend", "ecto"].includes(e.target.value))
         this.drawing.setTool("sculpt");
     });

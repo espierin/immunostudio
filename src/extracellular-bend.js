@@ -60,7 +60,7 @@ export function parseAffine(text = "") {
   }
   return matrix;
 }
-function relativeMatrix(node, frame) {
+export function relativeMatrix(node, frame) {
   let matrix = identity;
   for (let p = node; p && p !== frame; p = p.parentElement)
     matrix = multiplyAffine(
@@ -89,7 +89,7 @@ export function extracellularPoint(p, profile, angle) {
     s = Math.sin(r);
   return [profile.x + x * c - y * s, boundary + x * s + y * c];
 }
-function curvePoint(points, t) {
+export function curvePoint(points, t) {
   let rows = points.map((p) => [...p]);
   while (rows.length > 1)
     rows = rows

@@ -271,6 +271,11 @@ export function embeddedAnchors(session) {
       tilt,
       initialTilt: tilt,
       stemPoint,
+      stemMatrix,
+      stemProfile,
+      sourceStem: stemNode
+        ? [...session.sourceDoc.querySelectorAll("g")][groups.indexOf(stemNode)]
+        : null,
       stemAxisAngle: stemProfile
         ? Math.atan2(
             stemMatrix.d * (stemProfile.angle === 180 ? 1 : -1),

@@ -1,4 +1,10 @@
 const entries = `
+Buitendelen automatisch uit elkaar buigen|Automatically bend overlapping ectodomains
+Maximale automatische buiging (°)|Maximum automatic bend (°)
+Buigt overlappende buitendomeinen tijdens membraansculpting. De posities langs de membraan blijven vast; automatisch spreiden wordt uitgeschakeld.|Bends overlapping ectodomains while sculpting the membrane. Positions along the membrane stay fixed; automatic sliding is switched off.
+Niet alle buitendelen konden voldoende uit elkaar buigen; de ankerposities blijven vast.|Some ectodomains could not bend far enough apart; anchor positions remain fixed.
+Buitendelen automatisch gebogen; membraanankers blijven vast en haaks.|Ectodomains bent automatically; membrane anchors remain fixed and perpendicular.
+
 Hele moleculen kantelen|Tilt whole molecules
 Extracellulaire delen buigen|Bend extracellular parts
 Extracellulaire buiging (°)|Extracellular bend (°)

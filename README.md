@@ -1,5 +1,7 @@
 # ImmunoStudio 0.2
 
+In Sculpt & modifiers, enable **Automatically bend overlapping ectodomains** to separate supported TCR, CD4 and CD8 outer domains while sculpting a membrane or collection cell. Their positions along the membrane remain fixed and unlocked stems follow its local normal. Set **Maximum automatic bend** from 5 to 60 degrees. This setting and its limit are remembered on the device. Automatic bending and automatic anchor sliding are mutually exclusive. Locked receptors remain unchanged. Dense clusters can retain overlap at the chosen limit; the editor reports this. Sculpting and bending share one undo step.
+
 Bend extracellular parts deforms only the ectodomains of native TCR/CD3, combined TCR/CD8, CD4 and CD8, supported pathway figures and embedded collection receptors. The transmembrane stem and intracellular artwork stay fixed. Extracellular bending has its own reversible parameter, is included in vector export, and retains the source SVG. Both manuals include an illustrated example.
 
 Collection cell membranes now render a contour-following lipid bilayer with transmembrane openings for supported built-in and attached receptors. Automatic spacing includes embedded receptor groups. Bend molecules sideways tilts molecules about fixed anchors, without changing the membrane outline. Straighten receptors resets the tilt. Properties offers Show lipid bilayer and Membrane thickness.

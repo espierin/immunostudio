@@ -1,3 +1,4 @@
+import { prepareAutomaticEctodomains } from "./auto-extracellular.js";
 import { extracellularArtwork } from "./extracellular-bend.js";
 import { cellMembraneKey, updateCellMembranes } from "./cell-membrane2d.js";
 import { receptorFootprints } from "./receptor-footprints.js";
@@ -235,6 +236,8 @@ export class Drawing2D {
       interior: true,
       receptorGap: 6,
       autoSpread: false,
+      autoEcto: false,
+      autoEctoLimit: 45,
     };
     this.clipboard = [];
     this.cache = new Map();
@@ -705,8 +708,12 @@ export class Drawing2D {
             start: p,
             session,
             anchors,
+            autoBending: this.sculptOptions.autoEcto
+              ? prepareAutomaticEctodomains(this, session, receptors, anchors)
+              : null,
             spacing:
               this.sculptOptions.autoSpread &&
+              !this.sculptOptions.autoEcto &&
               receptors.length + anchors.length > 1
                 ? {
                     items: [...receptors, ...anchors.map((a) => a.proxy)],
@@ -993,6 +1000,13 @@ export class Drawing2D {
                 iterations: 64,
               },
             );
+          if (x.autoBending) {
+            const result = x.autoBending.relax(points, {
+              gap: this.sculptOptions.receptorGap,
+              maxAngle: this.sculptOptions.autoEctoLimit,
+            });
+            x.autoBendMoved = (x.autoBendMoved || 0) + result.moved;
+          }
           syncEmbeddedReceptors(x.anchors);
           writeContour(s, points, x.anchors, x.interior);
           this.render();
@@ -1190,22 +1204,39 @@ export class Drawing2D {
     this.svg.addEventListener("pointerup", (e) => {
       if (!interaction) return;
       const type = interaction.type;
-      if (type === "sculpt" && interaction.spacing && interaction.lastPoints) {
+      if (
+        type === "sculpt" &&
+        (interaction.spacing || interaction.autoBending) &&
+        interaction.lastPoints
+      ) {
         const x = interaction;
-        const result = spreadReceptors(
-          x.spacing.items,
-          { points: x.lastPoints, closed: x.session.closed },
-          {
-            bounds: x.spacing.bounds,
-            gap: this.sculptOptions.receptorGap,
-            iterations: 96,
-          },
-        );
+        const result = x.autoBending
+          ? x.autoBending.relax(x.lastPoints, {
+              gap: this.sculptOptions.receptorGap,
+              maxAngle: this.sculptOptions.autoEctoLimit,
+              maxDelta: Infinity,
+              passes: 6,
+            })
+          : spreadReceptors(
+              x.spacing.items,
+              { points: x.lastPoints, closed: x.session.closed },
+              {
+                bounds: x.spacing.bounds,
+                gap: this.sculptOptions.receptorGap,
+                iterations: 96,
+              },
+            );
         syncEmbeddedReceptors(x.anchors);
         writeContour(x.session, x.lastPoints, x.anchors, x.interior);
         if (result.remaining)
           this.onStatus(
-            "Er is nog receptoroverlap. Maak de membraan ruimer, verklein de receptoren of pas de receptorafstand aan.",
+            x.autoBending
+              ? "Niet alle buitendelen konden voldoende uit elkaar buigen; de ankerposities blijven vast."
+              : "Er is nog receptoroverlap. Maak de membraan ruimer, verklein de receptoren of pas de receptorafstand aan.",
+          );
+        else if (x.autoBending && (result.moved || x.autoBendMoved))
+          this.onStatus(
+            "Buitendelen automatisch gebogen; membraanankers blijven vast en haaks.",
           );
       }
       if (type === "draw" && interaction.item.kind === "path") {
