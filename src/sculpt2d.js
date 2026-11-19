@@ -1,3 +1,4 @@
+import { fitReceptorAnchor } from './receptor-anchor.js';
 import {
   vectorElements,
   elementPath,
@@ -393,6 +394,7 @@ export function syncSheetAnchors(drawing) {
       continue;
     }
     try {
+      if (fitReceptorAnchor(item, target, true)) changed = true;
       if (!cache.has(target.id))
         cache.set(target.id, prepareContour(drawing, target, a.pathIndex));
       const s = cache.get(target.id),

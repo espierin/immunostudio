@@ -30,6 +30,7 @@ test('browser fallback writes real SVG only when supported, and never silently s
   class Item{constructor(data){this.data=data;}static supports(type){return type==='image/svg+xml';}}
   const result=await copyVectorImage(ccr5SVG(),{fetcher:async()=>{throw Error('offline');},Item,clipboard:{write:async items=>{writes++;assert.equal(items[0].data['image/svg+xml'].type,'image/svg+xml');assert.match(await items[0].data['image/svg+xml'].text(),/CCR5/);}}});
   assert.equal(result.format,'svg');assert.equal(writes,1);
+  await assert.rejects(copyVectorImage(ccr5SVG(),{allowSVG:false,fetcher:async()=>{throw Error('offline');},Item,clipboard:{write:async()=>{throw Error('Office must not receive SVG clipboard data');}}}),/lokale ImmunoStudio-helper/);
   await assert.rejects(copyVectorImage(ccr5SVG(),{fetcher:async()=>{throw Error('offline');},Item:undefined,clipboard:undefined}),/lokale ImmunoStudio-helper/);
 });
 test('native clipboard outlines fonts, copies an EMF and removes the temporary file',async()=>{

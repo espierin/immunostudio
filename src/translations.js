@@ -1,4 +1,5 @@
 const entries = `
+Start de lokale ImmunoStudio-helper met Inkscape voor EMF/WMF. SVG downloaden werkt ook zonder helper.|Start the local ImmunoStudio helper with Inkscape for EMF/WMF. SVG download also works without the helper.
 Figuurlabel|Figure label
 Tekstlabel tonen|Show text label
 Labeltekst|Label text

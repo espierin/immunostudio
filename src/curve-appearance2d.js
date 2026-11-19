@@ -124,13 +124,13 @@ export function tissueMarkup(item, style) {
 export function curveAppearanceMarkup(item, style) {
   const d = curvePath(item),
     fill = item.fillEnabled ? item.fill || style.head : "none",
-    interior = `<path data-curve-fill d="${d}" fill="${fill}" stroke="none"/>`,
+    interior = `<path data-curve-fill="true" d="${d}" fill="${fill}" stroke="none"/>`,
     kind = item.lineStyle || "membrane";
   if (kind === "membrane") return interior + membraneMarkup(item, style);
   if (kind !== "line") return interior + tissueMarkup(item, style);
   return (
     interior +
-    `<path data-curve-line d="${d}" fill="none" stroke="${item.stroke || style.outline || "#2167AE"}" stroke-width="${item.strokeWidth || 3}" stroke-linecap="round" stroke-linejoin="round"/>`
+    `<path data-curve-line="true" d="${d}" fill="none" stroke="${item.stroke || style.outline || "#2167AE"}" stroke-width="${item.strokeWidth || 3}" stroke-linecap="round" stroke-linejoin="round"/>`
   );
 }
 // One entry per live object. Position/rotation live on the wrapper and do not

@@ -25,5 +25,9 @@ test('local clipboard service permits the published app and requires its session
     assert.equal(options.status,204);assert.equal(options.headers.get('access-control-allow-origin'),origin);
     const unauthorized=await fetch(base+'/api/office/clipboard',{method:'POST',headers:{Origin:origin,'Content-Type':'application/json'},body:JSON.stringify({svg:'<svg/>'})});
     assert.equal(unauthorized.status,403);
+    const exportOptions=await fetch(base+'/api/office/export',{method:'OPTIONS',headers:{Origin:origin,'Access-Control-Request-Method':'POST'}});
+    assert.equal(exportOptions.status,204);assert.equal(exportOptions.headers.get('access-control-allow-origin'),origin);
+    const exportUnauthorized=await fetch(base+'/api/office/export',{method:'POST',headers:{Origin:origin,'Content-Type':'application/json'},body:'{}'});
+    assert.equal(exportUnauthorized.status,403);
   }finally{child.kill();await new Promise(resolve=>{if(child.exitCode!==null)resolve();else child.once('close',resolve);});}
 });

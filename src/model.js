@@ -497,6 +497,7 @@ export function validateProject(p) {
       if (i.anchor2d) {
         const a = i.anchor2d;
         if (
+          (a.receptorFit !== undefined && (typeof a.receptorFit !== "string" || a.receptorFit.length > 512)) ||
           typeof a.targetId !== "string" ||
           a.targetId === i.id ||
           !p.sheet.items.some((t) => t.id === a.targetId) ||

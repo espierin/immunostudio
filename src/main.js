@@ -1,5 +1,5 @@
 import { PathwaySearchDialog } from "./pathway-search-dialog.js";
-import {copyVectorImage} from './vector-clipboard.js';
+import {copyVectorImage,exportOfficeImage} from './vector-clipboard.js';
 import { pathwayCatalog, makePathwayItem } from "./pathway-elements.js";
 import { CommandPalette } from "./command-palette.js";
 import { starterProject } from "./starter-projects.js";
@@ -2369,7 +2369,7 @@ async function copySelectedVector(){
   const svg=drawing2D.exportSelectionSVG();copyingVector=true;
   toast('Vector voor het klembord voorbereiden...');
   try{
-    const result=await copyVectorImage(svg);
+    const result=await copyVectorImage(svg,{allowSVG:false});
     toast(result.format==='emf'?'EMF op het klembord. Plak in PowerPoint of Word.':'SVG op het klembord. De doelapp moet SVG-plakken ondersteunen.');
   }catch(error){
     pendingVectorSVG=svg;
@@ -2378,13 +2378,6 @@ async function copySelectedVector(){
 }
 async function exportOffice(format) {
   if (recording) return;
-  const status = await fetch("./api/status")
-    .then((r) => r.json())
-    .catch(() => null);
-  if (!status?.office)
-    throw Error(
-      "De lokale Inkscape-exporter is niet actief. Herstart ImmunoStudio voor EMF/WMF.",
-    );
   const outlineText = $("#outline-fonts").checked;
   let svg;
   if (project.editorMode === "2d")
@@ -2405,19 +2398,8 @@ async function exportOffice(format) {
   setExportLock(true);
   toast(format.toUpperCase() + " voorbereiden…");
   try {
-    const result = await fetch("./api/office/export", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-ImmunoStudio": status.token,
-      },
-      body: JSON.stringify({ svg, format, outlineText }),
-    });
-    if (!result.ok) {
-      const error = await result.json();
-      throw Error(error.error || "Office-export mislukt");
-    }
-    download(await result.blob(), project.name + "." + format);
+    const blob = await exportOfficeImage(svg, format, {outlineText});
+    download(blob, project.name + "." + format);
     toast(
       format.toUpperCase() +
         " geëxporteerd" +

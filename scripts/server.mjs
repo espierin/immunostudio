@@ -87,7 +87,7 @@ const server = http.createServer(async (req, res) => {
     const name = decodeURIComponent(
       new URL(req.url, "http://localhost").pathname,
     );
-    if(name==='/api/status'||name==='/api/office/clipboard'){
+    if(name==='/api/status'||name==='/api/office/clipboard'||name==='/api/office/export'){
       const origin=req.headers.origin,allowed=new Set(['https://espierin.github.io',`http://127.0.0.1:${port}`,`http://localhost:${port}`]);
       if(origin&&!allowed.has(origin)){json(res,{error:'Ongeldige oorsprong'},403);return;}
       if(origin){
@@ -113,12 +113,8 @@ const server = http.createServer(async (req, res) => {
       json(res,await officeClipboard(payload.svg));return;
     }
     if (name === "/api/office/export" && req.method === "POST") {
-      const origin = req.headers.origin;
       if (
-        req.headers["x-immunostudio"] !== token ||
-        (origin &&
-          origin !== `http://127.0.0.1:${port}` &&
-          origin !== `http://localhost:${port}`)
+        req.headers["x-immunostudio"] !== token
       ) {
         json(res, { error: "Ongeldige exportsessie" }, 403);
         return;
