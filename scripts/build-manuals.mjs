@@ -6,7 +6,7 @@ import {appendVectorCopyHelp} from './vector-copy-help.mjs';
 const manuals = {
   en: {
     title: "ImmunoStudio user manual",
-    subtitle: "Detailed English guide · version 0.2 · 3 November 2026",
+    subtitle: "Detailed English guide · version 0.2 · 19 November 2026",
     other: "Nederlandse handleiding",
     print: "Print / save as PDF",
     contents: "Contents",
@@ -20,7 +20,7 @@ const manuals = {
       [
         "quick",
         "2. First illustration: step by step",
-        `<ol><li>Enter a meaningful project name in the header.</li><li>Stay in 2D. Search the Basic elements library, or select a category.</li><li>Click an element card to place it on the page.</li><li>Choose Select or Move and drag it to the desired position.</li><li>Use a corner handle to resize it. Use the round handle above the selection, or Rotate, to change its angle.</li><li>Open Properties to enter exact X/Y, width, height and rotation values.</li><li>Add a text label with Text; click the page, then edit the text in Properties.</li><li>Choose an illustration style in Properties → Illustration style.</li><li>Click Project to download an editable backup, then Export for the finished figure.</li></ol><p>The library contains 190 curated individual elements, rather than complete teaching figures or tables. Search terms may be Dutch or English; source titles are retained.</p>`,
+        `<ol><li>Enter a meaningful project name in the header.</li><li>Stay in 2D. Search the Basic elements library, or select a category.</li><li>Click an element card to place it on the page.</li><li>Choose Select or Move and drag it to the desired position.</li><li>Use a corner handle to resize it. Use the round handle above the selection, or Rotate, to change its angle.</li><li>Open Properties to enter exact X/Y, width, height and rotation values.</li><li>Add a text label with Text; click the page, then edit the text in Properties.</li><li>Choose an illustration style in Properties → Illustration style.</li><li>Click Project to download an editable backup, then Export for the finished figure.</li></ol><p>The library contains 702 individual basic elements, rather than complete teaching figures or tables. Search terms may be Dutch or English; source titles are retained.</p>`,
       ],
       [
         "select",
@@ -97,7 +97,7 @@ const manuals = {
   nl: {
     title: "ImmunoStudio gebruikershandleiding",
     subtitle:
-      "Uitgebreide Nederlandse handleiding · versie 0.2 · 2 november 2026",
+      "Uitgebreide Nederlandse handleiding · versie 0.2 · 19 november 2026",
     other: "English manual",
     print: "Afdrukken / opslaan als PDF",
     contents: "Inhoud",
@@ -111,7 +111,7 @@ const manuals = {
       [
         "quick",
         "2. Je eerste illustratie: stap voor stap",
-        `<ol><li>Geef het project een herkenbare naam in de kopbalk.</li><li>Blijf in 2D. Zoek in Basis set of kies een categorie.</li><li>Klik op een bibliotheekkaart om het element op het blad te plaatsen.</li><li>Kies Selecteren of Verplaatsen en sleep het element naar de gewenste plek.</li><li>Verander de grootte met een hoekgreep. Draai met de ronde greep boven de selectie of met Draaien.</li><li>Open Eigenschappen voor exacte X/Y, breedte, hoogte en rotatie.</li><li>Voeg met Tekst een label toe: klik op het blad en bewerk de tekst in Eigenschappen.</li><li>Kies de illustratiestijl onder Eigenschappen → Stylesheet.</li><li>Klik op Project voor een bewerkbare reservekopie en daarna op Exporteren voor het eindresultaat.</li></ol><p>De bibliotheek bevat 190 geselecteerde losse basiselementen, geen volledige lesfiguren of tabellen. Zoeken kan met Nederlandse of Engelse termen; oorspronkelijke titels blijven behouden.</p>`,
+        `<ol><li>Geef het project een herkenbare naam in de kopbalk.</li><li>Blijf in 2D. Zoek in Basis set of kies een categorie.</li><li>Klik op een bibliotheekkaart om het element op het blad te plaatsen.</li><li>Kies Selecteren of Verplaatsen en sleep het element naar de gewenste plek.</li><li>Verander de grootte met een hoekgreep. Draai met de ronde greep boven de selectie of met Draaien.</li><li>Open Eigenschappen voor exacte X/Y, breedte, hoogte en rotatie.</li><li>Voeg met Tekst een label toe: klik op het blad en bewerk de tekst in Eigenschappen.</li><li>Kies de illustratiestijl onder Eigenschappen → Stylesheet.</li><li>Klik op Project voor een bewerkbare reservekopie en daarna op Exporteren voor het eindresultaat.</li></ol><p>De bibliotheek bevat 702 losse basiselementen, geen volledige lesfiguren of tabellen. Zoeken kan met Nederlandse of Engelse termen; oorspronkelijke titels blijven behouden.</p>`,
       ],
       [
         "select",
@@ -439,8 +439,8 @@ appendVectorCopyHelp(manuals);
 await mkdir("public/manual", { recursive: true });
 for (const [lang, m] of Object.entries(manuals)) {
   const other = lang === "en" ? "nl" : "en";
-  const html = `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${m.title}</title><link rel="icon" href="../immunostudio-icon.svg"><style>${css}${shotCSS}</style></head><body><header><div>IMMUNOSTUDIO · USER DOCUMENTATION</div><h1>${m.title}</h1><p>${m.subtitle}</p><p class="shot-note">${lang === "nl" ? "Screenshots uit versie 0.2. Klik op een afbeelding om het volledige screenshot op ware grootte te openen. Detailbeelden zijn uitsneden van ongewijzigde screenshots." : "Screenshots from version 0.2. Click an image to open the full screenshot at its original size. Detail views are crops of unmodified screenshots."}</p><nav class="actions"><a href="../">${m.back}</a><a href="${other}.html" lang="${other}">${m.other}</a><button onclick="window.print()">${m.print}</button></nav></header><div class="layout"><aside aria-label="${m.contents}"><b>${m.contents}</b>${m.sections.map(([id, title]) => `<a href="#${id}">${title}</a>`).join("")}</aside><article>${m.sections.map(([id, title, body]) => `<section id="${id}"><h2>${title}</h2>${body}${sectionFigures(lang, id)}</section>`).join("")}</article></div><footer>ImmunoStudio · 3 November 2026 · <a href="${other}.html">${m.other}</a></footer></body></html>`;
-  const cleaned=html.replaceAll('3 November 2026','19 November 2026').replace(/(\d)[\u2012-\u2015](\d)/g,lang==='nl'?'$1 tot $2':'$1 to $2').replace(/[\u2012-\u2015]/g,', ');
+  const html = `<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${m.title}</title><link rel="icon" href="../immunostudio-icon.svg"><style>${css}${shotCSS}</style></head><body><header><div>IMMUNOSTUDIO · USER DOCUMENTATION</div><h1>${m.title}</h1><p>${m.subtitle}</p><p class="shot-note">${lang === "nl" ? "Screenshots uit versie 0.2. Klik op een afbeelding om het volledige screenshot op ware grootte te openen. Detailbeelden zijn uitsneden van ongewijzigde screenshots." : "Screenshots from version 0.2. Click an image to open the full screenshot at its original size. Detail views are crops of unmodified screenshots."}</p><nav class="actions"><a href="../">${m.back}</a><a href="${other}.html" lang="${other}">${m.other}</a><button onclick="window.print()">${m.print}</button></nav></header><div class="layout"><aside aria-label="${m.contents}"><b>${m.contents}</b>${m.sections.map(([id, title]) => `<a href="#${id}">${title}</a>`).join("")}</aside><article>${m.sections.map(([id, title, body]) => `<section id="${id}"><h2>${title}</h2>${body}${sectionFigures(lang, id)}</section>`).join("")}</article></div><footer>ImmunoStudio · 19 November 2026 · <a href="${other}.html">${m.other}</a></footer></body></html>`;
+  const cleaned=html.replaceAll('19 November 2026','19 November 2026').replace(/(\d)[\u2012-\u2015](\d)/g,lang==='nl'?'$1 tot $2':'$1 to $2').replace(/[\u2012-\u2015]/g,', ');
   await writeFile(`public/manual/${lang}.html`, cleaned);
 }
 console.log("Generated English and Dutch manuals, 23 sections each.");

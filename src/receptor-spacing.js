@@ -1,3 +1,4 @@
+import { receptorAnchorProfile } from "./receptor-anchor.js";
 import { anchoredPose, contourFrame } from "./contour2d.js";
 
 function shape(item, frame, bounds, gap = 0) {
@@ -251,28 +252,45 @@ export function bendReceptors(
   items,
   contour,
   delta,
-  { bounds = new Map(), focus, radius = 100, strength = 0.7 } = {},
+  {
+    bounds = new Map(),
+    focus,
+    radius = 100,
+    strength = 0.7,
+    extracellular = false,
+  } = {},
 ) {
   let moved = 0;
   for (const item of items) {
-    if (item.locked) continue;
+    if (
+      item.locked ||
+      (extracellular &&
+        !item.ectoProfile &&
+        !receptorAnchorProfile(item)?.extracellular)
+    )
+      continue;
+    const field = extracellular ? "ectoBend" : "tilt";
     const frame = contourFrame(contour.points, item.anchor2d.u, contour.closed),
       box = shape(item, frame, bounds.get(item.id));
     const weight = brushWeight(box, focus, radius);
     if (!weight) continue;
+    if (extracellular)
+      item.anchor2d.tilt = item.embeddedInitialTilt
+        ? -item.embeddedInitialTilt
+        : 0;
     const along = delta[0] * frame.tangent[0] + delta[1] * frame.tangent[1];
     const tilt = Math.max(
       -60,
       Math.min(
         60,
-        (item.anchor2d.tilt || 0) +
+        (item.anchor2d[field] || 0) +
           ((Math.atan2(along, Math.max(30, item.h * 0.5)) * 180) / Math.PI) *
             weight *
             strength,
       ),
     );
-    if (tilt !== item.anchor2d.tilt) {
-      item.anchor2d.tilt = tilt;
+    if (tilt !== item.anchor2d[field]) {
+      item.anchor2d[field] = tilt;
       moved++;
     }
   }

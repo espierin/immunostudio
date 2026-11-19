@@ -1,3 +1,4 @@
+import { extracellularArtwork } from "./extracellular-bend.js";
 import { cellMembraneKey, updateCellMembranes } from "./cell-membrane2d.js";
 import { receptorFootprints } from "./receptor-footprints.js";
 import {
@@ -11,7 +12,11 @@ import {
   figureLabelControls,
   figureLabelBounds,
 } from "./figure-label.js";
-import { membraneThickness, fitReceptorAnchor } from "./receptor-anchor.js";
+import {
+  receptorAnchorProfile,
+  membraneThickness,
+  fitReceptorAnchor,
+} from "./receptor-anchor.js";
 import {
   validatePathwayMetadata,
   pathwayProperties,
@@ -295,11 +300,13 @@ export class Drawing2D {
         : tool === "move"
           ? "2D: sleep een element om het te verplaatsen."
           : tool === "sculpt"
-            ? this.sculptOptions.mode === "bend"
-              ? "2D: sleep over membraanmoleculen om ze rond hun vaste anker opzij te buigen."
-              : this.sculptOptions.mode === "spread"
-                ? "2D: sleep over overlappende receptoren om ze langs de membraan te spreiden."
-                : "2D: sleep bij de rand om te sculpten. Radius en sterkte staan in het zwevende menu."
+            ? this.sculptOptions.mode === "ecto"
+              ? "2D: buig alleen de extracellulaire delen van TCR, CD4 en CD8. Het transmembraandeel blijft vast."
+              : this.sculptOptions.mode === "bend"
+                ? "2D: sleep over membraanmoleculen om ze rond hun vaste anker opzij te buigen."
+                : this.sculptOptions.mode === "spread"
+                  ? "2D: sleep over overlappende receptoren om ze langs de membraan te spreiden."
+                  : "2D: sleep bij de rand om te sculpten. Radius en sterkte staan in het zwevende menu."
             : tool === "select"
               ? "2D: selecteren, slepen en hoekpunten schalen."
               : "2D: " + tool + " tekenen.",
@@ -528,10 +535,12 @@ export class Drawing2D {
         "|" +
         this.labelsVisible +
         "|" +
-        i.volumeLook;
+        i.volumeLook +
+        "|" +
+        (i.anchor2d?.ectoBend || 0);
       let markup = this.cache.get(key);
       if (!markup) {
-        markup = sanitizedSVG(i.svg, i.id);
+        markup = extracellularArtwork(sanitizedSVG(i.svg, i.id), i);
         if (this.labelsVisible === false) {
           const doc = new DOMParser().parseFromString(markup, "image/svg+xml");
           for (const n of doc.querySelectorAll("text,tspan")) n.remove();
@@ -615,18 +624,27 @@ export class Drawing2D {
           this.selectedItems().length === 1
             ? this.selectedItems()[0]
             : this.doc.items.find((i) => i.id === hit);
-        if (["spread", "bend"].includes(this.sculptOptions.mode)) {
+        if (["spread", "bend", "ecto"].includes(this.sculptOptions.mode)) {
           try {
             const session = this.receptorSession(
               item,
-              this.sculptOptions.mode === "bend" ? 1 : 2,
+              ["bend", "ecto"].includes(this.sculptOptions.mode) ? 1 : 2,
             );
+            if (
+              this.sculptOptions.mode === "ecto" &&
+              !session.items.some(
+                (i) => i.ectoProfile || receptorAnchorProfile(i)?.extracellular,
+              )
+            )
+              throw Error(
+                "Selecteer TCR, CD4 of CD8 voor extracellulaire buiging.",
+              );
             this.beforeChange();
             interaction = {
-              type:
-                this.sculptOptions.mode === "bend"
-                  ? "receptor-bend"
-                  : "receptor-spread",
+              extracellular: this.sculptOptions.mode === "ecto",
+              type: ["bend", "ecto"].includes(this.sculptOptions.mode)
+                ? "receptor-bend"
+                : "receptor-spread",
               session,
               start: p,
               last: p,
@@ -922,6 +940,7 @@ export class Drawing2D {
           focus: [p.x, p.y],
           radius: this.sculptOptions.radius,
           strength: this.sculptOptions.strength,
+          extracellular: x.extracellular,
         });
         syncEmbeddedReceptors(x.session.anchors);
         if (x.session.anchors.length)
@@ -1548,9 +1567,15 @@ export class Drawing2D {
         const session = this.receptorSession(items[0], 1);
         this.beforeChange();
         for (const item of session.items)
-          if (!item.locked) item.anchor2d.tilt = 0;
+          if (!item.locked) {
+            item.anchor2d.tilt = 0;
+            item.anchor2d.ectoBend = 0;
+          }
         for (const a of session.anchors)
-          if (!a.proxy.locked) a.proxy.anchor2d.tilt = -a.initialTilt;
+          if (!a.proxy.locked) {
+            a.proxy.anchor2d.tilt = -a.initialTilt;
+            a.proxy.anchor2d.ectoBend = -(a.initialEctoBend || 0);
+          }
         syncEmbeddedReceptors(session.anchors);
         if (session.anchors.length)
           followEmbedded(session.contour, session.anchors);
@@ -2250,8 +2275,37 @@ export class Drawing2D {
     if (!items.length) throw Error("Selecteer eerst een 2D-figuur.");
     const boundsItems =
       this.labelsVisible === false
-        ? items
+        ? [...items]
         : [...items, ...items.map(figureLabelBounds).filter(Boolean)];
+    // Include displayed geometry outside the original frame, including bent ectodomains.
+    if (this.svg?.getScreenCTM)
+      for (const item of items)
+        try {
+          const art = this.svg.querySelector(
+            `[data-entity="${item.id}"] [data-artwork]`,
+          );
+          if (!art) continue;
+          const box = art.getBBox(),
+            matrix = this.svg
+              .getScreenCTM()
+              .inverse()
+              .multiply(art.getScreenCTM());
+          const corners = [
+            [box.x, box.y],
+            [box.x + box.width, box.y],
+            [box.x + box.width, box.y + box.height],
+            [box.x, box.y + box.height],
+          ].map((p) => new DOMPoint(...p).matrixTransform(matrix));
+          const x = Math.min(...corners.map((p) => p.x)),
+            y = Math.min(...corners.map((p) => p.y));
+          boundsItems.push({
+            x,
+            y,
+            w: Math.max(...corners.map((p) => p.x)) - x,
+            h: Math.max(...corners.map((p) => p.y)) - y,
+            rotation: 0,
+          });
+        } catch {}
     const b = sheetBounds(boundsItems),
       padding = 10,
       x = b.x - padding,

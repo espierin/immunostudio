@@ -1,4 +1,11 @@
 const entries = `
+Hele moleculen kantelen|Tilt whole molecules
+Extracellulaire delen buigen|Bend extracellular parts
+Extracellulaire buiging (°)|Extracellular bend (°)
+Buigt alleen het extracellulaire deel van TCR, CD4 of CD8. Het transmembraandeel blijft vast.|Bends only the extracellular part of TCR, CD4 or CD8. The transmembrane portion stays fixed.
+Selecteer TCR, CD4 of CD8 voor extracellulaire buiging.|Select TCR, CD4 or CD8 for extracellular bending.
+2D: buig alleen de extracellulaire delen van TCR, CD4 en CD8. Het transmembraandeel blijft vast.|2D: bend only the extracellular parts of TCR, CD4 and CD8. The transmembrane portion stays fixed.
+
 Receptoren rechtzetten|Straighten receptors
 Herstel de kanteling van receptoren zonder de membraan te veranderen.|Reset receptor tilt without changing the membrane.
 Moleculen opzij buigen|Bend molecules sideways

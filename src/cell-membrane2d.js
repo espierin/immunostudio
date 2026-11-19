@@ -37,6 +37,7 @@ export function cellMembraneKey(item, style, items, labelsVisible = true) {
         i.w,
         i.h,
         i.rotation,
+        i.anchor2d?.ectoBend,
         i.mirrorX,
         i.mirrorY,
         i.visible,

@@ -247,11 +247,14 @@ export function embeddedAnchors(session) {
       w = Math.max(1, Math.max(...local.map((p) => p[0])) - x),
       h = Math.max(1, Math.max(...local.map((p) => p[1])) - y);
     const tilt = +(container.getAttribute("data-membrane-tilt") || 0);
+    const ectoBend = +(container.getAttribute("data-membrane-ecto-bend") || 0);
     const proxy = {
       id: `embedded-${session.item.id}-${groups.indexOf(container)}`,
       w,
       h,
       locked: !!session.item.locked,
+      ectoProfile: stemProfile?.extracellular ? stemProfile : null,
+      embeddedInitialTilt: tilt,
       anchor2d: {
         u,
         pivotX: -x / w,
@@ -260,12 +263,22 @@ export function embeddedAnchors(session) {
         offset: 0,
         angle: 0,
         tilt: 0,
+        ectoBend: 0,
       },
     };
     anchors.push({
       proxy,
       tilt,
       initialTilt: tilt,
+      stemPoint,
+      stemAxisAngle: stemProfile
+        ? Math.atan2(
+            stemMatrix.d * (stemProfile.angle === 180 ? 1 : -1),
+            stemMatrix.c * (stemProfile.angle === 180 ? 1 : -1),
+          )
+        : null,
+      ectoBend,
+      initialEctoBend: ectoBend,
       normalAngle,
       stem: stemProfile
         ? [
@@ -294,6 +307,7 @@ export function embeddedAnchors(session) {
           ),
       index: groups.indexOf(container),
       u,
+      initialU: u,
       side,
       axisAngle: Math.atan2(axis[1], axis[0]),
       frame,
@@ -344,22 +358,38 @@ function moveEmbedded(doc, worldPoints, closed, anchors) {
     const frame = contourFrame(worldPoints, a.u, closed),
       angle =
         Math.atan2(frame.normal[1] * a.side, frame.normal[0] * a.side) -
-        a.normalAngle +
-        (((a.tilt || 0) - (a.initialTilt || 0)) * Math.PI) / 180,
+        (a.stemAxisAngle ?? a.normalAngle) +
+        (((a.tilt || 0) - (a.stemAxisAngle == null ? a.initialTilt || 0 : 0)) *
+          Math.PI) /
+          180,
       delta = new DOMMatrix()
         .translate(frame.point[0], frame.point[1])
         .rotate((angle * 180) / Math.PI)
-        .translate(-a.frame.point[0], -a.frame.point[1]),
+        .translate(
+          -(a.stemPoint || a.frame.point)[0],
+          -(a.stemPoint || a.frame.point)[1],
+        ),
       m = a.parentMatrix.inverse().multiply(delta).multiply(a.matrix),
       g = groups[a.index];
     if (!g) continue;
-    g.setAttribute(
-      "transform",
-      `matrix(${m.a} ${m.b} ${m.c} ${m.d} ${m.e} ${m.f})`,
-    );
+    const pivot = a.stemPoint || a.frame.point;
+    const unchanged =
+      a.u === a.initialU &&
+      Math.abs(angle) < 1e-6 &&
+      Math.hypot(
+        frame.point[0] - a.frame.point[0],
+        frame.point[1] - a.frame.point[1],
+      ) < 1e-7 &&
+      Math.hypot(frame.point[0] - pivot[0], frame.point[1] - pivot[1]) < 1e-3;
+    if (!unchanged)
+      g.setAttribute(
+        "transform",
+        `matrix(${m.a} ${m.b} ${m.c} ${m.d} ${m.e} ${m.f})`,
+      );
     g.setAttribute("data-membrane-u", String(a.u));
     g.setAttribute("data-membrane-side", String(a.side));
     g.setAttribute("data-membrane-tilt", String(a.tilt || 0));
+    g.setAttribute("data-membrane-ecto-bend", String(a.ectoBend || 0));
   }
 }
 function deformParts(doc, session, worldPoints, interior) {
@@ -514,6 +544,10 @@ export function syncSheetAnchors(drawing) {
 export function syncEmbeddedReceptors(anchors) {
   for (const a of anchors) {
     a.u = a.proxy.anchor2d.u;
+    a.ectoBend = Math.max(
+      -60,
+      Math.min(60, (a.initialEctoBend || 0) + (a.proxy.anchor2d.ectoBend || 0)),
+    );
     a.tilt = Math.max(
       -60,
       Math.min(60, a.initialTilt + (a.proxy.anchor2d.tilt || 0)),

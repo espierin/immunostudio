@@ -68,6 +68,7 @@ export function receptorAnchorProfile(item) {
       span: native.span / box[3],
       width: native.width / box[2],
       angle: native.angle,
+      extracellular: true,
     };
   }
   if (/data-receptor="CCR5"/.test(svg))
@@ -85,7 +86,12 @@ export function receptorAnchorProfile(item) {
       tmX: 116.5 / 240,
     };
   if (/^bio-(?:tcr|tra|trb|cd4|cd8a|cd8b)$/.test(item.pathway?.type || ""))
-    return { pivotY: 87 / 140, span: 38 / 140, width: 17 / 240 };
+    return {
+      pivotY: 87 / 140,
+      span: 38 / 140,
+      width: 17 / 240,
+      extracellular: true,
+    };
   return null;
 }
 
@@ -108,7 +114,7 @@ export function embeddedStemProfile(name) {
         : /basic[_-]15[_-]CD8|CD8.*coreceptor/i.test(name)
           ? nativeProfiles[3]
           : null;
-  return file;
+  return file ? { ...file, extracellular: true } : null;
 }
 export function fitReceptorAnchor(item, target, onlyIfChanged = false) {
   const profile = receptorAnchorProfile(item);

@@ -1,5 +1,7 @@
 # ImmunoStudio 0.2
 
+Bend extracellular parts deforms only the ectodomains of native TCR/CD3, combined TCR/CD8, CD4 and CD8, supported pathway figures and embedded collection receptors. The transmembrane stem and intracellular artwork stay fixed. Extracellular bending has its own reversible parameter, is included in vector export, and retains the source SVG. Both manuals include an illustrated example.
+
 Collection cell membranes now render a contour-following lipid bilayer with transmembrane openings for supported built-in and attached receptors. Automatic spacing includes embedded receptor groups. Bend molecules sideways tilts molecules about fixed anchors, without changing the membrane outline. Straighten receptors resets the tilt. Properties offers Show lipid bilayer and Membrane thickness.
 
 Automatic receptor spacing is available in Sculpt brush and is remembered on this device. Sculpting and receptor displacement share one undo step. Native drawn bilayers omit heads, tails and core behind supported anchored transmembrane receptor footprints, including the full CCR5 seven-helix bundle. Footprints follow object transforms and are exported as ordinary vector paths without masks.
