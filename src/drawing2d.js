@@ -1,4 +1,5 @@
-import { figureLabelMarkup, figureLabelControls } from './figure-label.js';
+import { sheetActionEnabled } from './sheet-actions.js';
+import { figureLabelMarkup, figureLabelControls, figureLabelBounds } from './figure-label.js';
 import { fitReceptorAnchor } from './receptor-anchor.js';
 import {
   validatePathwayMetadata,
@@ -9,6 +10,7 @@ import {
 } from "./pathway-elements.js";
 import {
   selectionViewport,
+  zoomViewport,
   pageFormats,
   pageFormatControls,
 } from "./page-layout.js";
@@ -292,6 +294,10 @@ export class Drawing2D {
     this.onSelect(this.selected);
   }
   add(item) {
+    if (this.doc.items.length >= 4000) {
+      this.onStatus("Maximaal 4000 elementen per tekenblad.");
+      return null;
+    }
     this.beforeChange();
     const n = {
       id: uid(),
@@ -726,6 +732,10 @@ export class Drawing2D {
         return;
       }
       if (!["select", "move"].includes(this.tool)) {
+        if (this.doc.items.length >= 4000) {
+          this.onStatus("Maximaal 4000 elementen per tekenblad.");
+          return;
+        }
         this.beforeChange();
         const kind = this.tool === "freehand" ? "path" : this.tool;
         const item = {
@@ -1112,17 +1122,7 @@ export class Drawing2D {
       "wheel",
       (e) => {
         e.preventDefault();
-        const p = this.point(e),
-          old = this.doc.zoom,
-          next = Math.max(
-            0.25,
-            Math.min(5, old * (e.deltaY < 0 ? 1.12 : 1 / 1.12)),
-          );
-        this.doc.zoom = next;
-        this.doc.panX =
-          this.doc.panX + (p.x + this.doc.panX) * (old / next - 1);
-        this.doc.panY =
-          this.doc.panY + (p.y + this.doc.panY) * (old / next - 1);
+        Object.assign(this.doc,zoomViewport(this.doc,e.deltaY<0?1.12:1/1.12,this.point(e)));
         this.render();
         this.onSelect(this.selected);
       },
@@ -1248,6 +1248,7 @@ export class Drawing2D {
       if (
         document.documentElement.dataset.editor !== "2d" ||
         ["INPUT", "TEXTAREA", "SELECT"].includes(e.target.tagName) ||
+        e.target.isContentEditable ||
         e.defaultPrevented
       )
         return;
@@ -1632,6 +1633,9 @@ export class Drawing2D {
     }
     if (cmd === "copy") {
       this.clipboard = clone(items);
+      this.pasteOffset = 0;
+      this.onSelect?.(this.selected);
+      this.onStatus("Selectie gekopieerd binnen ImmunoStudio.");
       return;
     }
     if (cmd.startsWith("page-format-")) {
@@ -1686,15 +1690,21 @@ export class Drawing2D {
       return;
     }
     if (cmd === "zoom-in" || cmd === "zoom-out") {
-      this.doc.zoom = Math.max(
-        0.25,
-        Math.min(5, this.doc.zoom * (cmd === "zoom-in" ? 1.25 : 0.8)),
-      );
+      Object.assign(this.doc,zoomViewport(this.doc,cmd === "zoom-in" ? 1.25 : .8));
       this.render();
       this.onSelect(this.selected);
       return;
     }
     items = items.filter((i) => !i.locked);
+    if (cmd === "duplicate" || cmd === "paste") {
+      const count = cmd === "paste" ? this.clipboard.length : items.length;
+      if (!count) return;
+      if (this.doc.items.length + count > 4000) {
+        this.onStatus("Maximaal 4000 elementen per tekenblad.");
+        return;
+      }
+    }
+    if (!items.length && cmd !== "paste") return;
     this.beforeChange();
     if (cmd === "to-editable-curve") {
       for (const item of items.filter(editableLine)) {
@@ -1774,12 +1784,17 @@ export class Drawing2D {
       }
     } else if (cmd === "duplicate" || cmd === "paste") {
       const originals = cmd === "paste" ? this.clipboard : items;
+      const offset = cmd === "paste" ? (this.pasteOffset || 0) + 25 : 25;
+      const groups = new Map();
+      for (const original of originals)
+        if (original.groupId && !groups.has(original.groupId))
+          groups.set(original.groupId, uid());
       const added = originals.map((i) => ({
         ...clone(i),
         id: uid(),
-        x: i.x + 25,
-        y: i.y + 25,
-        groupId: null,
+        x: i.x + offset,
+        y: i.y + offset,
+        groupId: groups.get(i.groupId) || null,
       }));
       const copies = new Map(originals.map((i, n) => [i.id, added[n].id]));
       const batches = new Map();
@@ -1789,16 +1804,36 @@ export class Drawing2D {
             batches.set(i.pathwayBatchId, uid());
           i.pathwayBatchId = batches.get(i.pathwayBatchId);
         }
-      remapPathwayLinks(added, copies, 25, 25);
+      remapPathwayLinks(added, copies, offset, offset);
       const known = new Set([...this.doc.items, ...added].map((i) => i.id));
       for (const i of added)
         for (const l of i.pathwayConnection?.links || [])
           for (const k of ["from", "to"])
             if (l[k] && !known.has(l[k])) l[k] = null;
-      for (const i of added)
-        if (i.anchor2d && copies.has(i.anchor2d.targetId))
+      for (const i of added) {
+        if (i.anchor2d && copies.has(i.anchor2d.targetId)) {
           i.anchor2d.targetId = copies.get(i.anchor2d.targetId);
+        } else if (i.anchor2d) {
+          const target = this.doc.items.find(t => t.id === i.anchor2d.targetId);
+          if (!target) { delete i.anchor2d; continue; }
+          try {
+            const contour = prepareContour(this, target, i.anchor2d.pathIndex);
+            let length = 0;
+            for (let n = 1; n < contour.points.length; n++)
+              length += Math.hypot(...contour.points[n].map((v,k) => v-contour.points[n-1][k]));
+            if (contour.closed)
+              length += Math.hypot(...contour.points[0].map((v,k) => v-contour.points.at(-1)[k]));
+            const step = Math.min(.25, offset / Math.max(1, length));
+            const next = i.anchor2d.u + step;
+            i.anchor2d.u = contour.closed ? next % 1 : next <= 1 ? next : Math.max(0,i.anchor2d.u-step);
+          } catch {
+            // The membrane may be hidden. Keep a distinct position on its edge.
+            i.anchor2d.u = (i.anchor2d.u + .05) % 1;
+          }
+        }
+      }
       this.doc.items.push(...added);
+      if (cmd === "paste") this.pasteOffset = offset;
       this.selected = added.map((i) => i.id);
     } else if (cmd === "group") {
       const groupId = uid();
@@ -1849,7 +1884,7 @@ export class Drawing2D {
     ]
       .map(
         ([key, label]) =>
-          `<button data-sheet-action="${key}">${label}</button>`,
+          `<button data-sheet-action="${key}" ${sheetActionEnabled(this.doc,this.selected,this.clipboard,key) ? "" : "disabled"}>${label}</button>`,
       )
       .join("")}</div><strong>Uitlijnen</strong><div class="view-buttons">${[
       ["left", "Links"],
@@ -1861,18 +1896,18 @@ export class Drawing2D {
     ]
       .map(
         ([key, label]) =>
-          `<button data-sheet-action="align-${key}">${label}</button>`,
+          `<button data-sheet-action="align-${key}" ${sheetActionEnabled(this.doc,this.selected,this.clipboard,"align-"+key) ? "" : "disabled"}>${label}</button>`,
       )
       .join(
         "",
-      )}</div><div class="row"><button data-sheet-action="distribute-x">Verdelen X</button><button data-sheet-action="distribute-y">Verdelen Y</button></div></div>${pageFormatControls()}<label>Bladbreedte<input type="number" data-sheet-page="width" min="100" max="10000" value="${this.doc.width}"></label><label>Bladhoogte<input type="number" data-sheet-page="height" min="100" max="10000" value="${this.doc.height}"></label><label>Bladkleur<input type="color" data-sheet-page="background" value="${this.doc.background}"></label><label class="check"><input type="checkbox" data-sheet-page="grid" ${this.doc.grid ? "checked" : ""}> Raster tonen</label><label class="check"><input type="checkbox" data-sheet-page="snap" ${this.doc.snap ? "checked" : ""}> Op raster uitlijnen</label><p class="muted">Ctrl+A selecteren · Ctrl+D dupliceren · Ctrl+G groeperen · Shift+Ctrl+G losmaken · pijltjes verplaatsen.</p></div>`;
+      )}</div><div class="row"><button data-sheet-action="distribute-x" ${sheetActionEnabled(this.doc,this.selected,this.clipboard,"distribute-x") ? "" : "disabled"}>Verdelen X</button><button data-sheet-action="distribute-y" ${sheetActionEnabled(this.doc,this.selected,this.clipboard,"distribute-y") ? "" : "disabled"}>Verdelen Y</button></div></div>${pageFormatControls()}<label>Bladbreedte<input type="number" data-sheet-page="width" min="100" max="10000" value="${this.doc.width}"></label><label>Bladhoogte<input type="number" data-sheet-page="height" min="100" max="10000" value="${this.doc.height}"></label><label>Bladkleur<input type="color" data-sheet-page="background" value="${this.doc.background}"></label><label class="check"><input type="checkbox" data-sheet-page="grid" ${this.doc.grid ? "checked" : ""}> Raster tonen</label><label class="check"><input type="checkbox" data-sheet-page="snap" ${this.doc.snap ? "checked" : ""}> Op raster uitlijnen</label><p class="muted">Ctrl+A selecteren · Ctrl+D dupliceren · Ctrl+G groeperen · Shift+Ctrl+G losmaken · pijltjes verplaatsen.</p></div>`;
     return includeTools
       ? html
       : html.slice(0, html.indexOf('<div class="sheet-arrange">')) + "</div>";
   }
   toolsHTML() {
     const button = (cmd, label) =>
-      `<button data-sheet-action="${cmd}">${label}</button>`;
+      `<button data-sheet-action="${cmd}" ${sheetActionEnabled(this.doc,this.selected,this.clipboard,cmd) ? "" : "disabled"}>${label}</button>`;
     const html = this.propertiesHTML(true),
       tail = html.slice(html.indexOf('<div class="sheet-arrange">'));
     return `<div class="details-body drawing-details"><h2>Tekenen</h2><button data-sheet-action="floating-tools" class="wide">Sculpting en modifiers</button><p class="muted">${this.selected.length} geselecteerde elementen</p><strong>Selectie</strong><div class="drawing-grid">${[
@@ -1969,7 +2004,8 @@ export class Drawing2D {
     syncPathwayConnections(this.doc.items);
     const items=this.selectedItems().filter(i=>i.visible);
     if(!items.length)throw Error('Selecteer eerst een 2D-figuur.');
-    const b=sheetBounds(items),padding=10,x=b.x-padding,y=b.y-padding,w=b.w+padding*2,h=b.h+padding*2;
+    const boundsItems=this.labelsVisible===false?items:[...items,...items.map(figureLabelBounds).filter(Boolean)];
+    const b=sheetBounds(boundsItems),padding=10,x=b.x-padding,y=b.y-padding,w=b.w+padding*2,h=b.h+padding*2;
     return `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="${NS}" xmlns:xlink="http://www.w3.org/1999/xlink" width="${Math.ceil(w)}" height="${Math.ceil(h)}" viewBox="${x} ${y} ${w} ${h}"><title>ImmunoStudio selection</title>${items.map(i=>`<g transform="translate(${i.x+i.w/2} ${i.y+i.h/2}) rotate(${i.rotation||0}) translate(${-i.w/2} ${-i.h/2})" opacity="${i.opacity}"><g transform="translate(${i.w/2} ${i.h/2}) scale(${i.mirrorX?-1:1} ${i.mirrorY?-1:1}) translate(${-i.w/2} ${-i.h/2})">${this.itemMarkup(i)}</g></g>`).join('')}</svg>`;
   }
   async exportPNG(width = 1920, transparent = false) {

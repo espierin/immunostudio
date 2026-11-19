@@ -1,3 +1,4 @@
+import { createAutosave } from './autosave.js';
 import { PathwaySearchDialog } from "./pathway-search-dialog.js";
 import {copyVectorImage,copyRasterImage,exportOfficeImage} from './vector-clipboard.js';
 import { pathwayCatalog, makePathwayItem } from "./pathway-elements.js";
@@ -82,6 +83,8 @@ let openingPage;
 let basisRepresentation = "volume";
 let ownModels = [];
 let structurePreview = null;
+let remoteStructureRequest = null;
+let pdbSearchRequest = null;
 let exportCancelled = false;
 let inspectorTab = "drawing";
 let project = newProject(),
@@ -270,10 +273,15 @@ function toast(message) {
   toast.timer = setTimeout(() => $("#toast").classList.remove("show"), 4200);
   $("#status").textContent = message;
 }
+function updateHistoryButtons() {
+  for (const button of document.querySelectorAll('[data-action="undo"]')) button.disabled = !undo.length;
+  for (const button of document.querySelectorAll('[data-action="redo"]')) button.disabled = !redo.length;
+}
 function checkpoint() {
   undo.push(clone(project));
   if (undo.length > 35) undo.shift();
   redo = [];
+  updateHistoryButtons();
 }
 function changed(rebuild = true) {
   dirty = true;
@@ -308,29 +316,30 @@ function followAnchor() {
   project.camera.target = next;
   view.setCamera(project.camera);
 }
-function autosave() {
-  project.currentTime = time;
-  clearTimeout(autosave.timer);
-  $("#save-state").textContent = "Wijzigingen opslaan…";
-  autosave.timer = setTimeout(() => {
-    if (!db) {
-      $("#save-state").textContent = "Download project om te bewaren";
-      return;
-    }
-    try {
-      const tx = db.transaction("projects", "readwrite");
-      tx.objectStore("projects").put(clone(project), "autosave");
-      tx.oncomplete = () => {
-        $("#save-state").textContent = "✓ Op dit apparaat bewaard";
-        dirty = false;
-      };
-      tx.onerror = () => toast("Lokale opslag vol. Download je project.");
-    } catch {
-      toast("Automatisch bewaren mislukt. Download het project.");
-    }
-  }, 500);
-}
+const projectSaver = createAutosave({
+  snapshot: () => { project.currentTime = time; return clone(project); },
+  write: (snapshot) => new Promise((resolve, reject) => {
+    if (!db) { reject(Error("Local storage unavailable")); return; }
+    const tx = db.transaction("projects", "readwrite");
+    tx.oncomplete = resolve;
+    tx.onerror = tx.onabort = () => reject(tx.error || Error("Local storage failed"));
+    tx.objectStore("projects").put(snapshot, "autosave");
+  }),
+  onSaving: () => { dirty = true; $("#save-state").textContent = "Wijzigingen opslaan…"; },
+  onSaved: () => { dirty = false; $("#save-state").textContent = "✓ Op dit apparaat bewaard"; },
+  onError: () => {
+    $("#save-state").textContent = "Download project om te bewaren";
+    if (db) toast("Automatisch bewaren mislukt. Download het project.");
+  },
+});
+function autosave() { projectSaver.schedule(); }
+window.addEventListener("pagehide", () => projectSaver.flush());
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") projectSaver.flush();
+});
+
 function refresh() {
+  updateHistoryButtons();
   openingPage?.update(project);
   time = Math.max(0, Math.min(project.duration, project.currentTime || 0));
   // setEditorMode builds the 3D scene only when it will be displayed.
@@ -625,12 +634,15 @@ function download(blob, name) {
   setTimeout(() => URL.revokeObjectURL(a.href), 10000);
 }
 function showModal(html) {
+  remoteStructureRequest?.abort();
+  remoteStructureRequest = null;
   structurePreview?.dispose();
   structurePreview = null;
   $("#modal-content").innerHTML =
     `<button class="close" data-action="close" aria-label="Sluiten">×</button>${html}`;
   $("#modal").showModal();
 }
+$("#modal").addEventListener("close", () => remoteStructureRequest?.abort());
 function stop() {
   playing = false;
   $("#play").textContent = "▶";
@@ -741,7 +753,7 @@ async function action(name) {
       break;
     }
     case "import":
-      $("#file-input").accept = ".svg,.glb,.pdb,.cif,.mmcif";
+      $("#file-input").accept = project.editorMode === "2d" ? ".svg" : ".svg,.glb,.pdb,.cif,.mmcif";
       $("#file-input").click();
       break;
     case "style-import":
@@ -825,6 +837,7 @@ async function action(name) {
       break;
     case "duplicate":
       if (i) {
+        if (project.items.length >= 200) { toast("Maximaal 200 objecten per scène."); break; }
         checkpoint();
         const n = clone(i);
         n.id = uid();
@@ -1242,6 +1255,7 @@ $("#search").addEventListener("input", (e) => {
   query = e.target.value;
   page = 0;
   clearTimeout(librarySearchTimer);
+  if (tab === "pdb") pdbSearchRequest?.abort();
   if (tab !== "pdb") librarySearchTimer = setTimeout(renderLibrary, 120);
 });
 $("#search").addEventListener("keydown", (e) => {
@@ -1478,11 +1492,17 @@ document.addEventListener("keydown", (e) => {
     document.querySelector("dialog[open]")
   )
     return;
-  if (["INPUT", "SELECT", "TEXTAREA"].includes(e.target.tagName)) return;
+  if (["INPUT", "SELECT", "TEXTAREA"].includes(e.target.tagName) || e.target.isContentEditable || e.defaultPrevented) return;
   if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z") {
     e.preventDefault();
     action(e.shiftKey ? "redo" : "undo");
-  } else if (e.key === "Delete") {
+  } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "y") {
+    e.preventDefault();
+    action("redo");
+  } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "d" && project.editorMode === "3d") {
+    e.preventDefault();
+    action("duplicate");
+  } else if (e.key === "Delete" || e.key === "Backspace") {
     e.preventDefault();
     action("delete");
   }
@@ -1500,7 +1520,7 @@ $("#project-input").addEventListener("change", async (e) => {
     if (file.size > 60 * 1024 * 1024)
       throw Error("Projectbestand te groot (max. 60 MB).");
     const bytes = new Uint8Array(await file.arrayBuffer());
-    const text = file.name.endsWith(".json")
+    const text = file.name.toLowerCase().endsWith(".json")
       ? strFromU8(bytes)
       : strFromU8(unzipSync(bytes)["project.json"] || new Uint8Array());
     const next = validateProject(JSON.parse(text));
@@ -1520,7 +1540,9 @@ $("#project-input").addEventListener("change", async (e) => {
 });
 $("#style-input").addEventListener("change", async (e) => {
   try {
-    const style = validateStyle(JSON.parse(await e.target.files[0].text()));
+    const file = e.target.files[0];
+    if (!file) return;
+    const style = validateStyle(JSON.parse(await file.text()));
     checkpoint();
     project.style = style;
     changed();
@@ -1581,6 +1603,9 @@ $("#file-input").addEventListener("change", async (e) => {
   e.target.value = "";
 });
 async function pdbSearch() {
+  pdbSearchRequest?.abort();
+  const request = new AbortController();
+  pdbSearchRequest = request;
   const q = query.trim();
   if (!q) {
     toast("Typ een molecuulnaam of PDB-ID.");
@@ -1590,10 +1615,13 @@ async function pdbSearch() {
     showRemoteDialog(q.toUpperCase());
     return;
   }
-  $("#pdb-results").innerHTML = '<p class="muted">Structuren zoeken…</p>';
+  const resultsBox = $("#pdb-results");
+  if (!resultsBox) return;
+  resultsBox.innerHTML = '<p class="muted">Structuren zoeken…</p>';
   try {
-    const results = await searchStructures(q);
-    $("#pdb-results").innerHTML =
+    const results = await searchStructures(q, {signal:request.signal});
+    if (request !== pdbSearchRequest || tab !== "pdb" || query.trim() !== q || !resultsBox.isConnected) return;
+    resultsBox.innerHTML =
       results
         .map(
           (r) =>
@@ -1604,7 +1632,8 @@ async function pdbSearch() {
       /* Result click opens dialog via handler below. */
     }
   } catch (err) {
-    $("#pdb-results").innerHTML =
+    if (request.signal.aborted || request !== pdbSearchRequest || !resultsBox.isConnected) return;
+    resultsBox.innerHTML =
       '<p class="muted">' +
       esc(err.message) +
       ". Probeer een PDB-ID of importeer een lokaal bestand.</p>";
@@ -1620,18 +1649,23 @@ async function loadRemoteStructure() {
   const id = $("#pdb-id").value.trim().toUpperCase();
   if (!/^[A-Z0-9]{4,12}$/.test(id)) throw Error("Ongeldig PDB-ID");
   const assembly = $("#assembly")?.value || "1";
-  $("#structure-progress").textContent = "Coördinaten ophalen…";
+  const field = $("#pdb-id"), progress = $("#structure-progress");
+  const request = new AbortController();
+  remoteStructureRequest?.abort();
+  remoteStructureRequest = request;
+  progress.textContent = "Coördinaten ophalen…";
   try {
     const url =
       assembly === "asym"
         ? `https://files.rcsb.org/download/${id}.cif`
         : `https://files.rcsb.org/download/${id}-assembly${assembly}.cif`;
-    const res = await fetch(url);
+    const res = await fetch(url, {signal:AbortSignal.any([request.signal,AbortSignal.timeout(30000)])});
     if (!res.ok)
       throw Error(
         `Ophalen mislukt (${res.status}). Probeer de asymmetrische eenheid.`,
       );
     const text = await res.text();
+    if (request.signal.aborted || !field.isConnected || !$("#modal").open || $("#pdb-id") !== field) return;
     structures = {
       ...parseCIF(text),
       name: id,
@@ -1640,7 +1674,9 @@ async function loadRemoteStructure() {
     };
     structureDialog();
   } catch (err) {
-    $("#structure-progress").textContent = err.message;
+    if (!request.signal.aborted && progress.isConnected) progress.textContent = err.message;
+  } finally {
+    if (remoteStructureRequest === request) remoteStructureRequest = null;
   }
 }
 function structureDialog() {
@@ -1913,7 +1949,7 @@ function setFocusLayout(enabled) {
 function resetWorkspaceLayout() {
   setFocusLayout(false);
   Object.assign(drawing2D.floating.state, {
-    x: Math.max(0, innerWidth - 310),
+    x: Math.max(12, innerWidth - 630),
     y: 170,
     wide: false,
     minimized: true,
@@ -2046,12 +2082,12 @@ const commands = new CommandPalette(() => [
           keywords: cmd,
           disabled:
             !["fit", "floating-tools"].includes(cmd) &&
-            !drawing2D.selectedItems().some((i) => !i.locked),
+            !(cmd === "fit-selection" ? drawing2D.selectedItems().length : drawing2D.selectedItems().some((i) => !i.locked)),
           run: () => drawing2D.command(cmd),
         })),
       ]
     : []),
-]);
+], (error) => toast(error.message));
 const commandButton = document.createElement("button");
 commandButton.textContent = "⌕";
 commandButton.title = "Opdrachten zoeken (Ctrl+K / F3)";
@@ -2357,6 +2393,9 @@ function setEditorMode(next, save = true) {
     view.setCamera(project.camera);
   }
   renderInspector();
+  updateHistoryButtons();
+  const importButton = document.querySelector('.library [data-action="import"]');
+  importButton.title = next === "2d" ? "Eigen SVG importeren" : "Eigen SVG, GLB, PDB of mmCIF importeren";
   if (save) autosave();
 }
 
@@ -2369,6 +2408,7 @@ $("#all-labels").addEventListener("change", (e) => {
 let pendingVectorSVG=null,copyingVector=false;
 async function copySelectedVector(){
   if(copyingVector||project.editorMode!=='2d')return;
+  pendingVectorSVG=null;
   const svg=drawing2D.exportSelectionSVG();copyingVector=true;
   toast('Vector voor het klembord voorbereiden...');
   try{
@@ -2385,6 +2425,7 @@ async function copySelectedPNG(){
   copyingVector=true;
   try{
     await copyRasterImage(svg);
+    pendingVectorSVG=null;
     $('#modal').close();
     toast('PNG-afbeelding op het klembord. Plak met Ctrl+V in PowerPoint.');
   }finally{copyingVector=false;}

@@ -1,4 +1,9 @@
 const entries = `
+Selectie gekopieerd binnen ImmunoStudio.|Selection copied within ImmunoStudio.
+Maximaal 4000 elementen per tekenblad.|A drawing page supports up to 4000 elements.
+Selecteer een figuur om te bewerken.|Select a figure to edit.
+Kies eerst een cel of membraan als doel.|First choose a cell or membrane as the target.
+Eigen SVG importeren|Import your own SVG
 SVG-vector op het klembord. Plak met Ctrl+V in PowerPoint.|SVG vector copied. Paste into PowerPoint with Ctrl+V.
 Deze browser ondersteunt geen SVG op het klembord. Gebruik een recente versie van Edge of Chrome, of download de SVG.|This browser does not support SVG clipboard images. Use a recent Edge or Chrome version, or download the SVG.
 De browser staat kopiëren niet toe. Klik opnieuw op Vector kopiëren en geef de website zo nodig klembordtoegang.|The browser blocked copying. Click Copy vector again and allow clipboard access for this website if requested.

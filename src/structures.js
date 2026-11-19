@@ -106,7 +106,9 @@ export function centeredAtoms(atoms, chains) {
     z: a.z - center[2],
   }));
 }
-export async function searchStructures(query) {
+export async function searchStructures(query, {signal, fetcher=globalThis.fetch, timeout=20000} = {}) {
+  const deadline = AbortSignal.timeout(timeout);
+  const requestSignal = signal ? AbortSignal.any([signal, deadline]) : deadline;
   const body = {
     query: {
       type: "terminal",
@@ -116,10 +118,11 @@ export async function searchStructures(query) {
     return_type: "entry",
     request_options: { paginate: { start: 0, rows: 8 } },
   };
-  const response = await fetch("https://search.rcsb.org/rcsbsearch/v2/query", {
+  const response = await fetcher("https://search.rcsb.org/rcsbsearch/v2/query", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
+    signal: requestSignal,
   });
   if (response.status === 204) return [];
   if (!response.ok) throw Error(`PDB zoeken mislukt (${response.status})`);
@@ -127,8 +130,9 @@ export async function searchStructures(query) {
   return Promise.all(
     (data.result_set || []).map(async (r) => {
       try {
-        const res = await fetch(
+        const res = await fetcher(
           `https://data.rcsb.org/rest/v1/core/entry/${r.identifier}`,
+          {signal: requestSignal},
         );
         if (!res.ok) throw Error();
         const d = await res.json();
@@ -139,6 +143,7 @@ export async function searchStructures(query) {
           resolution: d.rcsb_entry_info?.resolution_combined?.[0],
         };
       } catch {
+          if (requestSignal.aborted) throw requestSignal.reason;
         return { id: r.identifier, title: r.identifier };
       }
     }),

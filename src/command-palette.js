@@ -15,8 +15,9 @@ export function searchCommands(commands, query) {
   );
 }
 export class CommandPalette {
-  constructor(getCommands) {
+  constructor(getCommands, onError = () => {}) {
     this.getCommands = getCommands;
+    this.onError = onError;
     this.dialog = document.createElement("dialog");
     this.dialog.className = "command-palette";
     this.dialog.setAttribute("aria-labelledby", "command-title");
@@ -61,10 +62,10 @@ export class CommandPalette {
             return;
           }
           const direction = e.key === "ArrowDown" ? 1 : -1;
-          this.index = Math.max(
-            0,
-            Math.min(this.matches.length - 1, this.index + direction),
-          );
+          let next = this.index + direction;
+          while (next >= 0 && next < this.matches.length && this.matches[next].disabled)
+            next += direction;
+          if (next >= 0 && next < this.matches.length) this.index = next;
           this.render();
         }
       },
@@ -82,10 +83,16 @@ export class CommandPalette {
   run(command) {
     if (!command || command.disabled) return;
     this.dialog.close();
-    command.run();
+    try {
+      Promise.resolve(command.run()).catch(this.onError);
+    } catch (error) { this.onError(error); }
   }
   render() {
     this.matches = searchCommands(this.getCommands(), this.input.value);
+    if (!this.matches[this.index] || this.matches[this.index].disabled) {
+      const first = this.matches.findIndex(command => !command.disabled);
+      this.index = Math.max(0, first);
+    }
     const root = this.dialog.querySelector(".command-results");
     root.replaceChildren();
     if (!this.matches.length) {

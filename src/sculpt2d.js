@@ -395,9 +395,10 @@ export function syncSheetAnchors(drawing) {
     }
     try {
       if (fitReceptorAnchor(item, target, true)) changed = true;
-      if (!cache.has(target.id))
-        cache.set(target.id, prepareContour(drawing, target, a.pathIndex));
-      const s = cache.get(target.id),
+      const contourKey = target.id + ":" + (a.pathIndex ?? "default");
+      if (!cache.has(contourKey))
+        cache.set(contourKey, prepareContour(drawing, target, a.pathIndex));
+      const s = cache.get(contourKey),
         pose = anchoredPose(item, contourFrame(s.points, a.u, s.closed), a);
       if (
         ["x", "y", "rotation"].some((k) => Math.abs(pose[k] - item[k]) > 1e-5)

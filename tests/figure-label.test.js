@@ -4,6 +4,7 @@ import {figureLabelMarkup, figureLabelControls} from '../src/figure-label.js';
 import {fitReceptorAnchor} from '../src/receptor-anchor.js';
 import {ccr5SVG} from '../src/receptor-art.js';
 import {anchoredPose} from '../src/contour2d.js';
+import {Drawing2D,newSheet} from '../src/drawing2d.js';
 
 test('figure labels escape text, respect local and global visibility and remain inside the export frame', () => {
   const item = {kind:'svg', w:100, h:80, figureLabel:'CD4 <TCR>', figureLabelVisible:true};
@@ -24,4 +25,14 @@ test('CCR5 anchoring matches the helix span to the bilayer and puts its center o
   const mirrored={...item,mirrorY:true,anchor2d:{...item.anchor2d}};
   fitReceptorAnchor(mirrored,{bilayerThickness:40});
   assert.equal(mirrored.anchor2d.pivotY,1-61/140);
+});
+
+test('selection export includes large labels at the top and after vertical reflection',()=>{
+  const item={id:'labelled',kind:'svg',x:100,y:100,w:100,h:100,rotation:0,visible:true,opacity:1,figureLabel:'TCR',figureLabelVisible:true,figureLabelY:0,figureLabelSize:80};
+  const doc=newSheet();doc.items=[item];
+  const drawing={doc,selectedItems:()=>[item],itemMarkup:()=>'<path d="M0 0L100 100"/>'};
+  const box=()=>Drawing2D.prototype.exportSelectionSVG.call(drawing).match(/viewBox="([^"]+)"/)[1].split(' ').map(Number);
+  assert.ok(box()[1]<=10,'the top label is included above the original item frame');
+  item.mirrorY=true;const b=box();assert.ok(b[1]+b[3]>=290,'the mirrored label is included below the frame');
+  drawing.labelsVisible=false;assert.deepEqual(box(),[90,90,120,120]);
 });

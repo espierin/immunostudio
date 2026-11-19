@@ -6,7 +6,7 @@ export class FloatingDrawingTools {
       "immunostudio-floating-tools" +
       (new URLSearchParams(location.search).has("qa") ? "-qa" : "");
     this.state = {
-      x: Math.max(0, innerWidth - 310),
+      x: Math.max(12, innerWidth - 630),
       y: 170,
       minimized: true,
       wide: false,
@@ -19,6 +19,8 @@ export class FloatingDrawingTools {
         JSON.parse(localStorage.getItem(this.key) || "{}"),
       );
     } catch {}
+    if (Math.abs(this.state.x - (innerWidth - 310)) < 12)
+      this.state.x = Math.max(12, innerWidth - 630);
     this.element = document.createElement("section");
     this.element.className = "floating-drawing";
     this.element.setAttribute("aria-label", "Sculpting en modifiers");
@@ -72,10 +74,12 @@ export class FloatingDrawingTools {
       selected = d.selectedItems(),
       target = d.doc.items.find((i) => i.id === d.anchorTargetId),
       a = selected.length === 1 ? selected[0].anchor2d : null;
-    this.element.querySelector(".floating-selection").textContent =
-      selected.map((i) => i.name).join(", ") || "—";
-    this.element.querySelector(".floating-target").textContent =
-      target?.name || "—";
+    const selectionText = this.element.querySelector(".floating-selection");
+    selectionText.toggleAttribute("data-no-translate", !!selected.length);
+    selectionText.textContent = selected.map((i) => i.name).join(", ") || "Selecteer een figuur om te bewerken.";
+    const targetText = this.element.querySelector(".floating-target");
+    targetText.toggleAttribute("data-no-translate", !!target);
+    targetText.textContent = target?.name || "Kies eerst een cel of membraan als doel.";
     const appearance = this.element.querySelector(".floating-line-appearance");
     const nextHTML =
         selected.length === 1 ? lineAppearanceControls(selected[0]) : "",
@@ -201,6 +205,10 @@ export class FloatingDrawingTools {
       this.place();
     });
     grip.addEventListener("pointerup", () => {
+      drag = null;
+      this.save();
+    });
+    grip.addEventListener("pointercancel", () => {
       drag = null;
       this.save();
     });

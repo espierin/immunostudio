@@ -1,7 +1,7 @@
 import { english, translateDynamic } from "./translations.js";
 const storageKey =
   "immunostudio-language" +
-  (new URLSearchParams(location.search).has("qa") ? "-qa" : "");
+  (new URLSearchParams(globalThis.location?.search || "").has("qa") ? "-qa" : "");
 let language = "en";
 try {
   language = localStorage.getItem(storageKey) === "nl" ? "nl" : "en";
