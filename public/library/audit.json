@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "sourceCount": 2018,
+  "publishedCount": 702,
+  "sourceBuildingBlockCount": 701,
+  "appBuildingBlockCount": 1,
+  "sourceManifestHash": "0dd60b1289a7dd629a161012f5ab654fe84a84bc33c1c3f7603437d0a8f52ce4",
+  "excludedByReason": {
+    "table-or-overview": 32,
+    "composite-role": 137,
+    "unclassified-module-scene": 207,
+    "composite-scene": 46,
+    "unclassified-contact-scene": 42,
+    "unclassified-extension": 9,
+    "concept-or-context-role": 844
+  }
+}

@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="680" height="430" viewBox="0 0 680 430" version="1.1" role="img" id="CMV1909_Object_0">
+  <title>Premature infant in an incubator</title>
+  <desc>Native editable neonatal incubator with a swaddled premature infant. Monitor waveform is schematic and contains no measured clinical data. Keywords: premature infant, prematurity, newborn, incubator, couveuse, prematuur, pasgeborene, neonatologie.</desc>
+  <defs id="CMV1909_Resources">
+    <linearGradient id="CMV1909_Skin" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F8DCC5" id="CMV1909_Object_5"/>
+      <stop offset=".6" stop-color="#E8B997" id="CMV1909_Object_6"/>
+      <stop offset="1" stop-color="#DFA986" id="CMV1909_Object_7"/>
+    </linearGradient>
+    <linearGradient id="CMV1909_Glass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F5FBFF" id="CMV1909_Object_9"/>
+      <stop offset=".5" stop-color="#E1F1FC" id="CMV1909_Object_10"/>
+      <stop offset="1" stop-color="#BDD9EF" id="CMV1909_Object_11"/>
+    </linearGradient>
+    <linearGradient id="CMV1909_Linen" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#EEF7FF" id="CMV1909_Object_13"/>
+      <stop offset="1" stop-color="#A9C6E2" id="CMV1909_Object_14"/>
+    </linearGradient>
+  </defs>
+  <g id="CMV1909_IncubatorCart">
+    <path d="M92 302 V367 H528 V302" fill="#E5F0F8" stroke="#064986" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" id="CMV1909_Object_16"/>
+    <path d="M116 368 V392 M504 368 V392 M175 323 H450" fill="none" stroke="#064986" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" id="CMV1909_Object_17"/>
+    <circle cx="116" cy="397" r="12" fill="#A9C6E2" stroke="#092E50" stroke-width="3" id="CMV1909_Object_18"/>
+    <circle cx="504" cy="397" r="12" fill="#A9C6E2" stroke="#092E50" stroke-width="3" id="CMV1909_Object_19"/>
+    <rect x="82" y="280" width="456" height="35" rx="12" fill="#A9C6E2" stroke="#064986" stroke-width="4" id="CMV1909_Object_20"/>
+    <rect x="208" y="327" width="185" height="25" rx="7" fill="#FFFFFF" stroke="#80B2D8" stroke-width="2" id="CMV1909_Object_21"/>
+    <circle cx="230" cy="340" r="3" fill="#2167AE" id="CMV1909_Object_22"/>
+    <circle cx="254" cy="340" r="3" fill="#2167AE" id="CMV1909_Object_23"/>
+    <circle cx="278" cy="340" r="3" fill="#2167AE" id="CMV1909_Object_24"/>
+  </g>
+  <g id="CMV1909_TransparentCanopy">
+    <path d="M62 281 V128 C62 70 107 35 165 35 H457 C515 35 558 78 558 133 V281 Z" fill="url(#CMV1909_Glass)" stroke="#064986" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" id="CMV1909_Object_26"/>
+    <path d="M88 122 C91 77 127 57 168 57 H455" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" id="CMV1909_Object_27"/>
+    <rect x="83" y="254" width="455" height="28" rx="12" fill="#FFFFFF" stroke="#80B2D8" stroke-width="2" id="CMV1909_Object_28"/>
+  </g>
+  <g id="CMV1909_PrematureInfant">
+    <path d="M190 170 C249 142 327 178 365 212 C389 230 423 232 448 251 L197 251 C167 227 164 194 190 170 Z" fill="url(#CMV1909_Linen)" stroke="#064986" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" id="CMV1909_Object_30"/>
+    <path d="M220 171 Q255 207 251 250 M267 182 Q297 205 321 248 M198 228 Q248 216 285 213" fill="none" stroke="#80B2D8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="CMV1909_Object_31"/>
+    <ellipse cx="163" cy="196" rx="41" ry="39" fill="url(#CMV1909_Skin)" stroke="#092E50" stroke-width="3" id="CMV1909_Object_32"/>
+    <path d="M125 187 Q127 153 162 153 Q190 154 201 179 Q167 172 125 187 Z" fill="#D6EAF8" stroke="#092E50" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" id="CMV1909_Object_33"/>
+    <path d="M139 198 Q146 202 152 196 M164 198 Q171 202 177 196 M151 216 Q161 223 170 215" fill="none" stroke="#092E50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="CMV1909_Object_34"/>
+    <path d="M130 181 Q167 169 197 181" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" id="CMV1909_Object_35"/>
+  </g>
+  <g id="CMV1909_CanopyPortholes" fill="none" stroke="#80B2D8" stroke-width="3">
+    <circle cx="275" cy="207" r="46" id="CMV1909_Object_37"/>
+    <path d="M247 181 A37 37 0 0 1 302 180" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" id="CMV1909_Object_38"/>
+    <circle cx="425" cy="207" r="46" id="CMV1909_Object_39"/>
+    <path d="M397 181 A37 37 0 0 1 452 180" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" id="CMV1909_Object_40"/>
+  </g>
+  <path d="M558 142 H576" fill="none" stroke="#064986" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" id="CMV1909_Object_41"/>
+  <rect x="574" y="66" width="88" height="104" rx="10" fill="#D9EAF6" stroke="#064986" stroke-width="3" id="CMV1909_Object_42"/>
+  <rect x="583" y="76" width="70" height="68" rx="5" fill="#064986" stroke="#092E50" stroke-width="2" id="CMV1909_Object_43"/>
+  <path d="M589 112 H602 L607 99 612 126 618 108 H646" fill="none" stroke="#C7E5F8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="CMV1909_Object_44"/>
+  <circle cx="591" cy="156" r="3.5" fill="#2167AE" id="CMV1909_Object_45"/>
+  <circle cx="611" cy="156" r="3.5" fill="#2167AE" id="CMV1909_Object_46"/>
+  <circle cx="631" cy="156" r="3.5" fill="#2167AE" id="CMV1909_Object_47"/>
+</svg>

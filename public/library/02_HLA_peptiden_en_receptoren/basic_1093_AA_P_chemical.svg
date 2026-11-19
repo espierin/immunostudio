@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" width="600" height="450" viewBox="0 0 600 450"><title>Proline — Pro (P), chemical structure</title><desc>Native molecular bonds and atom glyphs. Free amino acid, not a peptide-bound residue. Neutral formula is a structural convention, not the predominant protonation state at physiological pH. SMILES: O=C(O)[C@@H]1CCCN1 Native editable vector; domain cartoons are not atomic models.</desc><defs>
+<linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#78B9EB"/><stop offset=".46" stop-color="#287CC4"/><stop offset="1" stop-color="#125698"/></linearGradient>
+<linearGradient id="beta" x2="1" y2="1"><stop stop-color="#DAEEFC"/><stop offset="1" stop-color="#88B9DE"/></linearGradient>
+<linearGradient id="orange" x2="1" y2="1"><stop stop-color="#FFB47D"/><stop offset=".45" stop-color="#FF7546"/><stop offset="1" stop-color="#E74D30"/></linearGradient>
+<radialGradient id="cell" cx=".33" cy=".28" r=".8"><stop stop-color="#F0F8FD"/><stop offset=".65" stop-color="#C2E0F5"/><stop offset="1" stop-color="#94C3E7"/></radialGradient>
+<radialGradient id="warmCell"><stop stop-color="#FFE8D9"/><stop offset="1" stop-color="#FAB08D"/></radialGradient>
+<radialGradient id="nucleus" cx=".35" cy=".3"><stop stop-color="#4D95D2"/><stop offset="1" stop-color="#1B5B9D"/></radialGradient>
+<radialGradient id="warmNucleus"><stop stop-color="#FFA36C"/><stop offset="1" stop-color="#E86F4B"/></radialGradient>
+<radialGradient id="virus"><stop stop-color="#D2E9F9"/><stop offset="1" stop-color="#8FBFE4"/></radialGradient>
+<linearGradient id="lipid" x2="0" y2="1"><stop stop-color="#D5EEFF"/><stop offset="1" stop-color="#92BFE2"/></linearGradient>
+<linearGradient id="kidney" x2="1" y2="1"><stop stop-color="#FFC6AE"/><stop offset=".5" stop-color="#F59C83"/><stop offset="1" stop-color="#D56A57"/></linearGradient>
+<linearGradient id="lung" x2="1" y2="1"><stop stop-color="#E1F1FC"/><stop offset="1" stop-color="#9CC6E7"/></linearGradient>
+<linearGradient id="glass" x2="1" y2="0"><stop stop-color="#E0EEF8"/><stop offset=".4" stop-color="#FFFFFF"/><stop offset="1" stop-color="#C3DAEC"/></linearGradient>
+<linearGradient id="machine" x2="1" y2="1"><stop stop-color="#ACD6F2"/><stop offset="1" stop-color="#3183C5"/></linearGradient>
+<marker id="arrB" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="6" markerHeight="6" markerUnits="strokeWidth" orient="auto-start-reverse" overflow="visible"><path d="M1 1 L11 6 1 11 4 6 Z" fill="#064986" stroke="none"/></marker>
+<marker id="arrO" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="6" markerHeight="6" markerUnits="strokeWidth" orient="auto-start-reverse" overflow="visible"><path d="M1 1 L11 6 1 11 4 6 Z" fill="#FF5A36" stroke="none"/></marker><linearGradient id="ep2026Gold" x2=".7" y2="1"><stop stop-color="#FFF1AB"/><stop offset="1" stop-color="#FFC72C"/></linearGradient><linearGradient id="ep2026Red" x2=".8" y2="1"><stop stop-color="#FFB38B"/><stop offset="1" stop-color="#FF5A36"/></linearGradient><linearGradient id="pxBlue" x2=".8" y2="1"><stop stop-color="#B7DBF7"/><stop offset=".5" stop-color="#6EADE2"/><stop offset="1" stop-color="#2167AE"/></linearGradient><linearGradient id="pxLight" x2=".8" y2="1"><stop stop-color="#F1F9FF"/><stop offset="1" stop-color="#A9C6E2"/></linearGradient><linearGradient id="pxWarm" x2=".8" y2="1"><stop stop-color="#FFD6BA"/><stop offset="1" stop-color="#FF5A36"/></linearGradient><linearGradient id="pxGreen" x2=".8" y2="1"><stop stop-color="#D1EDAD"/><stop offset="1" stop-color="#93C94D"/></linearGradient><linearGradient id="pxGold" x2=".8" y2="1"><stop stop-color="#FFF1A9"/><stop offset="1" stop-color="#FFC72C"/></linearGradient></defs><g id="component-layer" inkscape:groupmode="layer" inkscape:label="Proline — Pro (P), chemical structure" data-extension-set="AA_GUT"><text x="300" y="38" font-family="Calibri" font-size="26" fill="#064986" text-anchor="middle" font-weight="600">Proline · Pro · P</text><svg x="0" y="55" width="600" height="330" viewBox="0 0 600 330">
+<!-- END OF HEADER -->
+<path class='bond-0 atom-0 atom-1' d='M 476.4,64.0 L 419.2,163.0' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2.4px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-0 atom-0 atom-1' d='M 459.4,54.2 L 402.2,153.2' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2.4px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-1 atom-1 atom-2' d='M 413.5,153.2 L 468.1,247.8' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2.4px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-2 atom-3 atom-1' d='M 282.8,153.2 L 408.1,143.8 L 419.4,163.5 Z' style='fill:#000000;fill-rule:evenodd;fill-opacity:1;stroke:#000000;stroke-width:0.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path class='bond-3 atom-3 atom-4' d='M 282.8,153.2 L 205.9,47.4' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2.4px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-4 atom-4 atom-5' d='M 205.9,47.4 L 81.5,87.9' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2.4px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-5 atom-5 atom-6' d='M 81.5,87.9 L 81.5,218.6' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2.4px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-6 atom-6 atom-7' d='M 81.5,218.6 L 190.8,254.1' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2.4px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-7 atom-7 atom-3' d='M 219.3,240.5 L 282.8,153.2' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2.4px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path d='M 278.9,147.9 L 282.8,153.2 L 279.6,157.6' style='fill:none;stroke:#000000;stroke-width:2.4px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 209.7,52.7 L 205.9,47.4 L 199.7,49.5' style='fill:none;stroke:#000000;stroke-width:2.4px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 87.8,85.8 L 81.5,87.9 L 81.5,94.4' style='fill:none;stroke:#000000;stroke-width:2.4px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 81.5,212.1 L 81.5,218.6 L 87.0,220.4' style='fill:none;stroke:#000000;stroke-width:2.4px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path class='atom-0' d='M 465.9 40.1
+Q 465.9 33.3, 469.3 29.5
+Q 472.6 25.7, 478.9 25.7
+Q 485.2 25.7, 488.5 29.5
+Q 491.9 33.3, 491.9 40.1
+Q 491.9 47.0, 488.5 50.9
+Q 485.1 54.8, 478.9 54.8
+Q 472.7 54.8, 469.3 50.9
+Q 465.9 47.0, 465.9 40.1
+M 478.9 51.6
+Q 483.2 51.6, 485.5 48.7
+Q 487.9 45.8, 487.9 40.1
+Q 487.9 34.5, 485.5 31.7
+Q 483.2 28.9, 478.9 28.9
+Q 474.6 28.9, 472.2 31.7
+Q 469.9 34.5, 469.9 40.1
+Q 469.9 45.8, 472.2 48.7
+Q 474.6 51.6, 478.9 51.6
+' fill='#000000'/>
+<path class='atom-2' d='M 465.9 266.6
+Q 465.9 259.8, 469.3 256.0
+Q 472.6 252.2, 478.9 252.2
+Q 485.2 252.2, 488.5 256.0
+Q 491.9 259.8, 491.9 266.6
+Q 491.9 273.4, 488.5 277.4
+Q 485.1 281.2, 478.9 281.2
+Q 472.7 281.2, 469.3 277.4
+Q 465.9 273.5, 465.9 266.6
+M 478.9 278.0
+Q 483.2 278.0, 485.5 275.2
+Q 487.9 272.2, 487.9 266.6
+Q 487.9 261.0, 485.5 258.2
+Q 483.2 255.4, 478.9 255.4
+Q 474.6 255.4, 472.2 258.2
+Q 469.9 261.0, 469.9 266.6
+Q 469.9 272.3, 472.2 275.2
+Q 474.6 278.0, 478.9 278.0
+' fill='#000000'/>
+<path class='atom-2' d='M 496.3 252.5
+L 500.1 252.5
+L 500.1 264.5
+L 514.6 264.5
+L 514.6 252.5
+L 518.5 252.5
+L 518.5 280.8
+L 514.6 280.8
+L 514.6 267.7
+L 500.1 267.7
+L 500.1 280.8
+L 496.3 280.8
+L 496.3 252.5
+' fill='#000000'/>
+<path class='atom-7' d='M 199.6 244.9
+L 208.9 259.9
+Q 209.8 261.3, 211.3 264.0
+Q 212.8 266.7, 212.9 266.9
+L 212.9 244.9
+L 216.6 244.9
+L 216.6 273.2
+L 212.8 273.2
+L 202.8 256.8
+Q 201.6 254.9, 200.4 252.7
+Q 199.2 250.5, 198.8 249.8
+L 198.8 273.2
+L 195.2 273.2
+L 195.2 244.9
+L 199.6 244.9
+' fill='#000000'/>
+<path class='atom-7' d='M 194.8 276.0
+L 198.7 276.0
+L 198.7 288.0
+L 213.1 288.0
+L 213.1 276.0
+L 217.0 276.0
+L 217.0 304.3
+L 213.1 304.3
+L 213.1 291.2
+L 198.7 291.2
+L 198.7 304.3
+L 194.8 304.3
+L 194.8 276.0
+' fill='#000000'/>
+</svg><text x="300" y="422" font-family="Calibri" font-size="16" fill="#064986" text-anchor="middle" font-weight="600">Free L-amino acid; neutral structural formula</text></g></svg>

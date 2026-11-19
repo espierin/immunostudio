@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" width="600" height="450" viewBox="0 0 600 450"><title>Threonine — Thr (T), chemical structure</title><desc>Native molecular bonds and atom glyphs. Free amino acid, not a peptide-bound residue. Neutral formula is a structural convention, not the predominant protonation state at physiological pH. SMILES: C[C@@H](O)[C@@H](C(=O)O)N Native editable vector; domain cartoons are not atomic models.</desc><defs>
+<linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#78B9EB"/><stop offset=".46" stop-color="#287CC4"/><stop offset="1" stop-color="#125698"/></linearGradient>
+<linearGradient id="beta" x2="1" y2="1"><stop stop-color="#DAEEFC"/><stop offset="1" stop-color="#88B9DE"/></linearGradient>
+<linearGradient id="orange" x2="1" y2="1"><stop stop-color="#FFB47D"/><stop offset=".45" stop-color="#FF7546"/><stop offset="1" stop-color="#E74D30"/></linearGradient>
+<radialGradient id="cell" cx=".33" cy=".28" r=".8"><stop stop-color="#F0F8FD"/><stop offset=".65" stop-color="#C2E0F5"/><stop offset="1" stop-color="#94C3E7"/></radialGradient>
+<radialGradient id="warmCell"><stop stop-color="#FFE8D9"/><stop offset="1" stop-color="#FAB08D"/></radialGradient>
+<radialGradient id="nucleus" cx=".35" cy=".3"><stop stop-color="#4D95D2"/><stop offset="1" stop-color="#1B5B9D"/></radialGradient>
+<radialGradient id="warmNucleus"><stop stop-color="#FFA36C"/><stop offset="1" stop-color="#E86F4B"/></radialGradient>
+<radialGradient id="virus"><stop stop-color="#D2E9F9"/><stop offset="1" stop-color="#8FBFE4"/></radialGradient>
+<linearGradient id="lipid" x2="0" y2="1"><stop stop-color="#D5EEFF"/><stop offset="1" stop-color="#92BFE2"/></linearGradient>
+<linearGradient id="kidney" x2="1" y2="1"><stop stop-color="#FFC6AE"/><stop offset=".5" stop-color="#F59C83"/><stop offset="1" stop-color="#D56A57"/></linearGradient>
+<linearGradient id="lung" x2="1" y2="1"><stop stop-color="#E1F1FC"/><stop offset="1" stop-color="#9CC6E7"/></linearGradient>
+<linearGradient id="glass" x2="1" y2="0"><stop stop-color="#E0EEF8"/><stop offset=".4" stop-color="#FFFFFF"/><stop offset="1" stop-color="#C3DAEC"/></linearGradient>
+<linearGradient id="machine" x2="1" y2="1"><stop stop-color="#ACD6F2"/><stop offset="1" stop-color="#3183C5"/></linearGradient>
+<marker id="arrB" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="6" markerHeight="6" markerUnits="strokeWidth" orient="auto-start-reverse" overflow="visible"><path d="M1 1 L11 6 1 11 4 6 Z" fill="#064986" stroke="none"/></marker>
+<marker id="arrO" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="6" markerHeight="6" markerUnits="strokeWidth" orient="auto-start-reverse" overflow="visible"><path d="M1 1 L11 6 1 11 4 6 Z" fill="#FF5A36" stroke="none"/></marker><linearGradient id="ep2026Gold" x2=".7" y2="1"><stop stop-color="#FFF1AB"/><stop offset="1" stop-color="#FFC72C"/></linearGradient><linearGradient id="ep2026Red" x2=".8" y2="1"><stop stop-color="#FFB38B"/><stop offset="1" stop-color="#FF5A36"/></linearGradient><linearGradient id="pxBlue" x2=".8" y2="1"><stop stop-color="#B7DBF7"/><stop offset=".5" stop-color="#6EADE2"/><stop offset="1" stop-color="#2167AE"/></linearGradient><linearGradient id="pxLight" x2=".8" y2="1"><stop stop-color="#F1F9FF"/><stop offset="1" stop-color="#A9C6E2"/></linearGradient><linearGradient id="pxWarm" x2=".8" y2="1"><stop stop-color="#FFD6BA"/><stop offset="1" stop-color="#FF5A36"/></linearGradient><linearGradient id="pxGreen" x2=".8" y2="1"><stop stop-color="#D1EDAD"/><stop offset="1" stop-color="#93C94D"/></linearGradient><linearGradient id="pxGold" x2=".8" y2="1"><stop stop-color="#FFF1A9"/><stop offset="1" stop-color="#FFC72C"/></linearGradient></defs><g id="component-layer" inkscape:groupmode="layer" inkscape:label="Threonine — Thr (T), chemical structure" data-extension-set="AA_GUT"><text x="300" y="38" font-family="Calibri" font-size="26" fill="#064986" text-anchor="middle" font-weight="600">Threonine · Thr · T</text><svg x="0" y="55" width="600" height="330" viewBox="0 0 600 330">
+<!-- END OF HEADER -->
+<path class='bond-0 atom-1 atom-0' d='M 194.2,132.6 L 110.1,190.0 L 102.5,176.8 Z' style='fill:#000000;fill-rule:evenodd;fill-opacity:1;stroke:#000000;stroke-width:0.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path class='bond-1 atom-1 atom-2' d='M 194.2,132.6 L 194.2,49.2' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2.4px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-2 atom-1 atom-3' d='M 194.2,132.6 L 282.1,183.4' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2.4px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-3 atom-3 atom-4' d='M 282.1,183.4 L 370.0,132.6' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2.4px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-4 atom-4 atom-5' d='M 377.6,137.0 L 377.6,49.2' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2.4px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-4 atom-4 atom-5' d='M 362.4,137.0 L 362.4,49.2' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2.4px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-5 atom-4 atom-6' d='M 370.0,132.6 L 441.6,173.9' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2.4px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-6 atom-3 atom-7' d='M 282.1,183.4 L 289.7,264.0 L 274.5,264.0 Z' style='fill:#000000;fill-rule:evenodd;fill-opacity:1;stroke:#000000;stroke-width:0.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 194.2,128.5 L 194.2,132.6 L 198.6,135.2' style='fill:none;stroke:#000000;stroke-width:2.4px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 277.7,180.8 L 282.1,183.4 L 286.5,180.8' style='fill:none;stroke:#000000;stroke-width:2.4px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 365.6,135.2 L 370.0,132.6 L 373.6,134.7' style='fill:none;stroke:#000000;stroke-width:2.4px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path class='atom-2' d='M 181.2 31.2
+Q 181.2 24.4, 184.6 20.6
+Q 187.9 16.8, 194.2 16.8
+Q 200.5 16.8, 203.9 20.6
+Q 207.2 24.4, 207.2 31.2
+Q 207.2 38.1, 203.8 42.0
+Q 200.4 45.9, 194.2 45.9
+Q 188.0 45.9, 184.6 42.0
+Q 181.2 38.1, 181.2 31.2
+M 194.2 42.7
+Q 198.5 42.7, 200.9 39.8
+Q 203.2 36.9, 203.2 31.2
+Q 203.2 25.7, 200.9 22.9
+Q 198.5 20.0, 194.2 20.0
+Q 189.9 20.0, 187.5 22.8
+Q 185.2 25.6, 185.2 31.2
+Q 185.2 36.9, 187.5 39.8
+Q 189.9 42.7, 194.2 42.7
+' fill='#000000'/>
+<path class='atom-2' d='M 211.6 17.1
+L 215.5 17.1
+L 215.5 29.2
+L 230.0 29.2
+L 230.0 17.1
+L 233.8 17.1
+L 233.8 45.5
+L 230.0 45.5
+L 230.0 32.4
+L 215.5 32.4
+L 215.5 45.5
+L 211.6 45.5
+L 211.6 17.1
+' fill='#000000'/>
+<path class='atom-5' d='M 357.0 31.2
+Q 357.0 24.4, 360.4 20.6
+Q 363.7 16.8, 370.0 16.8
+Q 376.3 16.8, 379.7 20.6
+Q 383.0 24.4, 383.0 31.2
+Q 383.0 38.1, 379.6 42.0
+Q 376.2 45.9, 370.0 45.9
+Q 363.8 45.9, 360.4 42.0
+Q 357.0 38.1, 357.0 31.2
+M 370.0 42.7
+Q 374.3 42.7, 376.7 39.8
+Q 379.0 36.9, 379.0 31.2
+Q 379.0 25.7, 376.7 22.9
+Q 374.3 20.0, 370.0 20.0
+Q 365.7 20.0, 363.3 22.8
+Q 361.0 25.6, 361.0 31.2
+Q 361.0 36.9, 363.3 39.8
+Q 365.7 42.7, 370.0 42.7
+' fill='#000000'/>
+<path class='atom-6' d='M 444.9 183.5
+Q 444.9 176.7, 448.3 172.9
+Q 451.6 169.1, 457.9 169.1
+Q 464.2 169.1, 467.5 172.9
+Q 470.9 176.7, 470.9 183.5
+Q 470.9 190.3, 467.5 194.3
+Q 464.1 198.1, 457.9 198.1
+Q 451.7 198.1, 448.3 194.3
+Q 444.9 190.4, 444.9 183.5
+M 457.9 194.9
+Q 462.2 194.9, 464.5 192.1
+Q 466.9 189.1, 466.9 183.5
+Q 466.9 177.9, 464.5 175.1
+Q 462.2 172.3, 457.9 172.3
+Q 453.6 172.3, 451.2 175.1
+Q 448.9 177.9, 448.9 183.5
+Q 448.9 189.2, 451.2 192.1
+Q 453.6 194.9, 457.9 194.9
+' fill='#000000'/>
+<path class='atom-6' d='M 475.3 169.4
+L 479.2 169.4
+L 479.2 181.4
+L 493.6 181.4
+L 493.6 169.4
+L 497.5 169.4
+L 497.5 197.7
+L 493.6 197.7
+L 493.6 184.6
+L 479.2 184.6
+L 479.2 197.7
+L 475.3 197.7
+L 475.3 169.4
+' fill='#000000'/>
+<path class='atom-7' d='M 275.9 270.7
+L 285.1 285.7
+Q 286.1 287.2, 287.5 289.9
+Q 289.0 292.5, 289.1 292.7
+L 289.1 270.7
+L 292.9 270.7
+L 292.9 299.0
+L 289.0 299.0
+L 279.0 282.6
+Q 277.9 280.7, 276.6 278.5
+Q 275.4 276.3, 275.1 275.6
+L 275.1 299.0
+L 271.4 299.0
+L 271.4 270.7
+L 275.9 270.7
+' fill='#000000'/>
+<path class='atom-7' d='M 298.3 270.7
+L 302.1 270.7
+L 302.1 282.7
+L 316.6 282.7
+L 316.6 270.7
+L 320.4 270.7
+L 320.4 299.0
+L 316.6 299.0
+L 316.6 285.9
+L 302.1 285.9
+L 302.1 299.0
+L 298.3 299.0
+L 298.3 270.7
+' fill='#000000'/>
+<path class='atom-7' d='M 326.0 298.0
+Q 326.7 296.3, 328.3 295.3
+Q 329.9 294.3, 332.2 294.3
+Q 335.0 294.3, 336.6 295.8
+Q 338.2 297.3, 338.2 300.1
+Q 338.2 302.8, 336.1 305.4
+Q 334.1 308.0, 329.9 311.1
+L 338.5 311.1
+L 338.5 313.2
+L 325.9 313.2
+L 325.9 311.4
+Q 329.4 308.9, 331.5 307.1
+Q 333.5 305.2, 334.6 303.6
+Q 335.6 301.9, 335.6 300.2
+Q 335.6 298.4, 334.7 297.4
+Q 333.8 296.4, 332.2 296.4
+Q 330.7 296.4, 329.7 297.0
+Q 328.7 297.6, 328.0 299.0
+L 326.0 298.0
+' fill='#000000'/>
+</svg><text x="300" y="422" font-family="Calibri" font-size="16" fill="#064986" text-anchor="middle" font-weight="600">Free L-amino acid; neutral structural formula</text></g></svg>
