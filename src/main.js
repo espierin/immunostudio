@@ -1,5 +1,5 @@
 import { PathwaySearchDialog } from "./pathway-search-dialog.js";
-import {copyVectorImage,exportOfficeImage} from './vector-clipboard.js';
+import {copyVectorImage,copyRasterImage,exportOfficeImage} from './vector-clipboard.js';
 import { pathwayCatalog, makePathwayItem } from "./pathway-elements.js";
 import { CommandPalette } from "./command-palette.js";
 import { starterProject } from "./starter-projects.js";
@@ -688,6 +688,9 @@ async function action(name) {
       break;
     case 'copy-vector':
       await copySelectedVector();
+      break;
+    case 'copy-selection-png':
+      await copySelectedPNG();
       break;
     case 'download-vector-selection':
       if(pendingVectorSVG)download(new Blob([pendingVectorSVG],{type:'image/svg+xml'}),project.name+'-selection.svg');
@@ -2369,11 +2372,21 @@ async function copySelectedVector(){
   const svg=drawing2D.exportSelectionSVG();copyingVector=true;
   toast('Vector voor het klembord voorbereiden...');
   try{
-    const result=await copyVectorImage(svg,{allowSVG:false});
-    toast(result.format==='emf'?'EMF op het klembord. Plak in PowerPoint of Word.':'SVG op het klembord. De doelapp moet SVG-plakken ondersteunen.');
+    await copyVectorImage(svg);
+    toast('SVG-vector op het klembord. Plak met Ctrl+V in PowerPoint.');
   }catch(error){
     pendingVectorSVG=svg;
-    showModal(`<h2>Vector kopiëren</h2><p>${esc(error.message)}</p><p>Start de lokale ImmunoStudio-helper met Inkscape voor rechtstreeks plakken als EMF in PowerPoint of Word. Je browser kan toestemming vragen om de lokale helper te bereiken.</p><p>Je kunt de selectie ook als SVG downloaden en in Office invoegen via Afbeeldingen. De figuur blijft dan vector.</p><div class="row"><button class="primary" data-action="download-vector-selection">Selectie als SVG downloaden</button><a href="http://127.0.0.1:5180/" target="_blank" rel="noopener">Lokale ImmunoStudio openen</a></div>`);
+    showModal(`<h2>Vector kopiëren</h2><p>${esc(error.message)}</p><p>Rechtstreeks vector kopiëren werkt zonder helper in browsers met SVG-klembordondersteuning. Gebruik een recente versie van Edge of Chrome en PowerPoint.</p><p>Je kunt de SVG ook downloaden en in PowerPoint invoegen via Invoegen, Afbeeldingen. Kies PNG als je alleen een afbeelding nodig hebt: PNG blijft geen vector.</p><div class="row"><button class="primary" data-action="download-vector-selection">Selectie als SVG downloaden</button><button data-action="copy-selection-png">Kopiëren als PNG</button></div>`);
+  }finally{copyingVector=false;}
+}
+async function copySelectedPNG(){
+  if(copyingVector)return;
+  const svg=pendingVectorSVG||drawing2D.exportSelectionSVG();
+  copyingVector=true;
+  try{
+    await copyRasterImage(svg);
+    $('#modal').close();
+    toast('PNG-afbeelding op het klembord. Plak met Ctrl+V in PowerPoint.');
   }finally{copyingVector=false;}
 }
 async function exportOffice(format) {

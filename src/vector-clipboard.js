@@ -17,27 +17,45 @@ export async function exportOfficeImage(svg,format,{fetcher=globalThis.fetch,hre
   return result.blob();
 }
 
+// Write during the click gesture. Awaiting a network probe first loses clipboard
+// activation in some browsers and unnecessarily requires a local service.
 export async function copyVectorImage(svg,{
-  fetcher=globalThis.fetch,
   clipboard=globalThis.navigator?.clipboard,
   Item=globalThis.ClipboardItem,
-  href=globalThis.location?.href||'https://espierin.github.io/immunostudio/',
-  allowSVG=true,
 }={}){
   if(typeof svg!=='string'||!svg.includes('<svg'))throw Error('Selecteer eerst een 2D-figuur.');
-  const service=await findOfficeService({fetcher,href,clipboardRequired:true});
-  if(service){
-    const response=await fetcher(service.base+'/api/office/clipboard',{
-      method:'POST',headers:{'Content-Type':'application/json','X-ImmunoStudio':service.token},body:JSON.stringify({svg}),signal:AbortSignal.timeout(110000),
-    });
-    if(!response.ok){const error=await response.json().catch(()=>({}));throw Error(error.error||'Kopiëren naar het Office-klembord is mislukt.');}
-    return response.json();
-  }
-  // SVG is written only when the browser explicitly advertises vector support.
-  // Do not silently turn an Office vector request into a bitmap or SVG text.
-  if(allowSVG&&clipboard?.write&&Item?.supports?.('image/svg+xml')){
+  if(!clipboard?.write || !Item || (Item.supports && !Item.supports('image/svg+xml')))
+    throw Error('Deze browser ondersteunt geen SVG op het klembord. Gebruik een recente versie van Edge of Chrome, of download de SVG.');
+  try{
     await clipboard.write([new Item({'image/svg+xml':new Blob([svg],{type:'image/svg+xml'})})]);
     return {format:'svg',outlinedText:false};
+  }catch(error){
+    if(error.name==='NotAllowedError')throw Error('De browser staat kopiëren niet toe. Klik opnieuw op Vector kopiëren en geef de website zo nodig klembordtoegang.');
+    throw Error('SVG kopiëren is niet gelukt. Download de SVG of kies Kopiëren als PNG.');
   }
-  throw Error('Voor het Office-vector-klembord is de lokale ImmunoStudio-helper met Inkscape nodig.');
+}
+
+export async function rasterizeClipboardSVG(svg){
+  const root=new DOMParser().parseFromString(svg,'image/svg+xml').documentElement;
+  const box=(root.getAttribute('viewBox')||'').trim().split(/[\s,]+/).map(Number);
+  const w=Number(root.getAttribute('width'))||box[2],h=Number(root.getAttribute('height'))||box[3];
+  if(!(w>0&&h>0))throw Error('Ongeldige SVG-afmetingen.');
+  const scale=Math.min(4096/Math.max(w,h),Math.sqrt(16000000/(w*h)));
+  const canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(w*scale));canvas.height=Math.max(1,Math.round(h*scale));
+  const image=new Image(),url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml'}));
+  try{
+    await new Promise((resolve,reject)=>{image.onload=resolve;image.onerror=()=>reject(Error('SVG kon niet worden gerenderd.'));image.src=url;});
+    canvas.getContext('2d').drawImage(image,0,0,canvas.width,canvas.height);
+    return await new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(Error('PNG kon niet worden gemaakt.')),'image/png'));
+  }finally{URL.revokeObjectURL(url);}
+}
+
+export async function copyRasterImage(svg,{
+  clipboard=globalThis.navigator?.clipboard,Item=globalThis.ClipboardItem,render=rasterizeClipboardSVG,
+}={}){
+  if(!clipboard?.write||!Item)throw Error('Deze browser ondersteunt geen afbeeldingen op het klembord. Download de SVG.');
+  const png=Promise.resolve().then(()=>render(svg));
+  png.catch(()=>{});
+  await clipboard.write([new Item({'image/png':png})]);
+  return {format:'png'};
 }

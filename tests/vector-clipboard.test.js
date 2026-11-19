@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile,access} from 'node:fs/promises';
 import {Drawing2D,newSheet} from '../src/drawing2d.js';
-import {copyVectorImage} from '../src/vector-clipboard.js';
+import {copyVectorImage,copyRasterImage} from '../src/vector-clipboard.js';
 import {officeClipboard} from '../scripts/office-clipboard.mjs';
 import {ccr5SVG} from '../src/receptor-art.js';
 import {biologicalFigureFor,biologicalArtwork} from '../src/biological-figures.js';
@@ -15,23 +15,28 @@ test('selection vector export crops the visible selection and retains reflection
   assert.doesNotMatch(svg,/width="1600"/);assert.equal(JSON.stringify(doc),before);
   assert.throws(()=>Drawing2D.prototype.exportSelectionSVG.call({...drawing,selectedItems:()=>[]}),/Selecteer/);
 });
-test('Office copy sends only the prepared SVG to the authenticated local helper',async()=>{
-  const seen=[],svg=ccr5SVG();
-  const result=await copyVectorImage(svg,{href:'https://espierin.github.io/immunostudio/',fetcher:async(url,options)=>{
-    seen.push({url,options});return url.endsWith('/status')?{ok:true,json:async()=>({officeClipboard:true,token:'test-token'})}:{ok:true,json:async()=>({format:'emf',outlinedText:true})};
-  }});
-  assert.equal(result.format,'emf');assert.equal(result.outlinedText,true);
-  assert.equal(seen[1].url,'http://127.0.0.1:5180/api/office/clipboard');
-  assert.equal(seen[1].options.headers['X-ImmunoStudio'],'test-token');
-  assert.deepEqual(JSON.parse(seen[1].options.body),{svg});
-});
-test('browser fallback writes real SVG only when supported, and never silently supplies a bitmap',async()=>{
+test('online copy writes SVG immediately during the click gesture without contacting any helper',async()=>{
   let writes=0;
   class Item{constructor(data){this.data=data;}static supports(type){return type==='image/svg+xml';}}
-  const result=await copyVectorImage(ccr5SVG(),{fetcher:async()=>{throw Error('offline');},Item,clipboard:{write:async items=>{writes++;assert.equal(items[0].data['image/svg+xml'].type,'image/svg+xml');assert.match(await items[0].data['image/svg+xml'].text(),/CCR5/);}}});
+  const pending=copyVectorImage(ccr5SVG(),{fetcher:async()=>{assert.fail('No network requests are needed for browser copying');},Item,clipboard:{write:async items=>{writes++;assert.equal(items[0].data['image/svg+xml'].type,'image/svg+xml');assert.match(await items[0].data['image/svg+xml'].text(),/CCR5/);}}});
+  assert.equal(writes,1,'clipboard.write runs before yielding user activation');
+  const result=await pending;
   assert.equal(result.format,'svg');assert.equal(writes,1);
-  await assert.rejects(copyVectorImage(ccr5SVG(),{allowSVG:false,fetcher:async()=>{throw Error('offline');},Item,clipboard:{write:async()=>{throw Error('Office must not receive SVG clipboard data');}}}),/lokale ImmunoStudio-helper/);
-  await assert.rejects(copyVectorImage(ccr5SVG(),{fetcher:async()=>{throw Error('offline');},Item:undefined,clipboard:undefined}),/lokale ImmunoStudio-helper/);
+  await assert.rejects(copyVectorImage(ccr5SVG(),{fetcher:async()=>{throw Error('offline');},Item:undefined,clipboard:undefined}),/Edge of Chrome/);
+});
+
+test('denied clipboard access gives actionable guidance and does not substitute a raster image',async()=>{
+  class Item{constructor(data){this.data=data;}static supports(){return true;}}
+  await assert.rejects(copyVectorImage(ccr5SVG(),{Item,clipboard:{write:async()=>{const error=Error('denied');error.name='NotAllowedError';throw error;}}}),/klembordtoegang/);
+});
+
+test('PNG copying is an explicit separate action and supplies a promised image during the click',async()=>{
+  let writes=0;
+  class Item{constructor(data){this.data=data;}}
+  const pending=copyRasterImage(ccr5SVG(),{Item,render:async()=>new Blob(['PNG'],{type:'image/png'}),clipboard:{write:async items=>{
+    writes++;assert.deepEqual(Object.keys(items[0].data),['image/png']);assert.equal((await items[0].data['image/png']).type,'image/png');
+  }}});
+  assert.equal(writes,1);assert.equal((await pending).format,'png');
 });
 test('native clipboard outlines fonts, copies an EMF and removes the temporary file',async()=>{
   let copied;

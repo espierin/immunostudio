@@ -1,4 +1,13 @@
 const entries = `
+SVG-vector op het klembord. Plak met Ctrl+V in PowerPoint.|SVG vector copied. Paste into PowerPoint with Ctrl+V.
+Deze browser ondersteunt geen SVG op het klembord. Gebruik een recente versie van Edge of Chrome, of download de SVG.|This browser does not support SVG clipboard images. Use a recent Edge or Chrome version, or download the SVG.
+De browser staat kopiëren niet toe. Klik opnieuw op Vector kopiëren en geef de website zo nodig klembordtoegang.|The browser blocked copying. Click Copy vector again and allow clipboard access for this website if requested.
+SVG kopiëren is niet gelukt. Download de SVG of kies Kopiëren als PNG.|SVG copying failed. Download the SVG or choose Copy as PNG.
+Rechtstreeks vector kopiëren werkt zonder helper in browsers met SVG-klembordondersteuning. Gebruik een recente versie van Edge of Chrome en PowerPoint.|Direct vector copying works without a helper in browsers with SVG clipboard support. Use a recent version of Edge or Chrome and PowerPoint.
+Je kunt de SVG ook downloaden en in PowerPoint invoegen via Invoegen, Afbeeldingen. Kies PNG als je alleen een afbeelding nodig hebt: PNG blijft geen vector.|You can also download the SVG and insert it in PowerPoint using Insert, Pictures. Choose PNG if you only need an image: PNG is not a vector.
+Kopiëren als PNG|Copy as PNG
+PNG-afbeelding op het klembord. Plak met Ctrl+V in PowerPoint.|PNG image copied. Paste into PowerPoint with Ctrl+V.
+Deze browser ondersteunt geen afbeeldingen op het klembord. Download de SVG.|This browser does not support clipboard images. Download the SVG.
 Start de lokale ImmunoStudio-helper met Inkscape voor EMF/WMF. SVG downloaden werkt ook zonder helper.|Start the local ImmunoStudio helper with Inkscape for EMF/WMF. SVG download also works without the helper.
 Figuurlabel|Figure label
 Tekstlabel tonen|Show text label
