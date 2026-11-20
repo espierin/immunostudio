@@ -1,7 +1,7 @@
 import { isMembraneCell } from "./cell-look.js";
 import { receptorAnchorProfile, membraneThickness } from "./receptor-anchor.js";
 import {
-  sampledStemFootprint,
+  sampledStemFootprints,
   receptorFootprints,
 } from "./receptor-footprints.js";
 import { prepareContour, embeddedAnchors } from "./sculpt2d.js";
@@ -111,7 +111,8 @@ export function updateCellMembranes(drawing) {
       );
       const embedded = embeddedAnchors(session);
       for (const anchor of embedded)
-        if (anchor.stem) footprints.push(anchor.stem.map(local));
+        for (const stem of anchor.stems || (anchor.stem ? [anchor.stem] : []))
+          footprints.push(stem.map(local));
       for (const receptor of drawing.doc.items) {
         if (
           receptor.visible === false ||
@@ -121,7 +122,7 @@ export function updateCellMembranes(drawing) {
           receptorAnchorProfile(receptor)?.width
         )
           continue;
-        const footprint = sampledStemFootprint(
+        const receptorStems = sampledStemFootprints(
           drawing.svg.querySelector(
             `[data-entity="${receptor.id}"] [data-artwork]`,
           ),
@@ -129,7 +130,7 @@ export function updateCellMembranes(drawing) {
           session.screenToSheet,
           membraneThickness(item),
         );
-        if (footprint) footprints.push(footprint.map(local));
+        footprints.push(...receptorStems.map((p) => p.map(local)));
       }
       const root = entity.querySelector("svg");
       root.querySelector("[data-cell-bilayer]")?.remove();

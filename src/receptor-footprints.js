@@ -13,37 +13,41 @@ export function receptorFootprints(target, items, pathIndex = 0) {
       continue;
     const profile = receptorAnchorProfile(item);
     if (!profile?.width) continue;
-    const x = (profile.tmX ?? profile.pivotX ?? 0.5) * item.w,
-      y = profile.pivotY * item.h;
-    const hw = (profile.width * item.w) / 2 + 0.5,
-      hh = (profile.span * item.h) / 2 + 0.5;
-    const angle = ((item.rotation || 0) * Math.PI) / 180,
-      c = Math.cos(angle),
-      s = Math.sin(angle);
-    const inverse = (-(target.rotation || 0) * Math.PI) / 180,
-      tc = Math.cos(inverse),
-      ts = Math.sin(inverse);
-    result.push(
-      [
-        [x - hw, y - hh],
-        [x + hw, y - hh],
-        [x + hw, y + hh],
-        [x - hw, y + hh],
-      ].map(([px, py]) => {
-        px = (item.mirrorX ? item.w - px : px) - item.w / 2;
-        py = (item.mirrorY ? item.h - py : py) - item.h / 2;
-        const wx =
-            item.x + item.w / 2 + px * c - py * s - (target.x + target.w / 2),
-          wy =
-            item.y + item.h / 2 + px * s + py * c - (target.y + target.h / 2);
-        const lx = wx * tc - wy * ts + target.w / 2,
-          ly = wx * ts + wy * tc + target.h / 2;
-        return [
-          target.mirrorX ? target.w - lx : lx,
-          target.mirrorY ? target.h - ly : ly,
-        ];
-      }),
-    );
+    for (const [stemX, stemWidth] of profile.stems || [
+      [profile.tmX ?? profile.pivotX ?? 0.5, profile.width],
+    ]) {
+      const x = stemX * item.w,
+        y = profile.pivotY * item.h;
+      const hw = (stemWidth * item.w) / 2 + 0.15,
+        hh = (profile.span * item.h) / 2 + 0.5;
+      const angle = ((item.rotation || 0) * Math.PI) / 180,
+        c = Math.cos(angle),
+        s = Math.sin(angle);
+      const inverse = (-(target.rotation || 0) * Math.PI) / 180,
+        tc = Math.cos(inverse),
+        ts = Math.sin(inverse);
+      result.push(
+        [
+          [x - hw, y - hh],
+          [x + hw, y - hh],
+          [x + hw, y + hh],
+          [x - hw, y + hh],
+        ].map(([px, py]) => {
+          px = (item.mirrorX ? item.w - px : px) - item.w / 2;
+          py = (item.mirrorY ? item.h - py : py) - item.h / 2;
+          const wx =
+              item.x + item.w / 2 + px * c - py * s - (target.x + target.w / 2),
+            wy =
+              item.y + item.h / 2 + px * s + py * c - (target.y + target.h / 2);
+          const lx = wx * tc - wy * ts + target.w / 2,
+            ly = wx * ts + wy * tc + target.h / 2;
+          return [
+            target.mirrorX ? target.w - lx : lx,
+            target.mirrorY ? target.h - ly : ly,
+          ];
+        }),
+      );
+    }
   }
   return result;
 }
@@ -63,6 +67,45 @@ export function polygonsOverlap(a, b) {
         return false;
     }
   return true;
+}
+
+// Cut tail strokes at the actual protein boundary, retaining the remaining lipid.
+export function outsideSegments(segments, footprints) {
+  for (const polygon of footprints) {
+    const area = polygon.reduce((s, p, n) => {
+      const q = polygon[(n + 1) % polygon.length];
+      return s + p[0] * q[1] - p[1] * q[0];
+    }, 0);
+    const sign = Math.sign(area) || 1;
+    segments = segments.flatMap(([a, b]) => {
+      let low = 0,
+        high = 1;
+      for (let n = 0; n < polygon.length; n++) {
+        const p = polygon[n],
+          q = polygon[(n + 1) % polygon.length];
+        const d = (v) =>
+          sign *
+          ((q[0] - p[0]) * (v[1] - p[1]) - (q[1] - p[1]) * (v[0] - p[0]));
+        const da = d(a),
+          db = d(b),
+          delta = db - da;
+        if (Math.abs(delta) < 1e-12) {
+          if (da < 0) return [[a, b]];
+          continue;
+        }
+        const t = -da / delta;
+        if (delta > 0) low = Math.max(low, t);
+        else high = Math.min(high, t);
+        if (low >= high) return [[a, b]];
+      }
+      const at = (t) => a.map((v, k) => v + (b[k] - v) * t),
+        result = [];
+      if (low > 1e-8) result.push([a, at(low)]);
+      if (high < 1 - 1e-8) result.push([at(high), b]);
+      return result;
+    });
+  }
+  return segments;
 }
 
 // Subtract a convex footprint without SVG masks, so exported paths remain plain vectors.
@@ -106,6 +149,80 @@ export function subtractFootprint(subject, clip) {
 }
 
 // For other receptor artwork, sample the geometry that actually crosses the membrane slab.
+export function sampledStemFootprints(node, frame, screenToSheet, thickness) {
+  if (!node) return [];
+  return [...node.querySelectorAll("[data-node-path]")].flatMap((shape) => {
+    // A single open path can contain several disconnected membrane stems.
+    // Keep those crossings separate instead of bridging the space between them.
+    try {
+      const style = getComputedStyle(shape);
+      if (style.fill === "none" || shape.getAttribute?.("fill") === "none") {
+        const matrix = screenToSheet.multiply(shape.getScreenCTM()),
+          scale = Math.hypot(matrix.a, matrix.b),
+          length = shape.getTotalLength(),
+          count = Math.max(
+            8,
+            Math.min(4096, Math.ceil((length * scale) / 0.75)),
+          ),
+          stroke = Math.max(
+            0.25,
+            ((parseFloat(style.strokeWidth) || 1) * scale) / 2,
+          ),
+          result = [];
+        let low = Infinity,
+          high = -Infinity,
+          previous;
+        const flush = () => {
+          if (!Number.isFinite(low)) return;
+          const at = (along, depth) =>
+            frame.point.map(
+              (v, k) => v + frame.tangent[k] * along + frame.normal[k] * depth,
+            );
+          result.push([
+            at(low, -thickness / 2 - 0.5),
+            at(high, -thickness / 2 - 0.5),
+            at(high, thickness / 2 + 0.5),
+            at(low, thickness / 2 + 0.5),
+          ]);
+          low = Infinity;
+          high = -Infinity;
+        };
+        for (let n = 0; n <= count; n++) {
+          const p = shape.getPointAtLength((length * n) / count),
+            world = new DOMPoint(p.x, p.y).matrixTransform(matrix),
+            dx = world.x - frame.point[0],
+            dy = world.y - frame.point[1];
+          if (
+            previous &&
+            Math.hypot(world.x - previous.x, world.y - previous.y) >
+              Math.max(2, ((length * scale) / count) * 4)
+          )
+            flush();
+          previous = world;
+          if (
+            Math.abs(dx * frame.normal[0] + dy * frame.normal[1]) >
+            thickness / 2 + stroke
+          ) {
+            flush();
+            continue;
+          }
+          const along = dx * frame.tangent[0] + dy * frame.tangent[1];
+          low = Math.min(low, along - stroke);
+          high = Math.max(high, along + stroke);
+        }
+        flush();
+        return result;
+      }
+    } catch {}
+    const footprint = sampledStemFootprint(
+      { querySelectorAll: () => [shape] },
+      frame,
+      screenToSheet,
+      thickness,
+    );
+    return footprint ? [footprint] : [];
+  });
+}
 export function sampledStemFootprint(node, frame, screenToSheet, thickness) {
   if (!node) return null;
   let low = Infinity,

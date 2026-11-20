@@ -1,5 +1,7 @@
 # ImmunoStudio 0.2
 
+Lipid bilayers pack tightly around transmembrane artwork. Native TCR/CD3, TCR/CD8 and CD8 use separate narrow stem openings, and CD4 uses its actual thin stalk. Collection receptors are measured per crossing rather than one bounding box. Each leaflet repacks its heads up to the protein boundary, while only intersecting tail segments and membrane core are trimmed. These remain plain vectors in SVG export.
+
 In Sculpt & modifiers, enable **Automatically bend overlapping ectodomains** to separate supported TCR, CD4 and CD8 outer domains while sculpting a membrane or collection cell. Their positions along the membrane remain fixed and unlocked stems follow its local normal. Set **Maximum automatic bend** from 5 to 60 degrees. This setting and its limit are remembered on the device. Automatic bending and automatic anchor sliding are mutually exclusive. Locked receptors remain unchanged. Dense clusters can retain overlap at the chosen limit; the editor reports this. Sculpting and bending share one undo step.
 
 Bend extracellular parts deforms only the ectodomains of native TCR/CD3, combined TCR/CD8, CD4 and CD8, supported pathway figures and embedded collection receptors. The transmembrane stem and intracellular artwork stay fixed. Extracellular bending has its own reversible parameter, is included in vector export, and retains the source SVG. Both manuals include an illustrated example.

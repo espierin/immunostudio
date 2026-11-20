@@ -1,4 +1,8 @@
-import { polygonsOverlap, subtractFootprint } from "./receptor-footprints.js";
+import {
+  polygonsOverlap,
+  subtractFootprint,
+  outsideSegments,
+} from "./receptor-footprints.js";
 import { bezier, tangent } from "./model.js";
 export function membranePoints(item) {
   return (
@@ -37,8 +41,7 @@ export function membraneLeaflets(item) {
     });
     const count = Math.max(1, Math.min(2000, Math.ceil(length / pitch))),
       size = length < 1e-8 ? 1 : count + (item.closed ? 0 : 1);
-    const lipids = Array.from({ length: size }, (_, n) => {
-      const distance = (n / count) * length;
+    const atDistance = (distance) => {
       let lo = 0,
         hi = rows.length - 1;
       while (lo < hi) {
@@ -61,8 +64,11 @@ export function membraneLeaflets(item) {
         tangent: v,
         normal,
       };
-    });
-    return { side, length, lipids };
+    };
+    const lipids = Array.from({ length: size }, (_, n) =>
+      atDistance((n / count) * length),
+    );
+    return { side, length, lipids, atDistance };
   });
   return { points, thickness, radius, leaflets };
 }
@@ -92,21 +98,10 @@ export function membraneMarkup(item, style, footprints = []) {
     }
     svg = `<path data-membrane-core="true" d="${polygons.map((p) => "M" + p.map((v) => v.join(" ")).join("L") + "Z").join("")}" fill="${style.core || "#D9EAF6"}" stroke="none"/>`;
   }
-  for (const { side, lipids } of leaflets) {
+  for (const leaflet of leaflets) {
+    const { side } = leaflet;
+    const lipids = packLeaflet(leaflet, radius, footprints, !!item.closed);
     for (const { center, tangent: v, normal } of lipids) {
-      if (footprints.length) {
-        const point = (along, depth) => [
-          center[0] + v[0] * along + normal[0] * side * depth,
-          center[1] + v[1] * along + normal[1] * side * depth,
-        ];
-        const lipid = [
-          point(-radius - 0.8, radius * 0.84 + 0.8),
-          point(radius + 0.8, radius * 0.84 + 0.8),
-          point(radius + 0.8, -thickness / 2),
-          point(-radius - 0.8, -thickness / 2),
-        ];
-        if (footprints.some((p) => polygonsOverlap(lipid, p))) continue;
-      }
       const angle = (Math.atan2(v[1], v[0]) * 180) / Math.PI,
         length = thickness / 2 - radius * 0.78 - 1;
       for (const branch of [-1, 1]) {
@@ -126,10 +121,85 @@ export function membraneMarkup(item, style, footprints = []) {
             a[0] - normal[0] * side * length - v[0] * branch * 1.3,
             a[1] - normal[1] * side * length - v[1] * branch * 1.3,
           ];
-        svg += `<path d="M${a.join(" ")}L${b.join(" ")}L${c.join(" ")}" fill="none" stroke="${tail}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>`;
+        const segments = outsideSegments(
+          [
+            [a, b],
+            [b, c],
+          ],
+          footprints,
+        );
+        if (segments.length)
+          svg += `<path d="${segments.map(([p, q]) => `M${p.join(" ")}L${q.join(" ")}`).join("")}" fill="none" stroke="${tail}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>`;
       }
       svg += `<ellipse data-lipid-side="${side}" cx="${center[0]}" cy="${center[1]}" rx="${radius}" ry="${radius * 0.84}" transform="rotate(${angle} ${center[0]} ${center[1]})" fill="${head}" stroke="${edge}" stroke-width="1.5"/>`;
     }
   }
   return svg;
+}
+
+// Repack each free stretch, using the head outline instead of a whole lipid box.
+export function packLeaflet(leaflet, radius, footprints, closed = false) {
+  if (!footprints.length) return leaflet.lipids;
+  const { length, atDistance } = leaflet;
+  if (length < 1e-8) return leaflet.lipids;
+  const free = (distance) => {
+    const { center, tangent: v, normal } = atDistance(distance);
+    const head = Array.from({ length: 16 }, (_, n) => {
+      const angle = (n * Math.PI) / 8,
+        x = Math.cos(angle) * (radius + 0.75),
+        y = Math.sin(angle) * (radius * 0.84 + 0.75);
+      return [
+        center[0] + v[0] * x + normal[0] * y,
+        center[1] + v[1] * x + normal[1] * y,
+      ];
+    });
+    return !footprints.some((p) => polygonsOverlap(head, p));
+  };
+  const steps = Math.max(1, Math.min(12000, Math.ceil(length))),
+    runs = [];
+  let start = free(0) ? 0 : null,
+    previous = 0,
+    wasFree = start !== null;
+  for (let n = 1; n <= steps; n++) {
+    const distance = (n / steps) * length,
+      isFree = free(distance);
+    if (isFree !== wasFree) {
+      let low = previous,
+        high = distance;
+      for (let k = 0; k < 10; k++) {
+        const mid = (low + high) / 2;
+        if (free(mid) === wasFree) low = mid;
+        else high = mid;
+      }
+      if (wasFree) runs.push([start, low]);
+      else start = high;
+    }
+    wasFree = isFree;
+    previous = distance;
+  }
+  if (wasFree) runs.push([start, length]);
+  if (runs.length === 1 && runs[0][0] === 0 && runs[0][1] === length)
+    return leaflet.lipids;
+  // Join the free stretch across the seam of a closed contour.
+  if (
+    closed &&
+    runs.length > 1 &&
+    runs[0][0] === 0 &&
+    runs.at(-1)[1] === length
+  ) {
+    const first = runs.shift(),
+      last = runs.pop();
+    runs.push([last[0], length + first[1]]);
+  }
+  const result = [],
+    pitch = radius * 2 + 1.1;
+  for (const [a, b] of runs) {
+    const count = Math.max(1, Math.floor((b - a) / pitch));
+    for (let n = 0; n <= count; n++) {
+      if (b - a < pitch && n > 0) continue;
+      const distance = b - a < pitch ? (a + b) / 2 : a + ((b - a) * n) / count;
+      result.push(atDistance(closed ? distance % length || 0 : distance));
+    }
+  }
+  return result;
 }

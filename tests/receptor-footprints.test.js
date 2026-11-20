@@ -5,9 +5,14 @@ import {
   receptorFootprints,
   polygonsOverlap,
   subtractFootprint,
+  outsideSegments,
 } from "../src/receptor-footprints.js";
 import { fitReceptorAnchor } from "../src/receptor-anchor.js";
-import { membraneMarkup } from "../src/membrane2d.js";
+import {
+  membraneMarkup,
+  membraneLeaflets,
+  packLeaflet,
+} from "../src/membrane2d.js";
 import { createCurveAppearanceCache } from "../src/curve-appearance2d.js";
 import { anchoredPose, contourFrame, sculptContour } from "../src/contour2d.js";
 import {
@@ -228,5 +233,167 @@ test("repeated membrane sculpt steps can space receptors without modifying their
       assert.equal(item.h, 90);
       assert.equal(item.anchor2d.targetId, "m");
     }
+  }
+});
+
+test("narrow stems retain adjacent heads and repack both leaflets up to the protein boundary", () => {
+  const item = membrane(),
+    { radius, leaflets } = membraneLeaflets(item);
+  const footprint = [
+    [298, -100],
+    [302, -100],
+    [302, 200],
+    [298, 200],
+  ];
+  for (const leaflet of leaflets) {
+    const packed = packLeaflet(leaflet, radius, [footprint]);
+    const left = packed.filter((p) => p.center[0] < 298).at(-1).center[0];
+    const right = packed.find((p) => p.center[0] > 302).center[0];
+    assert.ok(Math.abs(298 - left - radius - 0.75) < 0.01);
+    assert.ok(Math.abs(right - 302 - radius - 0.75) < 0.01);
+    assert.ok(packed.every((p) => p.center.every(Number.isFinite)));
+  }
+});
+test("a stem intersecting only tails does not remove lipid heads", () => {
+  const item = membrane(),
+    footprint = [
+      [298, 57],
+      [302, 57],
+      [302, 63],
+      [298, 63],
+    ];
+  const plain = membraneMarkup(item, {}),
+    cut = membraneMarkup(item, {}, [footprint]);
+  assert.equal(
+    (cut.match(/data-lipid-side/g) || []).length,
+    (plain.match(/data-lipid-side/g) || []).length,
+  );
+  assert.doesNotMatch(cut, /clipPath|mask|NaN|Infinity/);
+});
+test("tail clipping retains both sides of each intersected stroke and handles overlapping stems", () => {
+  const clip = [
+    [4, -2],
+    [6, -2],
+    [6, 2],
+    [4, 2],
+  ];
+  assert.deepEqual(
+    outsideSegments(
+      [
+        [
+          [0, 0],
+          [10, 0],
+        ],
+      ],
+      [clip],
+    ),
+    [
+      [
+        [0, 0],
+        [4, 0],
+      ],
+      [
+        [6, 0],
+        [10, 0],
+      ],
+    ],
+  );
+  assert.deepEqual(
+    outsideSegments(
+      [
+        [
+          [0, 3],
+          [10, 3],
+        ],
+      ],
+      [clip],
+    ),
+    [
+      [
+        [0, 3],
+        [10, 3],
+      ],
+    ],
+  );
+  assert.deepEqual(
+    outsideSegments(
+      [
+        [
+          [4.5, 0],
+          [5.5, 0],
+        ],
+      ],
+      [clip],
+    ),
+    [],
+  );
+  assert.deepEqual(
+    outsideSegments(
+      [
+        [
+          [0, 0],
+          [10, 0],
+        ],
+      ],
+      [clip, [...clip].reverse()],
+    ),
+    [
+      [
+        [0, 0],
+        [4, 0],
+      ],
+      [
+        [6, 0],
+        [10, 0],
+      ],
+    ],
+  );
+});
+test("TCR and CD8 cut separate narrow stems rather than the space between chains", () => {
+  for (const [file, count] of [
+    ["basic_13_TCR_CD3_user.svg", 4],
+    ["basic_14_TCR_CD8.svg", 6],
+    ["basic_15_CD8_coreceptor.svg", 2],
+  ]) {
+    const target = membrane(),
+      item = attached(target);
+    item.svg = readFileSync(
+      new URL(
+        "../public/library/02_HLA_peptiden_en_receptoren/" + file,
+        import.meta.url,
+      ),
+      "utf8",
+    );
+    item.sourceFile = file;
+    const box = item.svg
+      .match(/viewBox="([^"]+)"/)[1]
+      .split(/\s+/)
+      .map(Number);
+    item.w = box[2];
+    item.h = box[3];
+    fitReceptorAnchor(item, target);
+    Object.assign(
+      item,
+      anchoredPose(
+        item,
+        contourFrame(
+          [
+            [0, 60],
+            [600, 60],
+          ],
+          0.5,
+          false,
+        ),
+        item.anchor2d,
+      ),
+    );
+    const footprints = receptorFootprints(target, [item]);
+    assert.equal(footprints.length, count);
+    assert.ok(
+      footprints.every(
+        (p) =>
+          Math.max(...p.map((v) => v[0])) - Math.min(...p.map((v) => v[0])) < 6,
+      ),
+    );
   }
 });

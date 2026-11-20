@@ -12,6 +12,7 @@ import { anchoredPose, contourFrame } from "../src/contour2d.js";
 import { syncEmbeddedReceptors } from "../src/sculpt2d.js";
 import {
   sampledStemFootprint,
+  sampledStemFootprints,
   receptorFootprints,
 } from "../src/receptor-footprints.js";
 import { cellMembraneKey } from "../src/cell-membrane2d.js";
@@ -133,7 +134,10 @@ test("TCR, CD4 and CD8 fit an adaptive collection cell bilayer at any contour in
     receptor.anchor2d.tilt = 22;
     fitReceptorAnchor(receptor, { ...target, bilayerThickness: 14 }, true);
     assert.equal(receptor.anchor2d.tilt, 22);
-    assert.equal(receptorFootprints(target, [receptor], 7).length, 1);
+    assert.equal(
+      receptorFootprints(target, [receptor], 7).length,
+      receptorAnchorProfile(receptor).stems.length,
+    );
     assert.equal(receptorFootprints(target, [receptor], 0).length, 0);
   }
   assert.equal(membraneThickness({ ...target, name: "Fibroblast" }), 11.55);
@@ -220,6 +224,33 @@ test("other receptor artwork is measured only where it crosses the membrane", ()
       [11, 5.5],
       [9, 5.5],
     ]);
+    const other = { ...shape, getPointAtLength: (s) => ({ x: 30, y: s - 50 }) };
+    const separate = sampledStemFootprints(
+      { querySelectorAll: () => [shape, other] },
+      frame,
+      matrix,
+      10,
+    );
+    assert.equal(separate.length, 2);
+    assert.ok(separate[0].every((p) => p[0] <= 11));
+    assert.ok(separate[1].every((p) => p[0] >= 29));
+    globalThis.getComputedStyle = () => ({ strokeWidth: "2", fill: "none" });
+    const split = {
+      ...shape,
+      getPointAtLength: (s) => ({
+        x: s < 50 ? 10 : 30,
+        y: s < 50 ? s - 25 : s - 75,
+      }),
+    };
+    const crossings = sampledStemFootprints(
+      { querySelectorAll: () => [split] },
+      frame,
+      matrix,
+      10,
+    );
+    assert.equal(crossings.length, 2);
+    assert.ok(crossings[0].every((p) => p[0] <= 11));
+    assert.ok(crossings[1].every((p) => p[0] >= 29));
     shape.getPointAtLength = (s) => ({ x: s, y: 100 });
     assert.equal(sampledStemFootprint(node, frame, matrix, 10), null);
   } finally {

@@ -9,6 +9,7 @@ const nativeProfiles = [
     y: 0,
     span: 34,
     width: 6,
+    stems: [[-145, 6]],
     angle: 180,
   },
   {
@@ -18,6 +19,14 @@ const nativeProfiles = [
     y: 0,
     span: 34,
     width: 104,
+    stems: [
+      [-73, 2.8],
+      [-50, 5],
+      [-10, 5],
+      [13, 2.8],
+      [41, 3.15],
+      [59, 3.15],
+    ],
     angle: 0,
   },
   {
@@ -27,6 +36,12 @@ const nativeProfiles = [
     y: 0,
     span: 34,
     width: 98,
+    stems: [
+      [-43, 2.8],
+      [-20, 5],
+      [20, 5],
+      [43, 2.8],
+    ],
     angle: 0,
   },
   {
@@ -36,6 +51,10 @@ const nativeProfiles = [
     y: 0,
     span: 34,
     width: 24,
+    stems: [
+      [-10, 3.5],
+      [10, 3.5],
+    ],
     angle: 0,
   },
 ];
@@ -67,6 +86,10 @@ export function receptorAnchorProfile(item) {
       pivotY: (native.y - box[1]) / box[3],
       span: native.span / box[3],
       width: native.width / box[2],
+      stems: native.stems.map(([x, width]) => [
+        (x - box[0]) / box[2],
+        width / box[2],
+      ]),
       angle: native.angle,
       extracellular: true,
     };

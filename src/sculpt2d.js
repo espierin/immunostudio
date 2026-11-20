@@ -1,4 +1,7 @@
-import { sampledStemFootprint } from "./receptor-footprints.js";
+import {
+  sampledStemFootprint,
+  sampledStemFootprints,
+} from "./receptor-footprints.js";
 import {
   membraneThickness,
   embeddedStemProfile,
@@ -285,6 +288,23 @@ export function embeddedAnchors(session) {
       ectoBend,
       initialEctoBend: ectoBend,
       normalAngle,
+      stems: stemProfile?.stems
+        ? stemProfile.stems.map(([x, width]) =>
+            [
+              [x - width / 2, stemProfile.y - stemProfile.span / 2],
+              [x + width / 2, stemProfile.y - stemProfile.span / 2],
+              [x + width / 2, stemProfile.y + stemProfile.span / 2],
+              [x - width / 2, stemProfile.y + stemProfile.span / 2],
+            ].map((p) => point(p, stemMatrix)),
+          )
+        : !stemProfile
+          ? sampledStemFootprints(
+              container,
+              frame,
+              session.screenToSheet,
+              membraneThickness(session.item),
+            )
+          : null,
       stem: stemProfile
         ? [
             [
